@@ -353,3 +353,6 @@ fabric.properties
 *.code-workspace
 
 **/.idea
+
+**.classpath
+**.project
