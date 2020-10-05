@@ -1,10 +1,26 @@
-# Instructions
+# Smart Home Simulator
 
-Start backend for development `./gradlew bootRun` inside the `backend` folder.
+![Format and Lint](https://github.com/gordonpn/soen343/workflows/Format%20and%20Lint/badge.svg?branch=develop)
 
-To automatically format Java code, `./gradlew goJF` inside the `backend` folder.
+## Getting start with development
 
-Start frontend for development `npm run dev` inside the `frontend` folder.
+### Backend (server)
+
+**Inside the `backend` folder.**
+
+Start backend for development `./gradlew bootRun`
+
+To automatically format Java code, `./gradlew goJF`
+
+### Frontend (client)
+
+**Inside the `client` folder.**
+
+Start frontend for development `npm run dev`
+
+Format with Prettier `npm run format`
+
+Lint with ESLint `npm run lint`
 
 ## Authors
 
