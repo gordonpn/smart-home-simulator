@@ -2,6 +2,8 @@
 
 Start backend for development `./gradlew bootRun` inside the `backend` folder.
 
+To automatically format Java code, `./gradlew goJF` inside the `backend` folder.
+
 Start frontend for development `npm run dev` inside the `frontend` folder.
 
 ## Authors
