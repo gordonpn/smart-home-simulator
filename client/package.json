@@ -2,6 +2,7 @@
   "name": "nextjs",
   "version": "4.0.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@material-ui/core": "latest",
     "clsx": "latest",
@@ -31,7 +32,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write **/*.{js,ts,tsx} --ignore-path .gitignore",
-    "lint": "eslint . --ext ts --ext tsx --ext js --ignore-path .gitignore"
+    "format": "prettier --write **/*.{js,ts,jsx} --ignore-path .gitignore",
+    "lint": "eslint . --ext ts --ext jsx --ext js --ignore-path .gitignore"
   }
 }
