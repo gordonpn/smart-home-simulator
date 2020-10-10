@@ -4,6 +4,8 @@
 
 ## Getting start with development
 
+[Getting Started in Wiki page](https://github.com/gordonpn/soen343/wiki/Getting-Started)
+
 ### Backend (server)
 
 **Inside the `backend` folder.**
