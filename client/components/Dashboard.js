@@ -18,6 +18,7 @@ import Console from "./Console";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Modules from "./Modules";
+import Box from "@material-ui/core/Box";
 
 const drawerWidth = 240;
 
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   drawerPaper: {
+    marginTop: 80,
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
@@ -107,10 +109,7 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, classes.appBarShift)}
-      >
+      <AppBar position="absolute" className={clsx(classes.appBar)}>
         <Toolbar className={classes.toolbar}>
           <Typography
             component="h1"
@@ -121,11 +120,6 @@ export default function Dashboard() {
           >
             Smart Home Simulator
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -135,22 +129,20 @@ export default function Dashboard() {
         }}
         open={true}
       >
-        <Typography variant="h6" gutterBottom>
-          Simulation
-        </Typography>
-        <Divider />
-        <ToggleButtonGroup value="on" exclusive aria-label="text alignment">
-          <ToggleButton value="on" aria-label="left aligned">
-            <Typography variant="body1" gutterBottom>
-              On
-            </Typography>
-          </ToggleButton>
-          <ToggleButton value="off" aria-label="centered">
-            <Typography variant="body1" gutterBottom>
-              Off
-            </Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <ToggleButtonGroup value="on" exclusive aria-label="text alignment">
+            <ToggleButton value="on" aria-label="left aligned">
+              <Typography variant="body1" gutterBottom>
+                On
+              </Typography>
+            </ToggleButton>
+            <ToggleButton value="off" aria-label="centered">
+              <Typography variant="body1" gutterBottom>
+                Off
+              </Typography>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
