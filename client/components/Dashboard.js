@@ -15,6 +15,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Modules from "./Modules";
 import Box from "@material-ui/core/Box";
+import Toggle from "./Toggle";
 
 const drawerWidth = 240;
 
@@ -72,18 +73,7 @@ export default function Dashboard() {
         open={true}
       >
         <Box display="flex" alignItems="center" justifyContent="center">
-          <ToggleButtonGroup value="on" exclusive aria-label="text alignment">
-            <ToggleButton value="on" aria-label="left aligned">
-              <Typography variant="body1" gutterBottom>
-                On
-              </Typography>
-            </ToggleButton>
-            <ToggleButton value="off" aria-label="centered">
-              <Typography variant="body1" gutterBottom>
-                Off
-              </Typography>
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <Toggle />
         </Box>
       </Drawer>
       <main className={classes.content}>
