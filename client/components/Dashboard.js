@@ -16,6 +16,8 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Modules from "./Modules";
 import Box from "@material-ui/core/Box";
 import Toggle from "./Toggle";
+import Avatar from "@material-ui/core/Avatar";
+import UserProfile from "./UserProfile";
 
 const drawerWidth = 240;
 
@@ -72,8 +74,14 @@ export default function Dashboard() {
         }}
         open={true}
       >
-        <Box display="flex" alignItems="center" justifyContent="center">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+        >
           <Toggle />
+          <UserProfile />
         </Box>
       </Drawer>
       <main className={classes.content}>
