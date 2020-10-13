@@ -1,4 +1,13 @@
-.PHONY: start
+.PHONY: client server
 
-start:
-	(cd ./backend && ./gradlew bootRun) && (cd ./frontend && nr dev)
+client:
+	cd ./client && npm run dev
+
+server:
+	cd ./backend && ./gradlew bootRun
+
+test:
+	cd ./backend && ./gradlew test
+
+format:
+	cd ./backend && ./gradlew goJF
