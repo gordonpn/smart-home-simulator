@@ -1,0 +1,57 @@
+name: Format and Lint
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  linting:
+    name: Run linters JavaScript
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          eslint: true
+          eslint_dir: client/
+          eslint_extensions: js,ts,jsx
+          prettier: true
+          prettier_dir: client/
+
+  formatting:
+    name: Run Google Java Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11"
+
+      - name: Run Formatter
+        uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
