@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"team23.smartHomeSimulator"},{"l":"team23.smartHomeSimulator.controller"},{"l":"team23.smartHomeSimulator.model"}];updateSearchResults();
