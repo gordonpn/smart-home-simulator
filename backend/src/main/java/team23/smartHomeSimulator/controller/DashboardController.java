@@ -52,4 +52,10 @@ public class DashboardController {
 
 
 
+  public DashboardController() {}
+
+  @GetMapping("/dateTime")
+  public String getDateTime() {
+    return "Hello" + dashboard.getDateTime().toString();
+  }
 }
