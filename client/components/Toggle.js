@@ -2,14 +2,28 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 
 export default function Toggle() {
-  const [runningState, setRunningState] = React.useState("off");
+  const [runningState, setRunningState] = React.useState(false);
 
   const handleRunningState = (event, newRunningState) => {
     setRunningState(newRunningState);
+    if (newRunningState) {
+      axios.put("api/running");
+    } else {
+      axios.delete("api/running");
+    }
   };
+
+  useEffect(() => {
+    const getRunningState = async () => {
+      const res = await axios.get("/api/running");
+      setRunningState(res.data);
+    };
+    getRunningState();
+  }, []);
 
   return (
     <>
@@ -26,12 +40,12 @@ export default function Toggle() {
           size="large"
           value={runningState}
         >
-          <ToggleButton value="on">
+          <ToggleButton value={true}>
             <Typography variant="button" display="block">
               On
             </Typography>
           </ToggleButton>
-          <ToggleButton value="off">
+          <ToggleButton value={false}>
             <Typography variant="button" display="block">
               Off
             </Typography>
