@@ -1,8 +1,7 @@
 package team23.smartHomeSimulator.model;
 
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
+import org.springframework.stereotype.Component;
 
 @Component
 public class Dashboard {

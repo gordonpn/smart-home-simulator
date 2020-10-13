@@ -8,3 +8,6 @@ server:
 
 test:
 	cd ./backend && ./gradlew test
+
+format:
+	cd ./backend && ./gradlew goJF
