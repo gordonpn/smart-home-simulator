@@ -5,6 +5,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import SHSTab from "./SHSTab";
+import SHCTab from "./SHCTab";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,19 +54,17 @@ export default function Modules() {
   return (
     <div className={classes.root}>
       <Tabs value={value} onChange={handleChange} className={classes.tabBorder}>
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
+        <Tab label="SHS" />
+        <Tab label="SHC" />
+        <Tab label="SHH" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        Item One
+        <SHSTab />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <SHCTab />
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
+      <TabPanel value={value} index={2} />
     </div>
   );
 }
