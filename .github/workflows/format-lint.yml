@@ -34,6 +34,7 @@ jobs:
           github_token: ${{ secrets.github_token }}
           eslint: true
           eslint_dir: client/
+          eslint_extensions: js,ts,jsx
           prettier: true
           prettier_dir: client/
 
