@@ -13,22 +13,31 @@ export default function Toggle() {
 
   return (
     <>
-      <ToggleButtonGroup
-        value={runningState}
-        exclusive
-        onChange={handleRunningState}
+      <Box
+        display="flex"
+        p={2}
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
       >
-        <ToggleButton value="on">
-          <Typography variant="body1" gutterBottom>
-            On
-          </Typography>
-        </ToggleButton>
-        <ToggleButton value="off">
-          <Typography variant="body1" gutterBottom>
-            Off
-          </Typography>
-        </ToggleButton>
-      </ToggleButtonGroup>
+        <ToggleButtonGroup
+          exclusive
+          onChange={handleRunningState}
+          size="large"
+          value={runningState}
+        >
+          <ToggleButton value="on">
+            <Typography variant="button" display="block">
+              On
+            </Typography>
+          </ToggleButton>
+          <ToggleButton value="off">
+            <Typography variant="button" display="block">
+              Off
+            </Typography>
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
     </>
   );
 }

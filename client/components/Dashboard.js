@@ -11,13 +11,11 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import HouseView from "./HouseView";
 import Console from "./Console";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Modules from "./Modules";
 import Box from "@material-ui/core/Box";
 import Toggle from "./Toggle";
-import Avatar from "@material-ui/core/Avatar";
 import UserProfile from "./UserProfile";
+import LocationLink from "./LocationLink";
 
 const drawerWidth = 240;
 
@@ -82,6 +80,7 @@ export default function Dashboard() {
         >
           <Toggle />
           <UserProfile />
+          <LocationLink />
         </Box>
       </Drawer>
       <main className={classes.content}>
