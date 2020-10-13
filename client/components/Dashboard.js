@@ -16,6 +16,8 @@ import Box from "@material-ui/core/Box";
 import Toggle from "./Toggle";
 import UserProfile from "./UserProfile";
 import LocationLink from "./LocationLink";
+import OutsideTemp from "./OutsideTemp";
+import DateTime from "./DateTime";
 
 const drawerWidth = 240;
 
@@ -81,6 +83,8 @@ export default function Dashboard() {
           <Toggle />
           <UserProfile />
           <LocationLink />
+          <OutsideTemp />
+          <DateTime />
         </Box>
       </Drawer>
       <main className={classes.content}>

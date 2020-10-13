@@ -1,12 +1,9 @@
-import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import React from "react";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -22,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserProfile() {
+export default function OutsideTemp() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -36,19 +33,9 @@ export default function UserProfile() {
 
   return (
     <>
-      <Box display="flex" p={2}>
-        <Button onClick={handleOpen}>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Avatar />
-            <Typography>User</Typography>
-          </Box>
-        </Button>
-      </Box>
+      <Button color="primary" size="large" onClick={handleOpen}>
+        Outside Temp. 15&deg;C
+      </Button>
       <Modal
         className={classes.modal}
         open={open}
@@ -61,9 +48,9 @@ export default function UserProfile() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Change User Profile</h2>
+            <h2 id="transition-modal-title">Change Outside Temperature</h2>
             <p id="transition-modal-description">
-              There will be a dropdown with available profiles here.
+              There will be an option to change outside temperature here.
             </p>
           </div>
         </Fade>
