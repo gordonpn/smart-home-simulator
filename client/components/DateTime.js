@@ -4,6 +4,7 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { makeStyles } from "@material-ui/core/styles";
+import RunningStateStore from "../stores/RunningStateStore";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -23,6 +24,7 @@ export default function DateTime() {
   const [currentTime, setCurrentTime] = useState("");
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const { currentState } = RunningStateStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -33,11 +35,14 @@ export default function DateTime() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleString());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (currentState) {
+      const interval = setInterval(() => {
+        setCurrentTime(new Date().toLocaleString());
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [currentState]);
 
   return (
     <>

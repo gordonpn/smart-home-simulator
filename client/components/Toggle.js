@@ -4,9 +4,10 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import React, { useEffect } from "react";
 import axios from "axios";
+import RunningStateStore from "../stores/RunningStateStore";
 
 export default function Toggle() {
-  const [runningState, setRunningState] = React.useState(false);
+  const { currentState, setRunningState } = RunningStateStore();
 
   const handleRunningState = (event, newRunningState) => {
     setRunningState(newRunningState);
@@ -20,7 +21,8 @@ export default function Toggle() {
   useEffect(() => {
     const getRunningState = async () => {
       const res = await axios.get("/api/running");
-      setRunningState(res.data);
+      const { runningStatus } = res.data;
+      setRunningState(runningStatus);
     };
     getRunningState();
   }, []);
@@ -38,7 +40,7 @@ export default function Toggle() {
           exclusive
           onChange={handleRunningState}
           size="large"
-          value={runningState}
+          value={currentState}
         >
           <ToggleButton value={true}>
             <Typography variant="button" display="block">
