@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DateTime() {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [userDateInput, setUserDateInput] = useState("");
+  const [userTimeInput, setUserTimeInput] = useState("");
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { currentState } = RunningStateStore();
@@ -45,7 +47,48 @@ export default function DateTime() {
     setOpen(false);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const dateArray = userDateInput.split("-");
+    const timeArray = userTimeInput.split(":");
+    if (dateArray.length > 1 && timeArray.length > 1) {
+      setCurrentTime(
+        new Date(
+          parseInt(dateArray[0]),
+          parseInt(dateArray[1]) - 1,
+          parseInt(dateArray[2]),
+          parseInt(timeArray[0]),
+          parseInt(timeArray[1]),
+          currentTime.getSeconds()
+        )
+      );
+    } else if (dateArray.length > 1 && timeArray.length <= 1) {
+      //  only the date is set
+      setCurrentTime(
+        new Date(
+          parseInt(dateArray[0]),
+          parseInt(dateArray[1]) - 1,
+          parseInt(dateArray[2]),
+          currentTime.getHours(),
+          currentTime.getMinutes(),
+          currentTime.getSeconds()
+        )
+      );
+    } else if (dateArray.length <= 1 && timeArray.length > 1) {
+      //  only the time is set
+      setCurrentTime(
+        new Date(
+          currentTime.getFullYear(),
+          currentTime.getMonth(),
+          currentTime.getDate(),
+          parseInt(timeArray[0]),
+          parseInt(timeArray[1]),
+          currentTime.getSeconds()
+        )
+      );
+    }
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (currentState) {
@@ -87,36 +130,44 @@ export default function DateTime() {
               </>
             ) : (
               <>
-                <Typography variant="body1">
-                  <form
-                    className={classes.container}
-                    noValidate
-                    onSubmit={handleSubmit}
-                  >
-                    <TextField
-                      id="date"
-                      type="date"
-                      defaultValue="2017-05-24"
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                    <TextField
-                      id="time"
-                      type="time"
-                      defaultValue="07:30"
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      inputProps={{
-                        step: 300, // 5 min
-                      }}
-                    />
-                    <Button type="submit">Save</Button>
-                  </form>
-                </Typography>
+                <form
+                  className={classes.container}
+                  noValidate
+                  onSubmit={handleSubmit}
+                >
+                  <TextField
+                    id="date"
+                    type="date"
+                    onInput={(e) => {
+                      const { value } = e.target;
+                      return setUserDateInput(value);
+                    }}
+                    defaultValue={`${currentTime.getFullYear()}-${
+                      currentTime.getMonth() + 1
+                    }-${currentTime.getDate()}`}
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <TextField
+                    id="time"
+                    type="time"
+                    onInput={(e) => {
+                      const { value } = e.target;
+                      return setUserTimeInput(value);
+                    }}
+                    defaultValue={`${currentTime.getHours()}:${currentTime.getMinutes()}`}
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      step: 300,
+                    }}
+                  />
+                  <Button type="submit">Save</Button>
+                </form>
               </>
             )}
           </div>

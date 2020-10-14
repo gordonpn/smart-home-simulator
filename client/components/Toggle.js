@@ -25,16 +25,16 @@ export default function Toggle() {
       setRunningState(runningStatus);
     };
     getRunningState();
-  }, []);
+  }, [setRunningState]);
 
   return (
     <>
       <Box
-        display="flex"
-        p={2}
-        flexDirection="column"
         alignItems="center"
+        display="flex"
+        flexDirection="column"
         justifyContent="center"
+        p={2}
       >
         <ToggleButtonGroup
           exclusive
