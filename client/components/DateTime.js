@@ -90,6 +90,36 @@ export default function DateTime() {
     setOpen(false);
   };
 
+  const defaultDateValue = () => {
+    const year = currentTime.getFullYear();
+    const currentMonth = currentTime.getMonth() + 1;
+    const month =
+      currentMonth.toString().length === 1
+        ? "0" + currentMonth.toString()
+        : currentMonth;
+    const currentDate = currentTime.getDate();
+    const date =
+      currentDate.toString().length === 1
+        ? "0" + currentDate.toString()
+        : currentDate;
+    return `${year}-${month}-${date}`;
+  };
+
+  const defaultTimeValue = () => {
+    const currentHours = currentTime.getHours();
+    const hours =
+      currentHours.toString().length === 1
+        ? "0" + currentHours.toString()
+        : currentHours;
+    const currentMinutes = currentTime.getMinutes();
+    const minutes =
+      currentMinutes.toString().length === 1
+        ? "0" + currentMinutes.toString()
+        : currentMinutes;
+
+    return `${hours}:${minutes}`;
+  };
+
   useEffect(() => {
     if (currentState) {
       const interval = setInterval(() => {
@@ -142,9 +172,7 @@ export default function DateTime() {
                       const { value } = e.target;
                       return setUserDateInput(value);
                     }}
-                    defaultValue={`${currentTime.getFullYear()}-${
-                      currentTime.getMonth() + 1
-                    }-${currentTime.getDate()}`}
+                    defaultValue={defaultDateValue()}
                     className={classes.textField}
                     InputLabelProps={{
                       shrink: true,
@@ -157,7 +185,7 @@ export default function DateTime() {
                       const { value } = e.target;
                       return setUserTimeInput(value);
                     }}
-                    defaultValue={`${currentTime.getHours()}:${currentTime.getMinutes()}`}
+                    defaultValue={defaultTimeValue()}
                     className={classes.textField}
                     InputLabelProps={{
                       shrink: true,
