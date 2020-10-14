@@ -1,7 +1,14 @@
 package team23.smartHomeSimulator.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import netscape.javascript.JSObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Profile;
 
@@ -25,9 +32,9 @@ public class ProfileController {
    * @return the profile list
    */
   @GetMapping("/profile")
-  public List<Profile> getAllProfiles() {
-    List<Profile> profiles = (List) allProfiles.values();
-    return profiles;
+  public @ResponseBody List<Profile> getAllProfiles() {
+    List<Profile> list = new ArrayList<Profile>(allProfiles.values());
+    return list;
   }
 
   /**
