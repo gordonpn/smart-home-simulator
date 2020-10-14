@@ -20,7 +20,7 @@ public class ProfileController {
      * Constructor for the Class
      */
     public ProfileController(/**Profile profile**/) {
-        this.allProfiles = new HashMap<String, Profile>();
+        this.allProfiles = new HashMap<>();
     }
 
     /**
