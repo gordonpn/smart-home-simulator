@@ -14,48 +14,36 @@ import team23.smartHomeSimulator.model.House;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class DashboardController {
-    /**
-     * Instantiate the dashboard controller
-     */
-    private Dashboard dashboard=new Dashboard();
+  /** Instantiate the dashboard controller */
+  private Dashboard dashboard = new Dashboard();
 
-
-    /**
-     * Default constructor
-     */
-    public DashboardController() {
-    }
-
-    /**
-     * Get the current time
-     * @return dateTime
-     */
-    @GetMapping("/dateTime")
-    public String getDateTime() {
-        return "Hello "+dashboard.getDateTime().toString();
-    }
-
-    /**
-     * Create the house object
-     * @param houseData data of the house
-     * @return HTTP Response status and house layout json
-     * @throws JsonProcessingException Exception thrown for parsing json
-     */
-    @PostMapping("/uploadHouse")
-    public ResponseEntity<String> createHouseLayout(@RequestBody House houseData) throws JsonProcessingException {
-        House house = new House(houseData.getRooms());
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(house);
-
-        return new ResponseEntity<String>(json, HttpStatus.OK);
-    }
-
-
-
+  /** Default constructor */
   public DashboardController() {}
 
+  /**
+   * Get the current time
+   *
+   * @return dateTime
+   */
   @GetMapping("/dateTime")
   public String getDateTime() {
-    return "Hello" + dashboard.getDateTime().toString();
+    return "Hello " + dashboard.getDateTime().toString();
+  }
+
+  /**
+   * Create the house object
+   *
+   * @param houseData data of the house
+   * @return HTTP Response status and house layout json
+   * @throws JsonProcessingException Exception thrown for parsing json
+   */
+  @PostMapping("/uploadHouse")
+  public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
+      throws JsonProcessingException {
+    House house = new House(houseData.getRooms());
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(house);
+
+    return new ResponseEntity<String>(json, HttpStatus.OK);
   }
 }
