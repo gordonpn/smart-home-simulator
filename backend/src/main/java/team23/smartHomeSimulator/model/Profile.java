@@ -140,6 +140,14 @@ public class Profile {
         isActive = active;
     }
 
+    /**
+     * Method to set all the attributes of a profile
+     * @param name new name of profile
+     * @param location new location of profile
+     * @param role new role of profile
+     * @param permission new permission of profile
+     * @param isActive new active status of profile
+     */
     public void setAll (String name,String location,String role, String permission,boolean isActive){
         this.name = name;
         this.location = location;
