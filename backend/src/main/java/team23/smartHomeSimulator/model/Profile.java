@@ -1,9 +1,11 @@
 package team23.smartHomeSimulator.model;
+import org.springframework.stereotype.Component;
 
 /**
  * This class is made for instantiating various profile within the smart home
  * dashboard and handle operations related to dashboard functionalities
  */
+@Component
 public class Profile {
 
     /**
@@ -33,29 +35,27 @@ public class Profile {
 
     /**
      * Parametrised Constructor
-     * @param Name name of the profile
-     * @param Location current location of the profile
-     * @param Role role attributed to the profile
-     * @param Permission permission level profile has
-     * @param IsActive current status of this profile
+     * @param name name of the profile
+     * @param role role attributed to the profile
+     * @param permission permission level profile has
      */
-    public Profile(String Name,String Location,String Role, String Permission,boolean IsActive){
+    public Profile(String name,String location,String role, String permission){
 
-        this.name = Name;
-        this.location = Location;
-        this.role = Role;
-        this.permission = Permission;
-        this.isActive = IsActive;
+        this.name = name;
+        this.location = location;
+        this.role = role;
+        this.permission = permission;
+        this.isActive = false;
     }
 
     /**
      * Base Profile Constructor Initialising a Profile with only a name
-     * @param Name name of the base profile
+     * @param name name of the base profile
      */
-    public Profile(String Name){
-        this.name = Name;
+    public Profile(String name){
+        this.name = name;
         this.location = "Outside";
-        this.permission = "Guest";
+        this.role = "Guest";
         this.permission = "none";
         this.isActive = false;
     }
@@ -138,6 +138,14 @@ public class Profile {
      */
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public void setAll (String name,String location,String role, String permission,boolean isActive){
+        this.name = name;
+        this.location = location;
+        this.role = role;
+        this.permission = permission;
+        this.isActive = isActive;
     }
 
 }
