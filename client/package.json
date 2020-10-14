@@ -2,13 +2,11 @@
   "name": "nextjs",
   "version": "4.0.0",
   "private": true,
-  "proxy": "http://localhost:8080",
   "dependencies": {
     "axios": "^0.20.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
-    "axios": "^0.20.0",
     "clsx": "latest",
     "http-proxy-middleware": "^1.0.6",
     "next": "^9.5.5",
@@ -37,6 +35,7 @@
   },
   "scripts": {
     "dev": "NODE_ENV='development' node server.js",
+    "dev2": "SET NODE_ENV='development' & node server.js",
     "build": "next build",
     "start": "NODE_ENV='development' node server.js",
     "format": "prettier --write **/*.{js,ts,jsx} --ignore-path .gitignore",

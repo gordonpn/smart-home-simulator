@@ -11,19 +11,19 @@ import team23.smartHomeSimulator.model.House;
 /**
  * The DashboardController allows to call actions inside the various modules such SHH, SHC, and SHP
  */
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class DashboardController {
-  
+
   /** Instantiate the dashboard controller */
   private final Dashboard dashboard;
 
   public DashboardController(Dashboard dashboard) {
     this.dashboard = dashboard;
   }
-  
-    /**
+
+  /**
    * Create the house object
    *
    * @param houseData data of the house

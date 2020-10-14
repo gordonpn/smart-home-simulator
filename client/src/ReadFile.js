@@ -10,7 +10,7 @@ export const processFile = (event) => {
       const jsonString = JSON.parse(result);
 
       axios
-        .post("http://localhost:8080/uploadHouse", jsonString)
+        .post("/api/uploadHouse", jsonString)
         .then((res) => {
           if (res.status === 200) {
             console.warn(res.data);
