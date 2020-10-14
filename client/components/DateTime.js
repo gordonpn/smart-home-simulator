@@ -5,6 +5,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { makeStyles } from "@material-ui/core/styles";
 import RunningStateStore from "../stores/RunningStateStore";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -17,6 +19,15 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
   },
 }));
 
@@ -33,6 +44,8 @@ export default function DateTime() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSubmit = () => {};
 
   useEffect(() => {
     if (currentState) {
@@ -63,10 +76,49 @@ export default function DateTime() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Change Current Time</h2>
-            <p id="transition-modal-description">
-              There will be an option to change current time here.
-            </p>
+            <Typography variant="h6" gutterBottom>
+              Change Current Time
+            </Typography>
+            {currentState ? (
+              <>
+                <Typography variant="body1">
+                  Cannot edit time while simulation is running!
+                </Typography>
+              </>
+            ) : (
+              <>
+                <Typography variant="body1">
+                  <form
+                    className={classes.container}
+                    noValidate
+                    onSubmit={handleSubmit}
+                  >
+                    <TextField
+                      id="date"
+                      type="date"
+                      defaultValue="2017-05-24"
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                    <TextField
+                      id="time"
+                      type="time"
+                      defaultValue="07:30"
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        step: 300, // 5 min
+                      }}
+                    />
+                    <Button type="submit">Save</Button>
+                  </form>
+                </Typography>
+              </>
+            )}
           </div>
         </Fade>
       </Modal>
