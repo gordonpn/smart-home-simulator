@@ -8,8 +8,10 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "axios": "^0.20.0",
     "clsx": "latest",
-    "next": "latest",
+    "http-proxy-middleware": "^1.0.6",
+    "next": "^9.5.5",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -26,6 +28,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "eslint-plugin-standard": "^4.0.1",
+    "express": "^4.17.1",
     "prettier": "2.1.1",
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.2",
@@ -33,9 +36,9 @@
     "stylelint-prettier": "^1.1.2"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "NODE_ENV='development' node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV='development' node server.js",
     "format": "prettier --write **/*.{js,ts,jsx} --ignore-path .gitignore",
     "lint": "eslint . --ext ts --ext jsx --ext js --ignore-path .gitignore"
   }
