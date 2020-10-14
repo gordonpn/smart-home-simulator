@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DateTime() {
-  const [currentTime, setCurrentTime] = useState("");
+  const [currentTime, setCurrentTime] = useState(new Date());
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { currentState } = RunningStateStore();
@@ -37,17 +37,19 @@ export default function DateTime() {
   useEffect(() => {
     if (currentState) {
       const interval = setInterval(() => {
-        setCurrentTime(new Date().toLocaleString());
+        const incrementSeconds = currentTime.getSeconds() + 1;
+        const newTime = currentTime.setSeconds(incrementSeconds);
+        setCurrentTime(new Date(newTime));
       }, 1000);
 
       return () => clearInterval(interval);
     }
-  }, [currentState]);
+  }, [currentState, currentTime]);
 
   return (
     <>
       <Button size="large" onClick={handleOpen}>
-        {currentTime}
+        {currentTime.toLocaleString()}
       </Button>
       <Modal
         className={classes.modal}
