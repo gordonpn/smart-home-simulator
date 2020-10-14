@@ -1,7 +1,10 @@
 package team23.smartHomeSimulator.controller;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Profile;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
@@ -9,35 +12,26 @@ import java.util.HashMap;
 public class ProfileController {
     private HashMap<String,Profile> allProfiles;
 
-    public ProfileController(Profile profile) {
+    public ProfileController(/**Profile profile**/) {
         this.allProfiles = new HashMap<>();
     }
 
+    @GetMapping ("/profile")
+    public List<Profile> getAllProfiles() {
+        List<Profile>profiles = (List) allProfiles.values();
+        return profiles;
+    }
     @PutMapping("/profile")
     public void createProfile(@RequestParam(name = "name")String name,@RequestParam(name = "location") String location,@RequestParam(name = "role")String role,@RequestParam(name = "permission")String permission ) {
-        this.allProfiles.put(name,new Profile(name,location,role,permission));
+        allProfiles.put(name,new Profile(name,location,role,permission));
     }
 
     @DeleteMapping("/profile")
     public void deleteProfile(@RequestParam(name = "name")String name){
-        int counter = allProfiles.size();
-        while(counter != 0){
-            counter--;
-            if (allProfiles.get(counter).getName() == name) {
-                allProfiles.remove(counter);
-                counter = 0;
-            }
-        }
+        allProfiles.remove(name);
     }
     @PostMapping("/profile")
     public void editProfile(@RequestParam(name = "oldName")String oldName, @RequestParam(name = "name")String name, @RequestParam(name = "location") String location,@RequestParam(name = "role")String role,@RequestParam(name = "permission")String permission){
-        int counter = allProfiles.size();
-        while(counter != 0){
-            counter--;
-            if (allProfiles.get(counter).getName() == oldName) {
-                allProfiles.get(counter).setAll(name,location,role,permission,false);
-                counter = 0;
-            }
-        }
+        allProfiles.get(oldName).setAll(name,location,role,permission,false);
     }
 }

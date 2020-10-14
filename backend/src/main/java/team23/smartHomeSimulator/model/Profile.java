@@ -1,11 +1,11 @@
 package team23.smartHomeSimulator.model;
-import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Component;
 
 /**
  * This class is made for instantiating various profile within the smart home
  * dashboard and handle operations related to dashboard functionalities
  */
-@Component
+//@Component
 public class Profile {
 
     /**
