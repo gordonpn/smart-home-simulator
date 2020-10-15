@@ -19,7 +19,7 @@ import LocationLink from "./LocationLink";
 import OutsideTemp from "./OutsideTemp";
 import DateTime from "./DateTime";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const useStyles = makeStyles((theme) => ({
   root: {

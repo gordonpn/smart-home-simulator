@@ -7,6 +7,7 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
+import ProfileStore from "../stores/ProfileStore";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UserProfile() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const { currentProfile } = ProfileStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -45,7 +47,13 @@ export default function UserProfile() {
             justifyContent="center"
           >
             <Avatar />
-            <Typography>User</Typography>
+            <Box p={1}>
+              {currentProfile === undefined ? (
+                <Typography>No Profile Selected</Typography>
+              ) : (
+                <></>
+              )}
+            </Box>
           </Box>
         </Button>
       </Box>
