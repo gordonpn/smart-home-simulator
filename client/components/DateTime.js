@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import RunningStateStore from "../stores/RunningStateStore";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import * as axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -47,7 +48,7 @@ export default function DateTime() {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const dateArray = userDateInput.split("-");
     const timeArray = userTimeInput.split(":");
@@ -88,6 +89,10 @@ export default function DateTime() {
       );
     }
     setOpen(false);
+    const postBody = {
+      currentTime: currentTime,
+    };
+    await axios.put("/api/date-time", postBody);
   };
 
   const defaultDateValue = () => {
