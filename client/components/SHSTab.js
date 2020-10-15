@@ -1,6 +1,7 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import Button from "@material-ui/core/Button";
+import AddUser from "./AddUser";
 
 export default function SHSTab() {
   return (
@@ -8,9 +9,7 @@ export default function SHSTab() {
       <Typography variant="h6" gutterBottom>
         Profiles
       </Typography>
-      <Button variant="outlined" color="primary">
-        Add
-      </Button>
+      <AddUser />
       <Button variant="outlined" color="primary">
         Remove
       </Button>

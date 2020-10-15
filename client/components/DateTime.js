@@ -171,7 +171,6 @@ export default function DateTime() {
                   onSubmit={handleSubmit}
                 >
                   <TextField
-                    id="date"
                     type="date"
                     onInput={(e) => {
                       const { value } = e.target;
@@ -184,7 +183,6 @@ export default function DateTime() {
                     }}
                   />
                   <TextField
-                    id="time"
                     type="time"
                     onInput={(e) => {
                       const { value } = e.target;
