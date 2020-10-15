@@ -2,14 +2,13 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Dashboard;
 import team23.smartHomeSimulator.model.House;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The DashboardController allows to call actions inside the various modules such SHH, SHC, and SHP
@@ -50,8 +49,11 @@ public class DashboardController {
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
-  /** set running state to true
-   * @return 200 OK, no exception handling for now*/
+  /**
+   * set running state to true
+   *
+   * @return 200 OK, no exception handling for now
+   */
   @PutMapping("/running")
   public ResponseEntity<Object> runningOn() {
     Map<String, Boolean> resMap = new HashMap<>();
@@ -59,8 +61,11 @@ public class DashboardController {
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
-  /** set running state to false
-   * @return 200 OK, no exception handling for now*/
+  /**
+   * set running state to false
+   *
+   * @return 200 OK, no exception handling for now
+   */
   @DeleteMapping("/running")
   public ResponseEntity<Object> runningOff() {
     Map<String, Boolean> resMap = new HashMap<>();
