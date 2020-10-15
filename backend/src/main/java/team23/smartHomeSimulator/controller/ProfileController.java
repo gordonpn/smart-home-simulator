@@ -1,10 +1,5 @@
 package team23.smartHomeSimulator.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +7,9 @@ import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Controller for The Profile Model Class */
 @RestController
@@ -27,19 +25,17 @@ public class ProfileController {
   }
 
   /** @return the profile list */
-  @GetMapping("/profile")
+  @GetMapping("/profiles")
   public ResponseEntity<ArrayList<Profile>> getProfiles() {
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
   /**
-   * Returns a single selected profile
-   *
-   * @param name name of the desired profile
-   * @return returns the serialised profile object
+   * @param name of the profile we want
+   * @return the profile in question
    */
-  @GetMapping("/profile/single")
-  public ResponseEntity<Profile> getSingleProfiles(@RequestParam(name = "name") String name) {
+  @GetMapping("/profiles/{name}")
+  public ResponseEntity<Profile> getOneProfile(@PathVariable String name) {
     return new ResponseEntity<>(profiles.get(name), HttpStatus.OK);
   }
 
@@ -49,7 +45,7 @@ public class ProfileController {
    * @param name name of the profile to be deleted
    * @return the removed profile
    */
-  @DeleteMapping("/profile")
+  @DeleteMapping("/profiles")
   public ResponseEntity<Profile> deleteProfile(@RequestParam(name = "name") String name) {
     return new ResponseEntity<>(profiles.remove(name), HttpStatus.OK);
   }
@@ -60,7 +56,7 @@ public class ProfileController {
    * @param requestBody JSON body containing the edited data and the old name of the profile
    * @return the updated profile
    */
-  @PutMapping("/profile")
+  @PutMapping("/profiles")
   public ResponseEntity<Profile> editProfile(@RequestBody EditProfileRequestBody requestBody) {
     profiles.remove(requestBody.getOldName());
     createProfile(requestBody);
@@ -73,7 +69,7 @@ public class ProfileController {
    * @param requestBody JSON body containing the data for the new profile
    * @return the profile just created
    */
-  @PostMapping("/profile")
+  @PostMapping("/profiles")
   public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
     profiles.put(
         requestBody.getName(),
@@ -82,6 +78,34 @@ public class ProfileController {
             requestBody.getLocation(),
             requestBody.getRole(),
             requestBody.getPermission()));
+    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
+  }
+
+  /**
+   * @param name of the profile we'd like to login
+   * @return all profiles after logging in
+   */
+  @PutMapping("/profiles/login")
+  public ResponseEntity<ArrayList<Profile>> setActive(@RequestParam(name = "name") String name) {
+    profiles.get(name).setActive(true);
+    return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
+  }
+
+  /** @return all profiles after logging out */
+  @PutMapping("/profiles/logout")
+  public ResponseEntity<ArrayList<Profile>> setInactive() {
+    profiles.forEach((profileName, profile) -> profile.setActive(false));
+    return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
+  }
+
+  /**
+   * @param requestBody containing name and new location
+   * @return the updated profile
+   */
+  @PutMapping("/profiles/location")
+  public ResponseEntity<Profile> changeLocation(
+      @RequestBody LocationChangeRequestBody requestBody) {
+    profiles.get(requestBody.getName()).setLocation(requestBody.getLocation());
     return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
   }
 }

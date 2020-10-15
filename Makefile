@@ -1,4 +1,4 @@
-.PHONY: client server
+.PHONY: client server test format server-watch
 
 client:
 	cd ./client && npm run dev
