@@ -2,6 +2,8 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,19 +43,51 @@ public class DashboardController {
 
   /** @return current state of simulation, true || false */
   @GetMapping("/running")
-  public Boolean getRunning() {
-    return dashboard.getRunning();
+  public ResponseEntity<Object> getRunning() {
+    Map<String, Boolean> resMap = new HashMap<>();
+    resMap.put("runningStatus", dashboard.getRunning());
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
-  /** set running state to true */
+  /**
+   * set running state to true
+   *
+   * @return 200 OK, no exception handling for now
+   */
   @PutMapping("/running")
-  public void runningOn() {
+  public ResponseEntity<Object> runningOn() {
+    Map<String, Boolean> resMap = new HashMap<>();
     dashboard.setRunning(true);
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
-  /** set running state to false */
+  /**
+   * set running state to false
+   *
+   * @return 200 OK, no exception handling for now
+   */
   @DeleteMapping("/running")
-  public void runningOff() {
+  public ResponseEntity<Object> runningOff() {
+    Map<String, Boolean> resMap = new HashMap<>();
     dashboard.setRunning(false);
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
+  }
+
+  /**
+   * @param requestBody JSON request body in this format { "currentTime": "2020-10-15" }
+   * @return the JSON sent from the client
+   */
+  @PutMapping("/date-time")
+  public ResponseEntity<Object> updateDateTime(@RequestBody Map<String, String> requestBody) {
+    dashboard.setDateTime(requestBody.get("currentTime"));
+    return new ResponseEntity<>(requestBody, HttpStatus.OK);
+  }
+
+  /** @return the date time saved in JSON format */
+  @GetMapping("/date-time")
+  public ResponseEntity<Object> getDateTime() {
+    Map<String, String> resMap = new HashMap<>();
+    resMap.put("currentTime", dashboard.getDateTime());
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 }
