@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
+import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
 
 /** Controller for The Profile Model Class */
@@ -95,5 +96,15 @@ public class ProfileController {
         (k, v) -> {
           v.setActive(false);
         });
+  }
+
+  /**
+   * Method used for changing location
+   *
+   * @param requestBody contains both name of the profile to change and the location to change it to
+   */
+  @PutMapping("/profile/location")
+  public void changeLocation(@RequestBody LocationChangeRequestBody requestBody) {
+    allProfiles.get(requestBody.name).setLocation(requestBody.location);
   }
 }
