@@ -77,4 +77,23 @@ public class ProfileController {
             requestBody.permission,
             false);
   }
+
+  /**
+   * Method for login
+   *
+   * @param name name of the profile we want to be logged in
+   */
+  @PutMapping("/profile/login")
+  public void setActive(@RequestBody String name) {
+    allProfiles.get(name).setActive(true);
+  }
+
+  /** Method for logout, it logs out all profiles */
+  @PutMapping("/profile/logout")
+  public void setInactive() {
+    allProfiles.forEach(
+        (k, v) -> {
+          v.setActive(false);
+        });
+  }
 }
