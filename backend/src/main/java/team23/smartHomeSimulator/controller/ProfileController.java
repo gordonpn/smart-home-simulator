@@ -5,47 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Profile;
+import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
+import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
 
+/** Controller for The Profile Model Class */
 @RestController
 @RequestMapping("/api")
-/** Controller for The Profile Model Class */
 public class ProfileController {
-
-  /** Class Used for Creating Profiles having the parameters as a template for the recieved JSON */
-  private class ProfileResponseBody {
-    public String name;
-    public String location;
-    public String role;
-    public String permission;
-
-    public ProfileResponseBody(String name, String location, String role, String permission) {
-      this.name = name;
-      this.location = location;
-      this.role = role;
-      this.permission = permission;
-    }
-  }
-
-  /**
-   * Class Used for Editing the profile with same parameters as the ProfileResponseBody class but
-   * with oldName as extra parameter parameters are the template for the recieved JSON
-   */
-  private class EditProfileResponseBody {
-    public String oldName;
-    public String name;
-    public String location;
-    public String role;
-    public String permission;
-
-    public EditProfileResponseBody(
-        String oldName, String name, String location, String role, String permission) {
-      this.oldName = oldName;
-      this.name = name;
-      this.location = location;
-      this.role = role;
-      this.permission = permission;
-    }
-  }
 
   /** Private Attribute for matching name keys and Profile values */
   private HashMap<String, Profile> allProfiles;
@@ -58,8 +24,7 @@ public class ProfileController {
   /** @return the profile list */
   @GetMapping("/profile")
   public @ResponseBody List<Profile> getAllProfiles() {
-    List<Profile> list = new ArrayList<Profile>(allProfiles.values());
-    return list;
+    return new ArrayList<>(allProfiles.values());
   }
 
   /**
@@ -79,7 +44,7 @@ public class ProfileController {
    * @param requestBody SON body containing the data for the new profile
    */
   @PostMapping("/profile")
-  public void createProfile(@RequestBody ProfileResponseBody requestBody) {
+  public void createProfile(@RequestBody ProfileRequestBody requestBody) {
     allProfiles.put(
         requestBody.name,
         new Profile(
@@ -102,7 +67,7 @@ public class ProfileController {
    * @param requestBody JSON body containing the edited data and the old name of the profile
    */
   @PutMapping("/profile")
-  public void editProfile(@RequestBody EditProfileResponseBody requestBody) {
+  public void editProfile(@RequestBody EditProfileRequestBody requestBody) {
     allProfiles
         .get(requestBody.oldName)
         .setAll(
