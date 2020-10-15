@@ -41,24 +41,6 @@ public class ProfileController {
   }
 
   /**
-   * Create Method for the Profile
-   *
-   * @param requestBody JSON body containing the data for the new profile
-   * @return
-   */
-  @PostMapping("/profile")
-  public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
-    profiles.put(
-        requestBody.getName(),
-        new Profile(
-            requestBody.getName(),
-            requestBody.getLocation(),
-            requestBody.getRole(),
-            requestBody.getPermission()));
-    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
-  }
-
-  /**
    * Delete Method for the Profile
    *
    * @param name name of the profile to be deleted
@@ -77,14 +59,26 @@ public class ProfileController {
    */
   @PutMapping("/profile")
   public ResponseEntity<Profile> editProfile(@RequestBody EditProfileRequestBody requestBody) {
-    profiles
-        .get(requestBody.getOldName())
-        .setAll(
+    profiles.remove(requestBody.getOldName());
+    createProfile(requestBody);
+    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
+  }
+
+  /**
+   * Create Method for the Profile
+   *
+   * @param requestBody JSON body containing the data for the new profile
+   * @return the profile just created
+   */
+  @PostMapping("/profile")
+  public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
+    profiles.put(
+        requestBody.getName(),
+        new Profile(
             requestBody.getName(),
             requestBody.getLocation(),
             requestBody.getRole(),
-            requestBody.getPermission(),
-            false);
+            requestBody.getPermission()));
     return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
   }
 }
