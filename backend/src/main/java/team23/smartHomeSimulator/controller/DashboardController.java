@@ -67,4 +67,22 @@ public class DashboardController {
     dashboard.setRunning(false);
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
+
+  /**
+   * @param requestBody JSON request body in this format { "currentTime": "2020-10-15" }
+   * @return the JSON sent from the client
+   */
+  @PutMapping("/date-time")
+  public ResponseEntity<Object> updateDateTime(@RequestBody Map<String, String> requestBody) {
+    dashboard.setDateTime(requestBody.get("currentTime"));
+    return new ResponseEntity<>(requestBody, HttpStatus.OK);
+  }
+
+  /** @return the date time saved in JSON format */
+  @GetMapping("/date-time")
+  public ResponseEntity<Object> getDateTime() {
+    Map<String, String> resMap = new HashMap<>();
+    resMap.put("currentTime", dashboard.getDateTime());
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
+  }
 }
