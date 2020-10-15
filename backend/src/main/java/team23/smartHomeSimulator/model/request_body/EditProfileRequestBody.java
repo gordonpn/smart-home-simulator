@@ -5,11 +5,11 @@ package team23.smartHomeSimulator.model.request_body;
  * oldName as extra parameter parameters are the template for the received JSON
  */
 public class EditProfileRequestBody {
-  public String oldName;
-  public String name;
-  public String location;
-  public String role;
-  public String permission;
+  private String oldName;
+  private String name;
+  private String location;
+  private String role;
+  private String permission;
 
   public EditProfileRequestBody(
       String oldName, String name, String location, String role, String permission) {
@@ -18,5 +18,25 @@ public class EditProfileRequestBody {
     this.location = location;
     this.role = role;
     this.permission = permission;
+  }
+
+  public String getOldName() {
+    return oldName;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public String getPermission() {
+    return permission;
   }
 }

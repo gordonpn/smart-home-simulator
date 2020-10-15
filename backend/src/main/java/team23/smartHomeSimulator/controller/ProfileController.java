@@ -41,14 +41,17 @@ public class ProfileController {
   /**
    * Create Method for the Profile
    *
-   * @param requestBody SON body containing the data for the new profile
+   * @param requestBody JSON body containing the data for the new profile
    */
   @PostMapping("/profile")
   public void createProfile(@RequestBody ProfileRequestBody requestBody) {
     allProfiles.put(
-        requestBody.name,
+        requestBody.getName(),
         new Profile(
-            requestBody.name, requestBody.location, requestBody.role, requestBody.permission));
+            requestBody.getName(),
+            requestBody.getLocation(),
+            requestBody.getRole(),
+            requestBody.getPermission()));
   }
 
   /**
@@ -69,12 +72,12 @@ public class ProfileController {
   @PutMapping("/profile")
   public void editProfile(@RequestBody EditProfileRequestBody requestBody) {
     allProfiles
-        .get(requestBody.oldName)
+        .get(requestBody.getOldName())
         .setAll(
-            requestBody.name,
-            requestBody.location,
-            requestBody.role,
-            requestBody.permission,
+            requestBody.getName(),
+            requestBody.getLocation(),
+            requestBody.getRole(),
+            requestBody.getPermission(),
             false);
   }
 }

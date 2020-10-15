@@ -11,7 +11,6 @@ import team23.smartHomeSimulator.model.House;
 /**
  * The DashboardController allows to call actions inside the various modules such SHH, SHC, and SHP
  */
-// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class DashboardController {
@@ -37,7 +36,7 @@ public class DashboardController {
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(house);
 
-    return new ResponseEntity<String>(json, HttpStatus.OK);
+    return new ResponseEntity<>(json, HttpStatus.OK);
   }
 
   /** @return current state of simulation, true || false */
