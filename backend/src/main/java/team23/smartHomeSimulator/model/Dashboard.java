@@ -1,23 +1,22 @@
 package team23.smartHomeSimulator.model;
 
-import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Dashboard {
-  private LocalDateTime dateTime;
+  private String dateTime;
   private Boolean isRunning;
 
   public Dashboard() {
-    this.dateTime = LocalDateTime.now();
+    this.dateTime = "";
     this.isRunning = false;
   }
 
-  public LocalDateTime getDateTime() {
+  public String getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(LocalDateTime dateTime) {
+  public void setDateTime(String dateTime) {
     this.dateTime = dateTime;
   }
 
@@ -27,9 +26,5 @@ public class Dashboard {
 
   public void setRunning(Boolean running) {
     isRunning = running;
-  }
-
-  public void toggleRunning() {
-    isRunning = !isRunning;
   }
 }
