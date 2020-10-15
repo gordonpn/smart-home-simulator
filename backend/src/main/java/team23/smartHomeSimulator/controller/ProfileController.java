@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
@@ -17,17 +19,17 @@ import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
 public class ProfileController {
 
   /** Private Attribute for matching name keys and Profile values */
-  private HashMap<String, Profile> allProfiles;
+  private HashMap<String, Profile> profiles;
 
   /** Constructor for the Class */
   public ProfileController() {
-    this.allProfiles = new HashMap<>();
+    this.profiles = new HashMap<>();
   }
 
   /** @return the profile list */
   @GetMapping("/profile")
-  public @ResponseBody List<Profile> getAllProfiles() {
-    return new ArrayList<>(allProfiles.values());
+  public ResponseEntity<ArrayList<Profile>> getProfiles() {
+    return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
   /**
@@ -37,82 +39,49 @@ public class ProfileController {
    * @return returns the serialised profile object
    */
   @GetMapping("/profile/single")
-  public @ResponseBody Profile getSingleProfiles(@RequestParam(name = "name") String name) {
-    return allProfiles.get(name);
-  }
-
-  /**
-   * Create Method for the Profile
-   *
-   * @param requestBody SON body containing the data for the new profile
-   */
-  @PostMapping("/profile")
-  public ResponseEntity<String> createProfile(@RequestBody ProfileRequestBody requestBody) {
-    allProfiles.put(
-        requestBody.name,
-        new Profile(
-            requestBody.name, requestBody.location, requestBody.role, requestBody.permission));
-    return new ResponseEntity<>("Profile Created", HttpStatus.OK);
+  public ResponseEntity<Profile> getSingleProfiles(@RequestParam(name = "name") String name) {
+    return new ResponseEntity<>(profiles.get(name), HttpStatus.OK);
   }
 
   /**
    * Delete Method for the Profile
    *
    * @param name name of the profile to be deleted
+   * @return the removed profile
    */
   @DeleteMapping("/profile")
-  public ResponseEntity<String> deleteProfile(@RequestParam(name = "name") String name) {
-    allProfiles.remove(name);
-    return new ResponseEntity<>("Profile Deleted", HttpStatus.OK);
+  public ResponseEntity<Profile> deleteProfile(@RequestParam(name = "name") String name) {
+    return new ResponseEntity<>(profiles.remove(name), HttpStatus.OK);
   }
 
   /**
    * Edit method for the Profile
    *
    * @param requestBody JSON body containing the edited data and the old name of the profile
+   * @return the updated profile
    */
   @PutMapping("/profile")
-  public ResponseEntity<String> editProfile(@RequestBody EditProfileRequestBody requestBody) {
-    allProfiles
-        .get(requestBody.oldName)
-        .setAll(
-            requestBody.name,
-            requestBody.location,
-            requestBody.role,
-            requestBody.permission,
-            false);
-    return new ResponseEntity<>("Profile Edited", HttpStatus.OK);
+  public ResponseEntity<Profile> editProfile(@RequestBody EditProfileRequestBody requestBody) {
+    profiles.remove(requestBody.getOldName());
+    createProfile(requestBody);
+    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
   }
 
   /**
-   * Method for login
+   * Create Method for the Profile
    *
-   * @param name name of the profile we want to be logged in
+   * @param requestBody JSON body containing the data for the new profile
+   * @return the profile just created
    */
-  @PutMapping("/profile/login")
-  public ResponseEntity<String> setActive(@RequestBody String name) {
-    allProfiles.get(name).setActive(true);
-    return new ResponseEntity<>("Profile Set Active", HttpStatus.OK);
-  }
-
-  /** Method for logout, it logs out all profiles */
-  @PutMapping("/profile/logout")
-  public ResponseEntity<String> setInactive() {
-    allProfiles.forEach(
-        (k, v) -> {
-          v.setActive(false);
-        });
-    return new ResponseEntity<>("Profile Set Inactive", HttpStatus.OK);
-  }
-
-  /**
-   * Method used for changing location
-   *
-   * @param requestBody contains both name of the profile to change and the location to change it to
-   */
-  @PutMapping("/profile/location")
-  public ResponseEntity<String> changeLocation(@RequestBody LocationChangeRequestBody requestBody) {
-    allProfiles.get(requestBody.name).setLocation(requestBody.location);
-    return new ResponseEntity<>("Profile Location Set", HttpStatus.OK);
+  @PostMapping("/profile")
+  public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
+    profiles.put(
+        requestBody.getName(),
+        new Profile(
+            requestBody.getName(),
+            requestBody.getLocation(),
+            requestBody.getRole(),
+            requestBody.getPermission()));
+    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
   }
 }
