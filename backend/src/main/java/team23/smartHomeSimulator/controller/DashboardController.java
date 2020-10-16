@@ -20,6 +20,7 @@ public class DashboardController {
   /** Instantiate the dashboard controller */
   private final Dashboard dashboard;
 
+
   public DashboardController(Dashboard dashboard) {
     this.dashboard = dashboard;
   }
@@ -31,7 +32,7 @@ public class DashboardController {
    * @return HTTP Response status and house layout json
    * @throws JsonProcessingException Exception thrown for parsing json
    */
-  @PostMapping("/uploadHouse")
+  /*@PostMapping("/uploadHouse")
   public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
       throws JsonProcessingException {
     House house = new House(houseData.getRooms());
@@ -39,7 +40,7 @@ public class DashboardController {
     String json = mapper.writeValueAsString(house);
 
     return new ResponseEntity<>(json, HttpStatus.OK);
-  }
+  }*/
 
   /** @return current state of simulation, true || false */
   @GetMapping("/running")
@@ -90,4 +91,5 @@ public class DashboardController {
     resMap.put("currentTime", dashboard.getDateTime());
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
+
 }
