@@ -1,7 +1,7 @@
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import RunningStateStore from "../stores/RunningStateStore";
@@ -13,6 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -35,8 +36,12 @@ export default function AddUser() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [location, setLocation] = useState("");
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [permission, setPermission] = useState("");
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
+  const { rooms } = currentHouse;
 
   const handleOpen = () => {
     setOpen(true);
@@ -48,51 +53,20 @@ export default function AddUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const postBody = {
+      name: name,
+      location: location,
+      role: role,
+      permission: permission,
+    };
+    const res = await axios.post("/api/profile", postBody);
+    if (res.status === 200) {
+      setName("");
+      setLocation("");
+      setRole("");
+      setPermission("");
+    }
     setOpen(false);
-  };
-
-  const handleLocationChange = (event) => {
-    setLocation(event.target.value);
-  };
-
-  const AddForm = () => {
-    const { rooms } = currentHouse;
-
-    return (
-      <form
-        className={classes.root}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
-      >
-        <Box p={1}>
-          <TextField label="Name" />
-        </Box>
-        <Box p={1}>
-          <FormControl className={classes.formControl}>
-            <InputLabel>Location</InputLabel>
-            <Select value={location} onChange={handleLocationChange}>
-              {Object.keys(rooms).map((room) => (
-                <MenuItem key={room} value={room}>
-                  {room}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        <Box p={1}>
-          <TextField label="Role" />
-        </Box>
-        <Box p={1}>
-          <TextField label="Permission" />
-        </Box>
-        <Box p={1}>
-          <Button variant="outlined" color="primary" type="submit">
-            Create
-          </Button>
-        </Box>
-      </form>
-    );
   };
 
   return (
@@ -120,7 +94,67 @@ export default function AddUser() {
                 You must stop the simulation to add a profile
               </Typography>
             ) : currentHouse ? (
-              <AddForm />
+              <form
+                className={classes.root}
+                noValidate
+                autoComplete="off"
+                onSubmit={handleSubmit}
+              >
+                <Box p={1}>
+                  <TextField
+                    type="text"
+                    label="Name"
+                    value={name}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      return setName(value);
+                    }}
+                  />
+                </Box>
+                <Box p={1}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Location</InputLabel>
+                    <Select
+                      value={location}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        return setLocation(value);
+                      }}
+                    >
+                      {Object.keys(rooms).map((room) => (
+                        <MenuItem key={room} value={room}>
+                          {room}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box p={1}>
+                  <TextField
+                    label="Role"
+                    value={role}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      return setRole(value);
+                    }}
+                  />
+                </Box>
+                <Box p={1}>
+                  <TextField
+                    label="Permission"
+                    value={permission}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      return setPermission(value);
+                    }}
+                  />
+                </Box>
+                <Box p={1}>
+                  <Button variant="outlined" color="primary" type="submit">
+                    Create
+                  </Button>
+                </Box>
+              </form>
             ) : (
               <Typography variant="body1">
                 You must load a house-layout file first
