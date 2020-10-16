@@ -41,7 +41,6 @@ export default function AddUser() {
   const [permission, setPermission] = useState("");
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
-  const { rooms } = currentHouse;
 
   const handleOpen = () => {
     setOpen(true);
@@ -94,12 +93,7 @@ export default function AddUser() {
                 You must stop the simulation to add a profile
               </Typography>
             ) : currentHouse ? (
-              <form
-                className={classes.root}
-                noValidate
-                autoComplete="off"
-                onSubmit={handleSubmit}
-              >
+              <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Box p={1}>
                   <TextField
                     type="text"
@@ -121,7 +115,7 @@ export default function AddUser() {
                         return setLocation(value);
                       }}
                     >
-                      {Object.keys(rooms).map((room) => (
+                      {Object.keys(currentHouse.rooms).map((room) => (
                         <MenuItem key={room} value={room}>
                           {room}
                         </MenuItem>

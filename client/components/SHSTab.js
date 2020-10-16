@@ -3,6 +3,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import AddUser from "./AddUser";
 import Box from "@material-ui/core/Box";
+import RemoveUser from "./RemoveUser";
 
 export default function SHSTab() {
   return (
@@ -15,9 +16,7 @@ export default function SHSTab() {
           <AddUser />
         </Box>
         <Box p={0.5}>
-          <Button variant="outlined" color="primary">
-            Remove
-          </Button>
+          <RemoveUser />
         </Box>
         <Box p={0.5}>
           <Button variant="outlined" color="primary">
