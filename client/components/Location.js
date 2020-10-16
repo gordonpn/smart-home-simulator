@@ -11,12 +11,15 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import formStyles from "../styles/formStyles";
+import axios from "axios";
+import HouseStore from "../stores/HouseStore";
 
 export default function Location() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
-  const { profiles, currentProfile } = ProfileStore();
+  const { currentProfile, changeLocation } = ProfileStore();
   const [location, setLocation] = useState("");
+  const { currentHouse } = HouseStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -27,8 +30,17 @@ export default function Location() {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const putBody = {
+      name: currentProfile.name,
+      location: location,
+    };
+    const res = await axios.put("/api/profiles/location", putBody);
+    if (res.status === 200) {
+      changeLocation(location);
+      setOpen(false);
+    }
   };
 
   return (
@@ -73,12 +85,9 @@ export default function Location() {
                           return setLocation(value);
                         }}
                       >
-                        {profiles.map((profile) => (
-                          <MenuItem
-                            key={profile.location}
-                            value={profile.location}
-                          >
-                            {profile.location}
+                        {Object.keys(currentHouse.rooms).map((room) => (
+                          <MenuItem key={room} value={room}>
+                            {room}
                           </MenuItem>
                         ))}
                       </Select>

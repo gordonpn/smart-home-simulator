@@ -8,6 +8,9 @@ const ProfileStore = create((set) => ({
     set((state) => ({ profiles: state.profiles.push(profile) })),
   clearProfiles: () => ({ profiles: [] }),
   setProfiles: (profiles) => set({ profiles: profiles }),
+  changeLocation: (location) =>
+    set((state) => ({
+      currentProfile: { ...state.currentProfile, location: location },
+    })),
 }));
-
 export default ProfileStore;
