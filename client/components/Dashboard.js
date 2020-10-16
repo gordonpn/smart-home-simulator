@@ -15,11 +15,11 @@ import Modules from "./Modules";
 import Box from "@material-ui/core/Box";
 import Toggle from "./Toggle";
 import UserProfile from "./UserProfile";
-import LocationLink from "./LocationLink";
+import Location from "./Location";
 import OutsideTemp from "./OutsideTemp";
 import DateTime from "./DateTime";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,7 +82,7 @@ export default function Dashboard() {
         >
           <Toggle />
           <UserProfile />
-          <LocationLink />
+          <Location />
           <OutsideTemp />
           <DateTime />
         </Box>

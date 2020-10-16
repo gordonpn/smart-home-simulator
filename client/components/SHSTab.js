@@ -1,6 +1,9 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import Button from "@material-ui/core/Button";
+import AddUser from "./AddUser";
+import Box from "@material-ui/core/Box";
+import RemoveUser from "./RemoveUser";
+import EditUser from "./EditUser";
 
 export default function SHSTab() {
   return (
@@ -8,15 +11,17 @@ export default function SHSTab() {
       <Typography variant="h6" gutterBottom>
         Profiles
       </Typography>
-      <Button variant="outlined" color="primary">
-        Add
-      </Button>
-      <Button variant="outlined" color="primary">
-        Remove
-      </Button>
-      <Button variant="outlined" color="primary">
-        Edit
-      </Button>
+      <Box display="flex" flexDirection="row">
+        <Box p={0.5}>
+          <AddUser />
+        </Box>
+        <Box p={0.5}>
+          <RemoveUser />
+        </Box>
+        <Box p={0.5}>
+          <EditUser />
+        </Box>
+      </Box>
     </>
   );
 }

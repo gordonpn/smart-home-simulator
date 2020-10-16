@@ -1,31 +1,25 @@
-import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
-import ProfileStore from "../stores/ProfileStore";
-import axios from "axios";
+import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
 import RunningStateStore from "../stores/RunningStateStore";
+import ProfileStore from "../stores/ProfileStore";
 import formStyles from "../styles/formStyles";
 
-export default function UserProfile() {
+export default function RemoveUser() {
   const classes = formStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
-  const {
-    currentProfile,
-    setCurrentProfile,
-    profiles,
-    setProfiles,
-  } = ProfileStore();
   const { currentState } = RunningStateStore();
+  const { profiles, setProfiles } = ProfileStore();
 
   const handleOpen = async () => {
     const res = await axios.get("/api/profiles");
@@ -40,42 +34,25 @@ export default function UserProfile() {
     setOpen(false);
   };
 
-  const handleProfileChange = (event) => {
-    const { value } = event.target;
-    return setSelectedProfile(value);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    profiles.forEach((profile) => {
-      if (profile.name === selectedProfile) {
-        setCurrentProfile(profile);
-      }
-    });
+    const params = {
+      params: {
+        name: selectedProfile,
+      },
+    };
+    const res = await axios.delete("/api/profiles", params);
+    if (res.status === 200) {
+      setSelectedProfile("");
+    }
     setOpen(false);
   };
 
   return (
     <>
-      <Box display="flex" p={2}>
-        <Button onClick={handleOpen}>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Avatar />
-            <Box p={1}>
-              {currentProfile === undefined ? (
-                <Typography>No Profile Selected</Typography>
-              ) : (
-                <Typography>{currentProfile.name}</Typography>
-              )}
-            </Box>
-          </Box>
-        </Button>
-      </Box>
+      <Button variant="outlined" color="primary" onClick={handleOpen}>
+        Remove
+      </Button>
       <Modal
         className={classes.modal}
         open={open}
@@ -89,11 +66,11 @@ export default function UserProfile() {
         <Fade in={open}>
           <div className={classes.paper}>
             <Typography variant="h6" gutterBottom>
-              Change Profile
+              Remove A Profile
             </Typography>
             {currentState ? (
               <Typography variant="body1">
-                You must stop the simulation to change profile
+                You must stop the simulation to remove a profile
               </Typography>
             ) : profiles.length > 0 ? (
               <form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -103,7 +80,8 @@ export default function UserProfile() {
                     <Select
                       value={selectedProfile}
                       onChange={(e) => {
-                        handleProfileChange(e);
+                        const { value } = e.target;
+                        return setSelectedProfile(value);
                       }}
                     >
                       {profiles.map((profile) => (
@@ -116,7 +94,7 @@ export default function UserProfile() {
                 </Box>
                 <Box p={1}>
                   <Button variant="outlined" color="primary" type="submit">
-                    Select Profile
+                    Remove
                   </Button>
                 </Box>
               </form>

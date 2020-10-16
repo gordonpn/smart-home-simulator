@@ -2,20 +2,55 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RunningStateStore from "../stores/RunningStateStore";
+import ProfileStore from "../stores/ProfileStore";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 export default function Toggle() {
   const { currentState, setRunningState } = RunningStateStore();
+  const { currentProfile, setCurrentProfile } = ProfileStore();
+  const [openAlert, setOpenAlert] = useState(false);
+  const [onSuccess, setOnSuccess] = useState(false);
+  const [logOutAlert, setLogOutAlert] = useState(false);
 
-  const handleRunningState = (event, newRunningState) => {
-    setRunningState(newRunningState);
+  const handleRunningState = async (event, newRunningState) => {
     if (newRunningState) {
-      axios.put("api/running");
+      if (currentProfile === undefined) {
+        setOpenAlert(true);
+      } else {
+        const params = {
+          params: {
+            name: currentProfile.name,
+          },
+        };
+        const runningRes = await axios.put("/api/running");
+        const loginRes = await axios.put("/api/profiles/login", {}, params);
+        if (runningRes.status === 200 && loginRes.status === 200) {
+          setOnSuccess(true);
+          setRunningState(newRunningState);
+        }
+      }
     } else {
-      axios.delete("api/running");
+      const runningRes = await axios.delete("api/running");
+      const logoutRes = await axios.put("/api/profiles/logout");
+      if (runningRes.status === 200 && logoutRes.status === 200) {
+        setLogOutAlert(true);
+        setCurrentProfile(undefined);
+        setRunningState(newRunningState);
+      }
     }
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
+    setOnSuccess(false);
+    setLogOutAlert(false);
   };
 
   useEffect(() => {
@@ -54,6 +89,42 @@ export default function Toggle() {
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openAlert}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error">
+          <Typography variant="h6">
+            You may not start or log in to the simulation without a profile
+          </Typography>
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={onSuccess}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success">
+          <Typography variant="h6">
+            Started and logged in the simulation as {currentProfile?.name}
+          </Typography>
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={logOutAlert}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success">
+          <Typography variant="h6">
+            You have logged out and stopped simulation
+          </Typography>
+        </Alert>
+      </Snackbar>
     </>
   );
 }

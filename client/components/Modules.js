@@ -11,12 +11,7 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      {...other}
-    >
+    <div hidden={value !== index} {...other}>
       {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
@@ -52,6 +47,7 @@ export default function Modules() {
         <Tab label="SHS" />
         <Tab label="SHC" />
         <Tab label="SHH" />
+        <Tab label="+" />
       </Tabs>
       <TabPanel value={value} index={0}>
         <SHSTab />
@@ -60,6 +56,7 @@ export default function Modules() {
         <SHCTab />
       </TabPanel>
       <TabPanel value={value} index={2} />
+      <TabPanel value={value} index={3} />
     </div>
   );
 }
