@@ -10,4 +10,4 @@ test:
 	cd ./backend && ./gradlew test
 
 format:
-	cd ./backend && ./gradlew goJF
+	(cd ./backend && ./gradlew goJF); (cd ./client && npm run format)

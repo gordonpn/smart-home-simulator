@@ -38,7 +38,7 @@
     "dev2": "SET NODE_ENV='development' & node server.js",
     "build": "next build",
     "start": "NODE_ENV='development' node server.js",
-    "format": "prettier --write **/*.{js,ts,jsx} --ignore-path .gitignore",
+    "format": "prettier --write \"**/*.{js,jsx,ts}\" --ignore-path .gitignore",
     "lint": "eslint . --ext ts --ext jsx --ext js --ignore-path .gitignore"
   }
 }
