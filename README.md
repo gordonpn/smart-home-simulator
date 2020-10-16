@@ -1,6 +1,11 @@
 # Smart Home Simulator
 
 ![Format and Lint](https://github.com/gordonpn/soen343/workflows/Format%20and%20Lint/badge.svg?branch=develop)
+![Build and Test Java](https://github.com/gordonpn/soen343/workflows/Build%20and%20Test%20Java/badge.svg)
+
+## Requirements
+
+- At least JDK 11 is required (because of Google Java Format plugin)
 
 ## Getting start with development
 
