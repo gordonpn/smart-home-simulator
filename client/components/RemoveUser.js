@@ -92,7 +92,7 @@ export default function RemoveUser() {
                     </Select>
                   </FormControl>
                 </Box>
-                <Box p={1}>
+                <Box p={1} display="flex" justifyContent="flex-end">
                   <Button variant="outlined" color="primary" type="submit">
                     Remove
                   </Button>

@@ -182,7 +182,7 @@ export default function EditUser() {
                     )}
                   </FormControl>
                 </Box>
-                <Box p={1}>
+                <Box p={1} display="flex" justifyContent="flex-end">
                   <Button variant="outlined" color="primary" type="submit">
                     Update
                   </Button>
