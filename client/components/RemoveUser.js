@@ -12,6 +12,7 @@ import Select from "@material-ui/core/Select";
 import ProfileStore from "../stores/ProfileStore";
 import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
+import RunningStateStore from "../stores/RunningStateStore";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -34,6 +35,7 @@ export default function RemoveUser() {
   const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
   const { profiles, setProfiles } = ProfileStore();
+  const { currentState } = RunningStateStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -87,31 +89,37 @@ export default function RemoveUser() {
             <Typography variant="h6" gutterBottom>
               Remove A Profile
             </Typography>
-            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-              <Box p={1}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel>Profile</InputLabel>
-                  <Select
-                    value={selectedProfile}
-                    onChange={(e) => {
-                      const { value } = e.target;
-                      return setSelectedProfile(value);
-                    }}
-                  >
-                    {profiles.map((profile) => (
-                      <MenuItem key={profile.name} value={profile.name}>
-                        {profile.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box p={1}>
-                <Button variant="outlined" color="primary" type="submit">
-                  Remove
-                </Button>
-              </Box>
-            </form>
+            {currentState ? (
+              <Typography variant="body1">
+                You must stop the simulation to remove a profile
+              </Typography>
+            ) : (
+              <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <Box p={1}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Profile</InputLabel>
+                    <Select
+                      value={selectedProfile}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        return setSelectedProfile(value);
+                      }}
+                    >
+                      {profiles.map((profile) => (
+                        <MenuItem key={profile.name} value={profile.name}>
+                          {profile.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box p={1}>
+                  <Button variant="outlined" color="primary" type="submit">
+                    Remove
+                  </Button>
+                </Box>
+              </form>
+            )}
           </div>
         </Fade>
       </Modal>
