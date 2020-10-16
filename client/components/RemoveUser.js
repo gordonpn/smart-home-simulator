@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -9,10 +9,10 @@ import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import ProfileStore from "../stores/ProfileStore";
 import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
 import RunningStateStore from "../stores/RunningStateStore";
+import ProfileStore from "../stores/ProfileStore";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -30,18 +30,24 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
   },
 }));
+
 export default function RemoveUser() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
-  const { profiles, setProfiles } = ProfileStore();
   const { currentState } = RunningStateStore();
+  const { profiles, setProfiles } = ProfileStore();
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = async () => {
+    const res = await axios.get("/api/profile");
+    if (res.status === 200) {
+      setProfiles(res.data);
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
+    setSelectedProfile("");
     setOpen(false);
   };
 
@@ -58,16 +64,6 @@ export default function RemoveUser() {
     }
     setOpen(false);
   };
-
-  useEffect(() => {
-    const getProfiles = async () => {
-      const res = await axios.get("/api/profile");
-      if (res.status === 200) {
-        setProfiles(res.data);
-      }
-    };
-    getProfiles();
-  });
 
   return (
     <>
@@ -93,7 +89,7 @@ export default function RemoveUser() {
               <Typography variant="body1">
                 You must stop the simulation to remove a profile
               </Typography>
-            ) : (
+            ) : profiles.length > 0 ? (
               <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Box p={1}>
                   <FormControl className={classes.formControl}>
@@ -119,6 +115,10 @@ export default function RemoveUser() {
                   </Button>
                 </Box>
               </form>
+            ) : (
+              <Typography variant="body1">
+                You must have least one profile
+              </Typography>
             )}
           </div>
         </Fade>

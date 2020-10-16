@@ -1,9 +1,9 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import Button from "@material-ui/core/Button";
 import AddUser from "./AddUser";
 import Box from "@material-ui/core/Box";
 import RemoveUser from "./RemoveUser";
+import EditUser from "./EditUser";
 
 export default function SHSTab() {
   return (
@@ -19,9 +19,7 @@ export default function SHSTab() {
           <RemoveUser />
         </Box>
         <Box p={0.5}>
-          <Button variant="outlined" color="primary">
-            Edit
-          </Button>
+          <EditUser />
         </Box>
       </Box>
     </>
