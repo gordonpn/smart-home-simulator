@@ -1,9 +1,36 @@
 import React from "react";
 import Title from "./Title";
 import Button from "@material-ui/core/Button";
-import { processFile } from "../src/ReadFile";
+import axios from "axios";
+import HouseStore from "../stores/HouseStore";
 
 export default function HouseView() {
+  const { setHouse } = HouseStore();
+
+  const processFile = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    if (file) {
+      reader.readAsText(file);
+      reader.onload = (onLoadEvent) => {
+        const result = onLoadEvent.target.result;
+        const jsonString = JSON.parse(result.toString());
+
+        axios
+          .post("/api/uploadHouse", jsonString)
+          .then((res) => {
+            if (res.status === 200) {
+              setHouse(res.data);
+            }
+          })
+          .catch((err) => {
+            console.warn(err);
+          });
+      };
+    }
+  };
+
   return (
     <React.Fragment>
       <Title>House View</Title>

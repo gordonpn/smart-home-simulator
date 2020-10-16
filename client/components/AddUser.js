@@ -8,6 +8,7 @@ import RunningStateStore from "../stores/RunningStateStore";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
+import HouseStore from "../stores/HouseStore";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -27,6 +28,7 @@ export default function AddUser() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { currentState } = RunningStateStore();
+  const { currentHouse } = HouseStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -38,21 +40,43 @@ export default function AddUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("submitted");
     setOpen(false);
+  };
+
+  const AddForm = () => {
+    return (
+      <form
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <Box p={1}>
+          <TextField label="Name" />
+        </Box>
+        <Box p={1}>
+          <TextField label="Location" />
+        </Box>
+        <Box p={1}>
+          <TextField label="Role" />
+        </Box>
+        <Box p={1}>
+          <TextField label="Permission" />
+        </Box>
+        <Box p={1}>
+          <Button variant="outlined" color="primary" type="submit">
+            Create
+          </Button>
+        </Box>
+      </form>
+    );
   };
 
   return (
     <>
-      {currentState ? (
-        <Button variant="outlined" disabled>
-          Add
-        </Button>
-      ) : (
-        <Button variant="outlined" color="primary" onClick={handleOpen}>
-          Add
-        </Button>
-      )}
+      <Button variant="outlined" color="primary" onClick={handleOpen}>
+        Add
+      </Button>
       <Modal
         className={classes.modal}
         open={open}
@@ -68,30 +92,17 @@ export default function AddUser() {
             <Typography variant="h6" gutterBottom>
               Add A Profile
             </Typography>
-            <form
-              className={classes.root}
-              noValidate
-              autoComplete="off"
-              onSubmit={handleSubmit}
-            >
-              <Box p={1}>
-                <TextField label="Name" />
-              </Box>
-              <Box p={1}>
-                <TextField label="Location" />
-              </Box>
-              <Box p={1}>
-                <TextField label="Role" />
-              </Box>
-              <Box p={1}>
-                <TextField label="Permission" />
-              </Box>
-              <Box p={1}>
-                <Button variant="outlined" color="primary" type="submit">
-                  Create
-                </Button>
-              </Box>
-            </form>
+            {currentState ? (
+              <Typography variant="body1">
+                You must stop the simulation to add a profile
+              </Typography>
+            ) : currentHouse ? (
+              <AddForm />
+            ) : (
+              <Typography variant="body1">
+                You must load a house-layout file first
+              </Typography>
+            )}
           </div>
         </Fade>
       </Modal>

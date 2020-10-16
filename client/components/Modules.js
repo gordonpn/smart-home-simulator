@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -11,9 +11,9 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Fragment hidden={value !== index} {...other}>
+    <div hidden={value !== index} {...other}>
       {value === index && <Box p={3}>{children}</Box>}
-    </Fragment>
+    </div>
   );
 }
 
@@ -42,7 +42,7 @@ export default function Modules() {
   };
 
   return (
-    <Fragment className={classes.root}>
+    <div className={classes.root}>
       <Tabs value={value} onChange={handleChange} className={classes.tabBorder}>
         <Tab label="SHS" />
         <Tab label="SHC" />
@@ -57,6 +57,6 @@ export default function Modules() {
       </TabPanel>
       <TabPanel value={value} index={2} />
       <TabPanel value={value} index={3} />
-    </Fragment>
+    </div>
   );
 }
