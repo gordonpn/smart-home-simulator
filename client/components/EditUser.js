@@ -23,7 +23,12 @@ export default function EditUser() {
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
   const [selectedProfile, setSelectedProfile] = useState("");
-  const { profiles, setProfiles } = ProfileStore();
+  const {
+    profiles,
+    setProfiles,
+    changeLocation,
+    currentProfile,
+  } = ProfileStore();
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -56,6 +61,9 @@ export default function EditUser() {
     if (res.status === 200) {
       setSelectedProfile("");
       setShowEditForm(false);
+      if (selectedProfile === currentProfile.name) {
+        changeLocation(location);
+      }
     }
     setOpen(false);
   };
@@ -64,8 +72,8 @@ export default function EditUser() {
     const { value } = event.target;
     profiles.forEach((profile) => {
       if (profile.name === value) {
-        setName(profile.name);
         setLocation(profile.location);
+        setName(profile.name);
         setRole(profile.role);
         setPermission(profile.permission);
         setShowEditForm(true);
