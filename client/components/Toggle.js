@@ -16,20 +16,31 @@ export default function Toggle() {
   const [onSuccess, setOnSuccess] = useState(false);
   const [logOutAlert, setLogOutAlert] = useState(false);
 
-  const handleRunningState = (event, newRunningState) => {
+  const handleRunningState = async (event, newRunningState) => {
     if (newRunningState) {
       if (currentProfile === undefined) {
         setOpenAlert(true);
       } else {
-        setOnSuccess(true);
-        axios.put("api/running");
-        setRunningState(newRunningState);
+        const params = {
+          params: {
+            name: currentProfile.name,
+          },
+        };
+        const runningRes = await axios.put("/api/running");
+        const loginRes = await axios.put("/api/profiles/login", {}, params);
+        if (runningRes.status === 200 && loginRes.status === 200) {
+          setOnSuccess(true);
+          setRunningState(newRunningState);
+        }
       }
     } else {
-      setLogOutAlert(true);
-      axios.delete("api/running");
-      setCurrentProfile(undefined);
-      setRunningState(newRunningState);
+      const runningRes = await axios.delete("api/running");
+      const logoutRes = await axios.put("/api/profiles/logout");
+      if (runningRes.status === 200 && logoutRes.status === 200) {
+        setLogOutAlert(true);
+        setCurrentProfile(undefined);
+        setRunningState(newRunningState);
+      }
     }
   };
 

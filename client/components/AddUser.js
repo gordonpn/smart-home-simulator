@@ -58,7 +58,7 @@ export default function AddUser() {
       role: role,
       permission: permission,
     };
-    const res = await axios.post("/api/profile", postBody);
+    const res = await axios.post("/api/profiles", postBody);
     if (res.status === 200) {
       setName("");
       setLocation("");

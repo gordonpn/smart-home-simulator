@@ -45,7 +45,7 @@ export default function UserProfile() {
   const { currentState } = RunningStateStore();
 
   const handleOpen = async () => {
-    const res = await axios.get("/api/profile");
+    const res = await axios.get("/api/profiles");
     if (res.status === 200) {
       setProfiles(res.data);
       setOpen(true);
@@ -110,7 +110,7 @@ export default function UserProfile() {
             </Typography>
             {currentState ? (
               <Typography variant="body1">
-                You must stop the simulation to remove a profile
+                You must stop the simulation to change profile
               </Typography>
             ) : profiles.length > 0 ? (
               <form noValidate autoComplete="off" onSubmit={handleSubmit}>

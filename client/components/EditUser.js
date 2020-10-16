@@ -47,7 +47,7 @@ export default function EditUser() {
   const [permission, setPermission] = useState("");
 
   const handleOpen = async () => {
-    const res = await axios.get("/api/profile");
+    const res = await axios.get("/api/profiles");
     if (res.status === 200) {
       setProfiles(res.data);
       setOpen(true);
@@ -69,7 +69,7 @@ export default function EditUser() {
       role: role,
       permission: permission,
     };
-    const res = await axios.put("/api/profile", putBody);
+    const res = await axios.put("/api/profiles", putBody);
     if (res.status === 200) {
       setSelectedProfile("");
       setShowEditForm(false);
