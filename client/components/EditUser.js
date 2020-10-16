@@ -1,4 +1,3 @@
-import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
@@ -15,26 +14,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ProfileStore from "../stores/ProfileStore";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  formControl: {
-    minWidth: 200,
-  },
-}));
+import formStyles from "../styles/formStyles";
 
 export default function EditUser() {
-  const classes = useStyles();
+  const classes = formStyles();
   const [open, setOpen] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const { currentState } = RunningStateStore();

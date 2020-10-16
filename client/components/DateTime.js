@@ -3,40 +3,17 @@ import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { makeStyles } from "@material-ui/core/styles";
 import RunningStateStore from "../stores/RunningStateStore";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import * as axios from "axios";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-}));
+import axios from "axios";
+import formStyles from "../styles/formStyles";
 
 export default function DateTime() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [userDateInput, setUserDateInput] = useState("");
   const [userTimeInput, setUserTimeInput] = useState("");
-  const classes = useStyles();
+  const classes = formStyles();
   const [open, setOpen] = React.useState(false);
   const { currentState } = RunningStateStore();
 
@@ -165,11 +142,7 @@ export default function DateTime() {
               </>
             ) : (
               <>
-                <form
-                  className={classes.container}
-                  noValidate
-                  onSubmit={handleSubmit}
-                >
+                <form noValidate onSubmit={handleSubmit}>
                   <TextField
                     type="date"
                     onInput={(e) => {

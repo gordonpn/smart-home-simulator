@@ -1,7 +1,6 @@
 import Box from "@material-ui/core/Box";
 import Avatar from "@material-ui/core/Avatar";
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -14,26 +13,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import RunningStateStore from "../stores/RunningStateStore";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  formControl: {
-    minWidth: 200,
-  },
-}));
+import formStyles from "../styles/formStyles";
 
 export default function UserProfile() {
-  const classes = useStyles();
+  const classes = formStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
   const {
