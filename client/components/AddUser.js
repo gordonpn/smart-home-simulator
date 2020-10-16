@@ -1,7 +1,7 @@
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import RunningStateStore from "../stores/RunningStateStore";
@@ -9,6 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import HouseStore from "../stores/HouseStore";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -22,11 +26,15 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  formControl: {
+    minWidth: 200,
+  },
 }));
 
 export default function AddUser() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [location, setLocation] = useState("");
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
 
@@ -43,7 +51,13 @@ export default function AddUser() {
     setOpen(false);
   };
 
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
+  };
+
   const AddForm = () => {
+    const { rooms } = currentHouse;
+
     return (
       <form
         className={classes.root}
@@ -55,7 +69,16 @@ export default function AddUser() {
           <TextField label="Name" />
         </Box>
         <Box p={1}>
-          <TextField label="Location" />
+          <FormControl className={classes.formControl}>
+            <InputLabel>Location</InputLabel>
+            <Select value={location} onChange={handleLocationChange}>
+              {Object.keys(rooms).map((room) => (
+                <MenuItem key={room} value={room}>
+                  {room}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
         <Box p={1}>
           <TextField label="Role" />
