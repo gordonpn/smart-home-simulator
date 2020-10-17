@@ -34,7 +34,6 @@ public class Room {
   /** The list of lights with key-value pair */
   private HashMap<String, Light> lights = new HashMap<String, Light>();
 
-  private Coordinates coor;
 
   /**
    * Parameterized constructor
@@ -45,14 +44,13 @@ public class Room {
    * @param numLights the number of lights
    * @param numDoors the number of doors
    */
-  public Room(String roomNumber, String roomName, int numWindows, int numLights, int numDoors, int x, int y) {
+  public Room(String roomNumber, String roomName, int numWindows, int numLights, int numDoors) {
     this.roomNumber = roomNumber;
     this.roomName = roomName;
     this.roomTemp = 25;
     this.numLights = numLights;
     this.numWindows = numWindows;
     this.numDoors = numDoors;
-    this.coor = new Coordinates(x,y);
     createDoors(numDoors);
     createWindows(numWindows);
     createLights(numLights);
@@ -181,7 +179,4 @@ public class Room {
     return this.lights;
   }
 
-  public Coordinates getCoor() {
-    return coor;
-  }
 }

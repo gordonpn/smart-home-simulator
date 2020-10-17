@@ -13,6 +13,9 @@ public class House {
   /** The list of rooms in the house */
   private HashMap<String, Room> rooms = new HashMap<String, Room>();
 
+    /**
+     * The list of all components' coordinates in 2D plane
+     */
   private HashMap<String,List<Coordinates>> houseCoor = new HashMap<String, List<Coordinates>>();
 
   /** Default constructor to deserialize JSON object */
@@ -35,63 +38,78 @@ public class House {
    */
   private void initializeHouseLayout(HashMap<String, Room> rooms) {
     int roomWidth= 50;
-    int fixHeight = 50;
     int livingRoomWidth = 100;
     int diningRoomWidth = 120;
     int kitchenWidth = 80;
+    int sublvl0=0;
+    int sublvl1=50;
+    int sublvl2=100;
+    int sublvl3=150;
 
-    final int[] bedroomCount = {0};
-    final int[] bedroomX = {0};
-    int bedroomY =0;
+    this.houseCoor.put("doors", new ArrayList<Coordinates>());
+    this.houseCoor.put("windows", new ArrayList<Coordinates>());
+    this.houseCoor.put("bedrooms", new ArrayList<Coordinates>());
+    this.houseCoor.put("dining", new ArrayList<Coordinates>());
+    this.houseCoor.put("living", new ArrayList<Coordinates>());
+    this.houseCoor.put("kitchen", new ArrayList<Coordinates>());
+    this.houseCoor.put("bathrooms", new ArrayList<Coordinates>());
+    this.houseCoor.put("dining", new ArrayList<Coordinates>());
+    this.houseCoor.put("deck", new ArrayList<Coordinates>());
+    this.houseCoor.put("entrance", new ArrayList<Coordinates>());
+    this.houseCoor.put("garage", new ArrayList<Coordinates>());
 
-    rooms.forEach(
+
+      rooms.forEach(
         (key, room) -> {
 
-          //initialize rooms
+          // initialize rooms
           if(key.toLowerCase().contains("bedroom")){
+              int numBedroom=0;
+              int coordX=0;
 
-            if(!this.houseCoor.containsKey("bedrooms")){
-              this.houseCoor.put("bedrooms", new ArrayList<Coordinates>());
-//              this.houseCoor.get("rooms").add(new Coordinates(roomWidth * bedroomCount[0],bedroomY));
-            }
-            this.houseCoor.get("bedrooms").add(new Coordinates(roomWidth * this.houseCoor.get("bedrooms").toArray().length,bedroomY));
+            numBedroom = this.houseCoor.get("bedrooms").toArray().length;
+            coordX=roomWidth * numBedroom;
+            this.houseCoor.get("bedrooms").add(new Coordinates(key,coordX,sublvl0));
 
-//            this.rooms.put(
-//                    key,
-//                    new Room(
-//                            room.getRoomNumber(),
-//                            key,
-//                            room.getNumWindows(),
-//                            room.getNumLights(),
-//                            room.getNumDoors(),roomWidth* bedroomCount[0],bedroomY));
-            bedroomCount[0]++;
+              addDoorWindowCoord(room,coordX+10,sublvl0,coordX+25,sublvl1-10);
           }
           else if(key.toLowerCase().contains("dining")){
-            if(!this.houseCoor.containsKey("dining")){
-              this.houseCoor.put("dining", new ArrayList<Coordinates>());
-            }
-            this.houseCoor.get("dining").add(new Coordinates(livingRoomWidth,fixHeight));
 
+            this.houseCoor.get("dining").add(new Coordinates(key,livingRoomWidth,sublvl1));
+
+              addDoorWindowCoord(room,livingRoomWidth+diningRoomWidth-50,sublvl2-5,livingRoomWidth+10,sublvl2-10);
 
           }
           else if(key.toLowerCase().contains("living")){
-            if(!this.houseCoor.containsKey("living")){
-              this.houseCoor.put("living", new ArrayList<Coordinates>());
-            }
-            this.houseCoor.get("living").add(new Coordinates(0,fixHeight));
+
+            this.houseCoor.get("living").add(new Coordinates(key,0,sublvl1));
+
+              addDoorWindowCoord(room,10,sublvl2-5,40,sublvl2-10);
+
           }
           else if(key.toLowerCase().contains("kitchen")){
-            if(!this.houseCoor.containsKey("kitchen")){
-              this.houseCoor.put("kitchen", new ArrayList<Coordinates>());
-            }
-            this.houseCoor.get("kitchen").add(new Coordinates(livingRoomWidth+diningRoomWidth,fixHeight));
+
+            this.houseCoor.get("kitchen").add(new Coordinates(key,livingRoomWidth+diningRoomWidth,sublvl1));
+
+            addDoorWindowCoord(room,livingRoomWidth+diningRoomWidth+10,sublvl2-5,livingRoomWidth+diningRoomWidth+kitchenWidth-10,sublvl2-10);
 
           }
           else if(key.toLowerCase().contains("bathroom")){
+              this.houseCoor.get("bathrooms").add(new Coordinates(key,livingRoomWidth+30,sublvl2));
+
+              addDoorWindowCoord(room,livingRoomWidth+30,sublvl3-5,livingRoomWidth+35,sublvl2);
+          }
+          else if(key.toLowerCase().contains("deck")){
+              this.houseCoor.get("deck").add(new Coordinates(key,livingRoomWidth+diningRoomWidth,sublvl2));
 
           }
-          else{
+          else if(key.toLowerCase().contains("garage")){
+              this.houseCoor.get("garage").add(new Coordinates(key,livingRoomWidth+30-80,sublvl2));
 
+
+          }
+          else if(key.toLowerCase().contains("entrance")){
+              this.houseCoor.get("entrance").add(new Coordinates(key,0,sublvl2));
           }
 
           this.rooms.put(
@@ -101,8 +119,26 @@ public class House {
                   key,
                   room.getNumWindows(),
                   room.getNumLights(),
-                  room.getNumDoors(),6,6));
+                  room.getNumDoors()));
         });
+  }
+
+    /**
+     * Add doors and windows coordinates to house layout
+     * @param room the room object
+     * @param winX the x coordinate for window
+     * @param winY the y coordinate for window
+     * @param doorX the x coordinate for door
+     * @param doorY the y coordinate for door
+     */
+  private void addDoorWindowCoord(Room room, int winX,int winY, int doorX, int doorY){
+      if(room.getNumDoors()!=0){
+          this.houseCoor.get("doors").add(new Coordinates(doorX,doorY));
+      }
+
+      if(room.getNumWindows()!=0){
+          this.houseCoor.get("windows").add(new Coordinates(winX,winY));
+      }
   }
 
   /**
@@ -132,6 +168,10 @@ public class House {
     return this.rooms;
   }
 
+    /**
+     * Getter for components' coordinates in house
+     * @return Hash map of Coordinates
+     */
   public HashMap<String, List<Coordinates>> getHouseCoor() {
     return houseCoor;
   }
