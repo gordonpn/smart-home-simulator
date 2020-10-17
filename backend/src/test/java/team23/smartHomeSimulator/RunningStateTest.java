@@ -1,7 +1,7 @@
 package team23.smartHomeSimulator;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,6 +22,24 @@ public class RunningStateTest {
   public void shouldReturnDefaultState() throws Exception {
     this.mockMvc
         .perform(get("/api/running"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("false")));
+  }
+
+  @Test
+  public void shouldSetRunningTrue() throws Exception {
+    this.mockMvc
+        .perform(put("/api/running"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("true")));
+  }
+
+  @Test
+  public void shouldSetRunningFalse() throws Exception {
+    this.mockMvc
+        .perform(delete("/api/running"))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("false")));
