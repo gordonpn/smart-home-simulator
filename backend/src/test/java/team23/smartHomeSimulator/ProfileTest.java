@@ -42,8 +42,8 @@ public class ProfileTest {
             .content(
                 "{\"name\":\"David\",\"location\":\"Kitchen\",\"role\":\"Owner\",\"permission\":\"Parents\"}");
 
-    this.mockMvc.perform(builderGordon);
-    this.mockMvc.perform(builderDavid);
+    this.mockMvc.perform(builderGordon).andExpect(status().isOk());
+    this.mockMvc.perform(builderDavid).andExpect(status().isOk());
   }
 
   @Test

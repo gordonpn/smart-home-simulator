@@ -61,7 +61,7 @@ export default function OutsideTemp() {
                 onSubmit={handleSubmit}
               >
                 <input
-                  type="text"
+                  type="number"
                   onInput={(e) => {
                     const { value } = e.target;
                     return setOutTemp(value);

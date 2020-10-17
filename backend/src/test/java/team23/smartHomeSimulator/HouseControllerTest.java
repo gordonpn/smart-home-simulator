@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,11 +17,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class HouseUploadTest {
+public class HouseControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @Test
+  @BeforeEach
   public void shouldReturnHouseLayout() throws Exception {
     MockHttpServletRequestBuilder builder =
         MockMvcRequestBuilders.post("/api/uploadHouse")
@@ -36,5 +37,21 @@ public class HouseUploadTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("room1")))
         .andExpect(content().string(containsString("room2")));
+  }
+
+  @Test
+  public void shouldReturnValueSent() throws Exception {
+    MockHttpServletRequestBuilder builder =
+            MockMvcRequestBuilders.put("/api/outside-temperature")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
+                    .content("{\"outTemp\": 20}");
+
+    this.mockMvc
+            .perform(builder)
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("{\"outTemp\":20.0")));
   }
 }
