@@ -1,14 +1,11 @@
 package team23.smartHomeSimulator.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Dashboard;
-import team23.smartHomeSimulator.model.House;
 
 /**
  * The DashboardController allows to call actions inside the various modules such SHH, SHC, and SHP
@@ -20,11 +17,9 @@ public class DashboardController {
   /** Instantiate the dashboard controller */
   private final Dashboard dashboard;
 
-
   public DashboardController(Dashboard dashboard) {
     this.dashboard = dashboard;
   }
-
 
   /** @return current state of simulation, true || false */
   @GetMapping("/running")
@@ -77,5 +72,4 @@ public class DashboardController {
     resMap.put("currentTime", dashboard.getDateTime());
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
-
 }

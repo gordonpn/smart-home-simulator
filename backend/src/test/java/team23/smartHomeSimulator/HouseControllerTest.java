@@ -42,16 +42,16 @@ public class HouseControllerTest {
   @Test
   public void shouldReturnValueSent() throws Exception {
     MockHttpServletRequestBuilder builder =
-            MockMvcRequestBuilders.put("/api/outside-temperature")
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .characterEncoding("UTF-8")
-                    .content("{\"outTemp\": 20}");
+        MockMvcRequestBuilders.put("/api/outside-temperature")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"outTemp\": 20}");
 
     this.mockMvc
-            .perform(builder)
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("{\"outTemp\":20.0")));
+        .perform(builder)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("{\"outTemp\":20.0")));
   }
 }
