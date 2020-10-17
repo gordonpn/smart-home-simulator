@@ -47,8 +47,8 @@ export default function AddUser() {
       setLocation("");
       setRole("");
       setPermission("");
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   return (
