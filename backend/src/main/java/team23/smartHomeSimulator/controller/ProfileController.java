@@ -35,7 +35,7 @@ public class ProfileController {
    */
   @GetMapping("/profiles/{name}")
   public ResponseEntity<Profile> getOneProfile(@PathVariable String name) {
-    return new ResponseEntity<>(profiles.get(name), HttpStatus.OK);
+    return new ResponseEntity<>(profiles.get(name.toLowerCase()), HttpStatus.OK);
   }
 
   /**
@@ -46,7 +46,7 @@ public class ProfileController {
    */
   @DeleteMapping("/profiles")
   public ResponseEntity<Profile> deleteProfile(@RequestParam(name = "name") String name) {
-    return new ResponseEntity<>(profiles.remove(name), HttpStatus.OK);
+    return new ResponseEntity<>(profiles.remove(name.toLowerCase()), HttpStatus.OK);
   }
 
   /**
@@ -57,9 +57,9 @@ public class ProfileController {
    */
   @PutMapping("/profiles")
   public ResponseEntity<Profile> editProfile(@RequestBody EditProfileRequestBody requestBody) {
-    profiles.remove(requestBody.getOldName());
+    profiles.remove(requestBody.getOldName().toLowerCase());
     createProfile(requestBody);
-    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
+    return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
   }
 
   /**
@@ -71,13 +71,13 @@ public class ProfileController {
   @PostMapping("/profiles")
   public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
     profiles.put(
-        requestBody.getName(),
+        requestBody.getName().toLowerCase(),
         new Profile(
             requestBody.getName(),
             requestBody.getLocation(),
             requestBody.getRole(),
             requestBody.getPermission()));
-    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
+    return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
   }
 
   /**
@@ -86,7 +86,7 @@ public class ProfileController {
    */
   @PutMapping("/profiles/login")
   public ResponseEntity<ArrayList<Profile>> setActive(@RequestParam(name = "name") String name) {
-    profiles.get(name).setActive(true);
+    profiles.get(name.toLowerCase()).setActive(true);
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
@@ -104,7 +104,7 @@ public class ProfileController {
   @PutMapping("/profiles/location")
   public ResponseEntity<Profile> changeLocation(
       @RequestBody LocationChangeRequestBody requestBody) {
-    profiles.get(requestBody.getName()).setLocation(requestBody.getLocation());
-    return new ResponseEntity<>(profiles.get(requestBody.getName()), HttpStatus.OK);
+    profiles.get(requestBody.getName().toLowerCase()).setLocation(requestBody.getLocation());
+    return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
   }
 }
