@@ -3,29 +3,23 @@ import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import formStyles from "../styles/formStyles";
 import Typography from "@material-ui/core/Typography";
-import HouseStore from "../stores/HouseStore";
-import ProfileStore from "../stores/ProfileStore";
 import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import axios from "axios";
+import MenuItem from "@material-ui/core/MenuItem";
+import RunningStateStore from "../stores/RunningStateStore";
+import ProfileStore from "../stores/ProfileStore";
+import formStyles from "../styles/formStyles";
 
-export default function MoveUser() {
+export default function RemoveUser() {
   const classes = formStyles();
   const [open, setOpen] = useState(false);
-  const { currentHouse } = HouseStore();
-  const {
-    profiles,
-    setProfiles,
-    currentProfile,
-    changeLocation,
-  } = ProfileStore();
   const [selectedProfile, setSelectedProfile] = useState("");
-  const [location, setLocation] = useState("");
+  const { currentState } = RunningStateStore();
+  const { profiles, setProfiles } = ProfileStore();
 
   const handleOpen = async () => {
     const res = await axios.get("/api/profiles");
@@ -36,47 +30,28 @@ export default function MoveUser() {
   };
 
   const handleClose = () => {
-    setOpen(false);
     setSelectedProfile("");
-    setLocation("");
+    setOpen(false);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const putBody = {
-      name: selectedProfile,
-      location: location,
+    const params = {
+      params: {
+        name: selectedProfile,
+      },
     };
-    const res = await axios.put("/api/profiles/location", putBody);
+    const res = await axios.delete("/api/profiles", params);
     if (res.status === 200) {
-      if (selectedProfile === currentProfile?.name) {
-        changeLocation(location);
-      }
-      setOpen(false);
       setSelectedProfile("");
-      setLocation("");
     }
-  };
-
-  const handleProfileChange = (event) => {
-    const { value } = event.target;
-    return setSelectedProfile(value);
-  };
-
-  const handleLocationChange = (event) => {
-    const { value } = event.target;
-    return setLocation(value);
+    setOpen(false);
   };
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="primary"
-        size="large"
-        onClick={handleOpen}
-      >
-        Move Users
+      <Button variant="outlined" color="primary" onClick={handleOpen}>
+        Remove
       </Button>
       <Modal
         className={classes.modal}
@@ -91,9 +66,13 @@ export default function MoveUser() {
         <Fade in={open}>
           <div className={classes.paper}>
             <Typography variant="h6" gutterBottom>
-              Move User
+              Remove A Profile
             </Typography>
-            {profiles.length > 0 ? (
+            {currentState ? (
+              <Typography variant="body1">
+                You must stop the simulation to remove a profile
+              </Typography>
+            ) : profiles.length > 0 ? (
               <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Box p={1}>
                   <FormControl className={classes.formControl}>
@@ -101,7 +80,8 @@ export default function MoveUser() {
                     <Select
                       value={selectedProfile}
                       onChange={(e) => {
-                        handleProfileChange(e);
+                        const { value } = e.target;
+                        return setSelectedProfile(value);
                       }}
                     >
                       {profiles.map((profile) => (
@@ -111,31 +91,16 @@ export default function MoveUser() {
                       ))}
                     </Select>
                   </FormControl>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel>Location</InputLabel>
-                    <Select
-                      value={location}
-                      onChange={(e) => {
-                        handleLocationChange(e);
-                      }}
-                    >
-                      {Object.keys(currentHouse.rooms).map((room) => (
-                        <MenuItem key={room} value={room}>
-                          {room}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
                 </Box>
                 <Box p={1} display="flex" justifyContent="flex-end">
                   <Button variant="outlined" color="primary" type="submit">
-                    Move
+                    Remove
                   </Button>
                 </Box>
               </form>
             ) : (
               <Typography variant="body1">
-                You must have at least one profile
+                You must have least one profile
               </Typography>
             )}
           </div>

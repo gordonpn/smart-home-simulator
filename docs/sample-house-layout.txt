@@ -1,0 +1,16 @@
+{
+  "rooms": {
+    "kitchen": {
+      "roomNumber": "41",
+      "numDoors": 4,
+      "numWindows": 1,
+      "numLights": 10
+    },
+    "living room": {
+      "roomNumber": "2",
+      "numDoors": 4,
+      "numWindows": 1,
+      "numLights": 10
+    }
+  }
+}

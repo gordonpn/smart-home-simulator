@@ -59,6 +59,7 @@ public class DashboardController {
   public ResponseEntity<Object> runningOn() {
     Map<String, Boolean> resMap = new HashMap<>();
     dashboard.setRunning(true);
+    resMap.put("runningStatus", dashboard.getRunning());
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
@@ -71,6 +72,7 @@ public class DashboardController {
   public ResponseEntity<Object> runningOff() {
     Map<String, Boolean> resMap = new HashMap<>();
     dashboard.setRunning(false);
+    resMap.put("runningStatus", dashboard.getRunning());
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
