@@ -25,22 +25,6 @@ public class DashboardController {
     this.dashboard = dashboard;
   }
 
-  /**
-   * Create the house object
-   *
-   * @param houseData data of the house
-   * @return HTTP Response status and house layout json
-   * @throws JsonProcessingException Exception thrown for parsing json
-   */
-  /*@PostMapping("/uploadHouse")
-  public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
-      throws JsonProcessingException {
-    House house = new House(houseData.getRooms());
-    ObjectMapper mapper = new ObjectMapper();
-    String json = mapper.writeValueAsString(house);
-
-    return new ResponseEntity<>(json, HttpStatus.OK);
-  }*/
 
   /** @return current state of simulation, true || false */
   @GetMapping("/running")
