@@ -16,13 +16,6 @@ public class HouseController {
   private House house;
 
   /**
-   * Constructor for HouseController
-   *
-   * <p>public HouseController() {
-   *
-   * <p>}
-   */
-  /**
    * Create the house object
    *
    * @param houseData data of the house

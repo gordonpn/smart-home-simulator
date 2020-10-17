@@ -7,6 +7,8 @@ import axios from "axios";
 import HouseStore from "../stores/HouseStore";
 import formStyles from "../styles/formStyles";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Box from "@material-ui/core/Box";
 
 export default function OutsideTemp() {
   const classes = formStyles();
@@ -55,20 +57,31 @@ export default function OutsideTemp() {
               Change Outside Temperature
             </Typography>
             {currentHouse ? (
-              <form
-                className={classes.container}
-                noValidate
-                onSubmit={handleSubmit}
-              >
-                <input
-                  type="number"
-                  onInput={(e) => {
-                    const { value } = e.target;
-                    return setOutTemp(value);
-                  }}
-                />
-                <Button type="submit">Submit</Button>
-              </form>
+              <Box p={1}>
+                <form
+                  className={classes.container}
+                  noValidate
+                  onSubmit={handleSubmit}
+                >
+                  <TextField
+                    label="Temperature"
+                    type="number"
+                    onInput={(e) => {
+                      const { value } = e.target;
+                      return setOutTemp(value);
+                    }}
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <Box p={1}>
+                    <Button variant="outlined" color="primary" type="submit">
+                      Set
+                    </Button>
+                  </Box>
+                </form>
+              </Box>
             ) : (
               <Typography variant="body1">
                 You must load a house-layout file first
