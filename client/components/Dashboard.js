@@ -91,12 +91,12 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth={false} className={classes.container}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12}>
               <Paper className={fixedHeightPaper}>
                 <Modules />
               </Paper>
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12}>
               <Paper className={fixedHeightPaper}>
                 <HouseView />
               </Paper>

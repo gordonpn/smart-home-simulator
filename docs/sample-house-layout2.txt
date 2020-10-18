@@ -1,0 +1,72 @@
+{
+	"rooms" : {
+		
+		"bedroom1" : {
+			"roomNumber": "41",
+			"numDoors" : 1,
+			"numWindows" : 1,
+			"numLights" : 1
+		},
+		"bedroom2" : {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "bedroom3" : {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "bedroom4" : {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "kitchen" : {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "living room" : {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "dining" : {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "bathroom1": {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "deck": {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+        "entrance": {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		},
+         "garage": {
+			"roomNumber": "2",
+			"numDoors" : 1,
+			"numWindows" : 2,
+			"numLights" : 1
+		}
+		
+	}
+}
