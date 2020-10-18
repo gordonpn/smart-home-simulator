@@ -88,51 +88,51 @@ There is a JSON format template in the repo located in the doc folder
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "Bot3's bedroom" : {
+                "Bot3's bedroom" : {
 			"roomNumber": "11",
 			"numDoors" : 1,
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "Bot4's bedroom" : {
+                "Bot4's bedroom" : {
 			"roomNumber": "2",
 			"numDoors" : 1,
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "Home-kitchen" : {
+                "Home-kitchen" : {
 			"roomNumber": "23",
 			"numDoors" : 1,
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "Guests' living room" : {
+               "Guests' living room" : {
 			"roomNumber": "52",
 			"numDoors" : 1,
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "The dining room" : {
+                "The dining room" : {
 			"roomNumber": "25",
 			"numDoors" : 1,
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "Bathroom": {
+                "Bathroom": {
 			"roomNumber": "254",
 			"numDoors" : 1,
 			"numWindows" : 1,
 			"numLights" : 1
 		},
-    "outside deck": {
+                "outside deck": {
 			"roomNumber": "532",
 			"numLights" : 1
 		},
-    "home entrance": {
+                "home entrance": {
 			"roomNumber": "54",
 			"numLights" : 1
 		},
-    "garage": {
+                "garage": {
 			"roomNumber": "94",
 			"numLights" : 1
 		}
