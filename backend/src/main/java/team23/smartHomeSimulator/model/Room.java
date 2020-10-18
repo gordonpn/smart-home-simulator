@@ -34,7 +34,6 @@ public class Room {
   /** The list of lights with key-value pair */
   private HashMap<String, Light> lights = new HashMap<String, Light>();
 
-
   /**
    * Parameterized constructor
    *
@@ -178,5 +177,4 @@ public class Room {
   public HashMap<String, Light> getLights() {
     return this.lights;
   }
-
 }

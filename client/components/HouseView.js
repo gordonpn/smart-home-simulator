@@ -35,7 +35,7 @@ export default function HouseView() {
   return (
     <React.Fragment>
       <Title>House View</Title>
-      <HouseLayout/>
+      <HouseLayout />
       <input
         id="file-button"
         type="file"
