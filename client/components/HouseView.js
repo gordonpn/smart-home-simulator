@@ -3,6 +3,7 @@ import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import HouseStore from "../stores/HouseStore";
+import HouseLayout from "./HouseLayout";
 
 export default function HouseView() {
   const { setHouse } = HouseStore();
@@ -18,7 +19,7 @@ export default function HouseView() {
         const jsonString = JSON.parse(result.toString());
 
         axios
-          .post("/api/uploadHouse", jsonString)
+          .post("/api/upload-house", jsonString)
           .then((res) => {
             if (res.status === 200) {
               setHouse(res.data);
@@ -34,6 +35,7 @@ export default function HouseView() {
   return (
     <React.Fragment>
       <Title>House View</Title>
+      <HouseLayout />
       <input
         id="file-button"
         type="file"

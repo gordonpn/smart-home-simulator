@@ -170,7 +170,9 @@ export default function DateTime() {
                       step: 300,
                     }}
                   />
-                  <Button type="submit">Save</Button>
+                  <Button variant="outlined" color="primary" type="submit">
+                    Save
+                  </Button>
                 </form>
               </>
             )}
