@@ -83,11 +83,18 @@ public class DashboardController {
 
   @PutMapping("/rooms/windows")
   public ResponseEntity<Object> getWindows(@RequestBody Map<String, String> requestBody) {
-    String roomName = requestBody.get("roomName");
+    String roomNumber = requestBody.get("roomNumber");
     Map<String, HashMap> resMap =new HashMap<>();
-    resMap.put("Windows", dashboard.getHouse().getOneRoom(roomName).getWindows());
-    return new ResponseEntity<Object>(resMap, HttpStatus.OK);
+    resMap.put("Windows", dashboard.getHouse().getOneRoom(roomNumber).getWindows());
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
+  @PutMapping("/rooms/windows/block-window")
+  public ResponseEntity<Object> blockWindow(@RequestBody Map<String, String> requestBody) {
+    String windowNumber = requestBody.get("windowNumber");
+    String roomNumber = requestBody.get("roomNumber");
+    dashboard.getHouse().getOneRoom(roomNumber).getOneWindow(windowNumber).setIsBlocked(true);
+    return new ResponseEntity<>(windowNumber, HttpStatus.OK);
+  }
 
 }

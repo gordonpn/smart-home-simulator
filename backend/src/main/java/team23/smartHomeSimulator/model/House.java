@@ -179,5 +179,7 @@ public class House {
     return this.rooms;
   }
 
-
+  public Room getOneRoom(String roomNumber){
+    return rooms.get(roomNumber);
+  }
 }

@@ -177,4 +177,13 @@ public class Room {
   public HashMap<String, Light> getLights() {
     return this.lights;
   }
+
+  /**
+   * Getter for one window
+   *
+   * @return Window
+   */
+  public Window getOneWindow(String windowNumber){
+    return windows.get(windowNumber);
+  }
 }
