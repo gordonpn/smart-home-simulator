@@ -19,7 +19,7 @@ export default function HouseView() {
         const jsonString = JSON.parse(result.toString());
 
         axios
-          .post("/api/uploadHouse", jsonString)
+          .post("/api/upload-house", jsonString)
           .then((res) => {
             if (res.status === 200) {
               setHouse(res.data);

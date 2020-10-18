@@ -22,7 +22,7 @@ public class HouseController {
    * @return HTTP Response status and house layout json
    * @throws JsonProcessingException Exception thrown for parsing json
    */
-  @PostMapping("/uploadHouse")
+  @PostMapping("/upload-house")
   public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
       throws JsonProcessingException {
     this.house = new House(houseData.getRooms());

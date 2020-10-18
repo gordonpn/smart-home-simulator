@@ -10,11 +10,6 @@ export default function HouseLayout() {
   const [windowHeight, setWindowHeight] = useState(0);
 
   useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    setWindowHeight(window.innerHeight);
-  }, []);
-
-  useEffect(() => {
     const renderRooms = () => {
       const elements = [];
       const components = currentHouse.houseCoor;
@@ -118,6 +113,8 @@ export default function HouseLayout() {
 
     if (currentHouse !== undefined) {
       setRoomElements(renderRooms());
+      setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
     }
   }, [currentHouse]);
 
