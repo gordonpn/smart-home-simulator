@@ -69,4 +69,14 @@ public class House {
   public HashMap<String, Room> getRooms() {
     return this.rooms;
   }
+
+  /**
+   * Get one room
+   *
+   * @return Room
+   */
+  public Room getOneRoom(String roomName){
+    Room room = rooms.get(roomName);
+    return room;
+  }
 }

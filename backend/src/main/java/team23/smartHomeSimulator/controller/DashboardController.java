@@ -34,6 +34,7 @@ public class DashboardController {
   @PostMapping("/uploadHouse")
   public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
       throws JsonProcessingException {
+    dashboard.setHouse(houseData);
     House house = new House(houseData.getRooms());
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(house);
@@ -89,5 +90,27 @@ public class DashboardController {
     Map<String, String> resMap = new HashMap<>();
     resMap.put("currentTime", dashboard.getDateTime());
     return new ResponseEntity<>(resMap, HttpStatus.OK);
+  }
+
+  @GetMapping("/rooms")
+  public ResponseEntity<Object> getRooms() {
+    Map<String, HashMap> resMap = new HashMap<>();
+    resMap.get(dashboard.getHouse().getRooms());
+    return new ResponseEntity<>(resMap, HttpStatus.OK);
+  }
+
+  @PutMapping("/rooms/windows")
+  public ResponseEntity<Object> getWindows(@RequestBody Map<String, String> requestBody) {
+    String roomName = requestBody.get("roomName");
+    Map<String, HashMap> resMap =new HashMap<>();
+    resMap.put("Windows", dashboard.getHouse().getOneRoom(roomName).getWindows());
+    return new ResponseEntity<Object>(resMap, HttpStatus.OK);
+  }
+
+  @PutMapping("/rooms/windows/block-window")
+  public ResponseEntity<Object> blockWindow(@RequestBody Map<String, String> requestBody) {
+    String window = requestBody.get("windowNumber");
+    int windowNumber = Integer.parseInt(window);
+    dashboard.getHouse().getOneRoom()
   }
 }

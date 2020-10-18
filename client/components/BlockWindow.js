@@ -5,6 +5,8 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 
+const axios = require("axios");
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -25,6 +27,16 @@ export default function BlockWindow() {
 
   const handleOpen = () => {
     setOpen(true);
+    axios
+      .get("/api/rooms")
+      .then((res => {
+        if (res.status===200){
+          
+        }
+        else{
+          console.log("error");
+        }
+    }))
   };
 
   const handleClose = () => {
