@@ -1,27 +1,20 @@
 import Button from "@material-ui/core/Button";
-import React from "react";
+import React, { useState } from "react";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+import axios from "axios";
+import HouseStore from "../stores/HouseStore";
+import formStyles from "../styles/formStyles";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Box from "@material-ui/core/Box";
 
 export default function OutsideTemp() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const classes = formStyles();
+  const [outTemp, setOutTemp] = useState("");
+  const [open, setOpen] = useState(false);
+  const { currentHouse, currentTemperature, setTemperature } = HouseStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -31,10 +24,22 @@ export default function OutsideTemp() {
     setOpen(false);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const putBody = {
+      outTemp: outTemp,
+    };
+    const res = await axios.put("/api/outside-temperature", putBody);
+    if (res.status === 200) {
+      setTemperature(outTemp);
+      setOpen(false);
+    }
+  };
+
   return (
     <>
       <Button color="primary" size="large" onClick={handleOpen}>
-        Outside Temp. 15&deg;C
+        Outside Temp. {currentTemperature}&deg;C
       </Button>
       <Modal
         className={classes.modal}
@@ -48,10 +53,40 @@ export default function OutsideTemp() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Change Outside Temperature</h2>
-            <p id="transition-modal-description">
-              There will be an option to change outside temperature here.
-            </p>
+            <Typography variant="h6" gutterBottom>
+              Change Outside Temperature
+            </Typography>
+            {currentHouse ? (
+              <Box p={1}>
+                <form
+                  className={classes.container}
+                  noValidate
+                  onSubmit={handleSubmit}
+                >
+                  <TextField
+                    label="Temperature"
+                    type="number"
+                    onInput={(e) => {
+                      const { value } = e.target;
+                      return setOutTemp(value);
+                    }}
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <Box p={1}>
+                    <Button variant="outlined" color="primary" type="submit">
+                      Set
+                    </Button>
+                  </Box>
+                </form>
+              </Box>
+            ) : (
+              <Typography variant="body1">
+                You must load a house-layout file first
+              </Typography>
+            )}
           </div>
         </Fade>
       </Modal>
