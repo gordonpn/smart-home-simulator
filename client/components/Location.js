@@ -94,6 +94,9 @@ export default function Location() {
                             {room}
                           </MenuItem>
                         ))}
+                        <MenuItem key="outside" value="outside">
+                          outside
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   </Box>

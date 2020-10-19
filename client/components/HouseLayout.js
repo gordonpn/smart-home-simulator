@@ -140,6 +140,23 @@ export default function HouseLayout() {
         }
       }
 
+      let personAlreadyOutside = 0;
+      for (const profile of profiles) {
+        const { location, name } = profile;
+        if (location.toString() === "outside") {
+          personAlreadyOutside++;
+          elements.push(
+            <Text
+              key={"profile-" + "outside" + name}
+              x={0}
+              y={160 + personAlreadyOutside * 5}
+              text={name}
+              fontSize={4}
+              fill="orange"
+            />
+          );
+        }
+      }
       return elements;
     };
 

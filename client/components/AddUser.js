@@ -109,6 +109,9 @@ export default function AddUser() {
                           {room}
                         </MenuItem>
                       ))}
+                      <MenuItem key="outside" value="outside">
+                        outside
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
