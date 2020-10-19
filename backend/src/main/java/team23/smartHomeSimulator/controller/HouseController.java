@@ -2,11 +2,11 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.House;
+import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 
 /** Controller for The House Model Class */
 @RestController
@@ -57,7 +57,7 @@ public class HouseController {
    * http response with all windows of a specific room
    *
    * @param roomName
-   * @return all windows ina specific room and OK status
+   * @return all windows in a specific room and OK status
    */
   @GetMapping("/rooms/windows")
   public ResponseEntity<Object> getWindows(@RequestParam(name = "roomName") String roomName) {
@@ -65,30 +65,34 @@ public class HouseController {
   }
 
   /**
-   * block a window
+   * block window
    *
-   * @param requestBody
-   * @return window number and OK status
+   * @param requestBody with windowName and roomName
+   * @return room windows information
    */
   @PutMapping("/rooms/windows/block-window")
-  public ResponseEntity<Object> blockWindow(@RequestBody Map<String, String> requestBody) {
-    String windowName = requestBody.get("windowName");
-    String roomName = requestBody.get("roomName");
-    house.getOneRoom(roomName).getOneWindow(windowName).setIsBlocked(true);
-    return new ResponseEntity<>(windowName, HttpStatus.OK);
+  public ResponseEntity<Object> blockWindow(@RequestBody WindowRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneWindow(requestBody.getWindowName())
+        .setIsBlocked(true);
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
   }
 
   /**
    * unblock window
    *
-   * @param requestBody
-   * @return
+   * @param requestBody with windowName and roomName
+   * @return room windows information
    */
   @DeleteMapping("/rooms/windows/block-window")
-  public ResponseEntity<Object> unblockWindow(@RequestBody Map<String, String> requestBody) {
-    String windowNumber = requestBody.get("windowNumber");
-    String roomName = requestBody.get("roomName");
-    house.getOneRoom(roomName).getOneWindow(windowNumber).setIsBlocked(false);
-    return new ResponseEntity<>(windowNumber, HttpStatus.OK);
+  public ResponseEntity<Object> unblockWindow(@RequestBody WindowRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneWindow(requestBody.getWindowName())
+        .setIsBlocked(false);
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
   }
 }
