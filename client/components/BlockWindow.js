@@ -1,26 +1,13 @@
 import React from "react";
+import formStyles from "../styles/formStyles";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+import Typography from "@material-ui/core/Typography";
 
 export default function BlockWindow() {
-  const classes = useStyles();
+  const classes = formStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -33,12 +20,7 @@ export default function BlockWindow() {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="primary"
-        size="large"
-        onClick={handleOpen}
-      >
+      <Button color="primary" size="large" onClick={handleOpen}>
         Block Windows
       </Button>
       <Modal
@@ -53,10 +35,9 @@ export default function BlockWindow() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Block Window</h2>
-            <p id="transition-modal-description">
-              List options to block windows.
-            </p>
+            <Typography variant="h6" gutterBottom>
+              Block Windows
+            </Typography>
           </div>
         </Fade>
       </Modal>

@@ -48,6 +48,8 @@ public class Window {
    * @param open the new state of isOpen
    */
   public void setIsOpen(boolean open) {
-    this.isOpen = open;
+    if (this.isBlocked == false) {
+      this.isOpen = open;
+    }
   }
 }

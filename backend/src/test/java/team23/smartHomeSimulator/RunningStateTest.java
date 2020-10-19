@@ -38,6 +38,8 @@ public class RunningStateTest {
 
   @Test
   public void shouldSetRunningFalse() throws Exception {
+    this.mockMvc.perform(put("/api/running")).andExpect(status().isOk());
+
     this.mockMvc
         .perform(delete("/api/running"))
         .andDo(print())

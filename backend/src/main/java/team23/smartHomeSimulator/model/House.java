@@ -187,4 +187,14 @@ public class House {
   public HashMap<String, List<Coordinates>> getHouseCoor() {
     return houseCoor;
   }
+
+  /**
+   * get one specific room based on roomNumber
+   *
+   * @param roomName
+   * @return the room
+   */
+  public Room getOneRoom(String roomName) {
+    return rooms.get(roomName);
+  }
 }
