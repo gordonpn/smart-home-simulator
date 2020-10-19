@@ -24,13 +24,16 @@ public class BlockWindowsTest {
 
   @BeforeEach
   public void shouldReturnHouseLayout() throws Exception {
+
+    String content =
+        "{\"rooms\":{\"bedroom3\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1}}}";
+
     MockHttpServletRequestBuilder builder =
         MockMvcRequestBuilders.post("/api/upload-house")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content(
-                "{\"rooms\":{\"bedroom1\":{\"roomNumber\":\"41\",\"numDoors\":1,\"numWindows\":1,\"numLights\":1},\"bedroom2\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"bedroom3\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"bedroom4\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"kitchen\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"living room\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"dining\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"bathroom1\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"deck\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"entrance\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},\"garage\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1}}}");
+            .content(content);
 
     this.mockMvc.perform(builder).andDo(print()).andExpect(status().isOk());
   }
@@ -49,15 +52,14 @@ public class BlockWindowsTest {
     MockHttpServletRequestBuilder builder =
         MockMvcRequestBuilders.get("/api/rooms/windows").param("roomName", "bedroom3");
 
+    String results =
+        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}";
+
     this.mockMvc
         .perform(builder)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(
-            content()
-                .string(
-                    containsString(
-                        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}")));
+        .andExpect(content().string(containsString(results)));
   }
 
   @Test
@@ -69,15 +71,14 @@ public class BlockWindowsTest {
             .characterEncoding("UTF-8")
             .content("{\"windowName\":\"window-1\",\"roomName\":\"bedroom3\"}");
 
+    String resultsBlock =
+        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":true},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}";
+
     this.mockMvc
         .perform(builderBlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(
-            content()
-                .string(
-                    containsString(
-                        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":true},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}")));
+        .andExpect(content().string(containsString(resultsBlock)));
 
     MockHttpServletRequestBuilder builderUnblock =
         MockMvcRequestBuilders.delete("/api/rooms/windows/block-window")
@@ -86,14 +87,13 @@ public class BlockWindowsTest {
             .characterEncoding("UTF-8")
             .content("{\"windowName\":\"window-1\",\"roomName\":\"bedroom3\"}");
 
+    String resultsUnblock =
+        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}";
+
     this.mockMvc
         .perform(builderUnblock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(
-            content()
-                .string(
-                    containsString(
-                        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}")));
+        .andExpect(content().string(containsString(resultsUnblock)));
   }
 }
