@@ -25,21 +25,26 @@ export default function EditUser() {
   const [selectedProfile, setSelectedProfile] = useState("");
   const {
     profiles,
-    setProfiles,
     changeLocation,
     currentProfile,
+    setProfiles,
   } = ProfileStore();
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [permission, setPermission] = useState("");
 
-  const handleOpen = async () => {
+  const loadProfiles = async () => {
     const res = await axios.get("/api/profiles");
     if (res.status === 200) {
       setProfiles(res.data);
-      setOpen(true);
     }
+  };
+
+  const handleOpen = async () => {
+    loadProfiles().then(() => {
+      setOpen(true);
+    });
   };
 
   const handleClose = () => {
@@ -61,11 +66,13 @@ export default function EditUser() {
     if (res.status === 200) {
       setSelectedProfile("");
       setShowEditForm(false);
-      if (selectedProfile === currentProfile.name) {
+      if (currentProfile && selectedProfile === currentProfile.name) {
         changeLocation(location);
       }
+      loadProfiles().then(() => {
+        setOpen(false);
+      });
     }
-    setOpen(false);
   };
 
   const handleProfileChange = (event) => {
@@ -121,11 +128,12 @@ export default function EditUser() {
                         handleProfileChange(e);
                       }}
                     >
-                      {profiles.map((profile) => (
-                        <MenuItem key={profile.name} value={profile.name}>
-                          {profile.name}
-                        </MenuItem>
-                      ))}
+                      {profiles.length &&
+                        profiles.map((profile) => (
+                          <MenuItem key={profile.name} value={profile.name}>
+                            {profile.name}
+                          </MenuItem>
+                        ))}
                     </Select>
                     {showEditForm && (
                       <>
@@ -155,6 +163,9 @@ export default function EditUser() {
                                   {room}
                                 </MenuItem>
                               ))}
+                              <MenuItem key="outside" value="outside">
+                                outside
+                              </MenuItem>
                             </Select>
                           </FormControl>
                         </Box>

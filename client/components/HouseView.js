@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import HouseStore from "../stores/HouseStore";
 import HouseLayout from "./HouseLayout";
+import Input from "@material-ui/core/Input";
 
 export default function HouseView() {
   const { setHouse } = HouseStore();
@@ -36,7 +37,7 @@ export default function HouseView() {
     <React.Fragment>
       <Title>House View</Title>
       <HouseLayout />
-      <input
+      <Input
         id="file-button"
         type="file"
         accept=".txt"
