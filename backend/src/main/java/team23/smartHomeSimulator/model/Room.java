@@ -62,7 +62,7 @@ public class Room {
    */
   private void createDoors(int numDoors) {
     for (int i = 0; i < numDoors; i++) {
-      this.doors.put("Door " + String.valueOf(i + 1), new Door());
+      this.doors.put("door-" + (i + 1), new Door());
     }
   }
 
@@ -73,7 +73,7 @@ public class Room {
    */
   private void createWindows(int numWindows) {
     for (int i = 0; i < numWindows; i++) {
-      this.windows.put("Window " + String.valueOf(i + 1), new Window());
+      this.windows.put("window-" + (i + 1), new Window());
     }
   }
 
@@ -84,7 +84,7 @@ public class Room {
    */
   private void createLights(int numLights) {
     for (int i = 0; i < numLights; i++) {
-      this.lights.put("Light " + String.valueOf(i + 1), new Light());
+      this.lights.put("light-" + (i + 1), new Light());
     }
   }
 
@@ -183,7 +183,7 @@ public class Room {
    *
    * @return Window
    */
-  public Window getOneWindow(String windowNumber) {
-    return windows.get(windowNumber);
+  public Window getOneWindow(String windowName) {
+    return this.windows.get(windowName);
   }
 }

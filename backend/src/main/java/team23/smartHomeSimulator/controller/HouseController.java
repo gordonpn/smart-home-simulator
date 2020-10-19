@@ -72,10 +72,10 @@ public class HouseController {
    */
   @PutMapping("/rooms/windows/block-window")
   public ResponseEntity<Object> blockWindow(@RequestBody Map<String, String> requestBody) {
-    String windowNumber = requestBody.get("windowNumber");
+    String windowName = requestBody.get("windowName");
     String roomName = requestBody.get("roomName");
-    house.getOneRoom(roomName).getOneWindow(windowNumber).setIsBlocked(true);
-    return new ResponseEntity<>(windowNumber, HttpStatus.OK);
+    house.getOneRoom(roomName).getOneWindow(windowName).setIsBlocked(true);
+    return new ResponseEntity<>(windowName, HttpStatus.OK);
   }
 
   /**
