@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BlockWindow() {
-  const classes = useStyles();
+  const classes = formStyles();
   const [open, setOpen] = React.useState(false);
   const { windows, setWindows, currentHouse } = HouseStore();
   const [tempWindows, setTempWindows] = useState(new Map())
@@ -65,12 +65,7 @@ export default function BlockWindow() {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="primary"
-        size="large"
-        onClick={handleOpen}
-      >
+      <Button color="primary" size="large" onClick={handleOpen}>
         Block Windows
       </Button>
       <Modal
@@ -110,7 +105,6 @@ export default function BlockWindow() {
               </Box>
 
             </form>
-
           </div>
         </Fade>
       </Modal>

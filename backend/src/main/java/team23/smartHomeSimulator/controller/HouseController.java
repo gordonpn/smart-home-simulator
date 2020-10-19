@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.House;
+import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 
 /** Controller for The House Model Class */
 @RestController
@@ -40,5 +41,58 @@ public class HouseController {
   public ResponseEntity<Object> updateTemperature(@RequestBody House requestBody) {
     house.setOutTemp(requestBody.getOutTemp());
     return new ResponseEntity<>(house, HttpStatus.OK);
+  }
+
+  /**
+   * http response with all rooms
+   *
+   * @return all rooms and OK status
+   */
+  @GetMapping("/rooms")
+  public ResponseEntity<Object> getRooms() {
+    return new ResponseEntity<>(house.getRooms(), HttpStatus.OK);
+  }
+
+  /**
+   * http response with all windows of a specific room
+   *
+   * @param roomName
+   * @return all windows in a specific room and OK status
+   */
+  @GetMapping("/rooms/windows")
+  public ResponseEntity<Object> getWindows(@RequestParam(name = "roomName") String roomName) {
+    return new ResponseEntity<>(house.getOneRoom(roomName).getWindows(), HttpStatus.OK);
+  }
+
+  /**
+   * block window
+   *
+   * @param requestBody with windowName and roomName
+   * @return room windows information
+   */
+  @PutMapping("/rooms/windows/block-window")
+  public ResponseEntity<Object> blockWindow(@RequestBody WindowRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneWindow(requestBody.getWindowName())
+        .setIsBlocked(true);
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
+  }
+
+  /**
+   * unblock window
+   *
+   * @param requestBody with windowName and roomName
+   * @return room windows information
+   */
+  @DeleteMapping("/rooms/windows/block-window")
+  public ResponseEntity<Object> unblockWindow(@RequestBody WindowRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneWindow(requestBody.getWindowName())
+        .setIsBlocked(false);
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
   }
 }
