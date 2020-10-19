@@ -82,9 +82,10 @@ export default function AddUser() {
                 You must stop the simulation to add a profile
               </Typography>
             ) : currentHouse ? (
-              <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <form autoComplete="off" onSubmit={handleSubmit}>
                 <Box p={1}>
                   <TextField
+                    required
                     type="text"
                     label="Name"
                     value={name}
@@ -98,6 +99,7 @@ export default function AddUser() {
                   <FormControl className={classes.formControl}>
                     <InputLabel>Location</InputLabel>
                     <Select
+                      required
                       value={location}
                       onChange={(e) => {
                         const { value } = e.target;
