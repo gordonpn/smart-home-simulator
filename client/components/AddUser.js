@@ -14,6 +14,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
 import formStyles from "../styles/formStyles";
+import ProfileStore from "../stores/ProfileStore";
 
 export default function AddUser() {
   const classes = formStyles();
@@ -24,6 +25,7 @@ export default function AddUser() {
   const [permission, setPermission] = useState("");
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
+  const { setProfiles } = ProfileStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -47,7 +49,11 @@ export default function AddUser() {
       setLocation("");
       setRole("");
       setPermission("");
-      setOpen(false);
+      const response = await axios.get("/api/profiles");
+      if (response.status === 200) {
+        setProfiles(response.data);
+        setOpen(false);
+      }
     }
   };
 

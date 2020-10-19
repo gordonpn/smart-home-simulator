@@ -17,22 +17,27 @@ import axios from "axios";
 export default function MoveUser() {
   const classes = formStyles();
   const [open, setOpen] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState("");
   const { currentHouse } = HouseStore();
   const {
     profiles,
-    setProfiles,
     currentProfile,
     changeLocation,
+    setProfiles,
   } = ProfileStore();
-  const [selectedProfile, setSelectedProfile] = useState("");
   const [location, setLocation] = useState("");
 
-  const handleOpen = async () => {
+  const loadProfiles = async () => {
     const res = await axios.get("/api/profiles");
     if (res.status === 200) {
       setProfiles(res.data);
-      setOpen(true);
     }
+  };
+
+  const handleOpen = async () => {
+    loadProfiles().then(() => {
+      setOpen(true);
+    });
   };
 
   const handleClose = () => {
@@ -52,9 +57,11 @@ export default function MoveUser() {
       if (selectedProfile === currentProfile?.name) {
         changeLocation(location);
       }
-      setOpen(false);
       setSelectedProfile("");
       setLocation("");
+      loadProfiles().then(() => {
+        setOpen(false);
+      });
     }
   };
 

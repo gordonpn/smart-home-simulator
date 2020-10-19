@@ -19,7 +19,7 @@ export default function RemoveUser() {
   const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
   const { currentState } = RunningStateStore();
-  const { profiles, setProfiles } = ProfileStore();
+  const { profiles, removeByName, setProfiles } = ProfileStore();
 
   const handleOpen = async () => {
     const res = await axios.get("/api/profiles");
@@ -43,9 +43,10 @@ export default function RemoveUser() {
     };
     const res = await axios.delete("/api/profiles", params);
     if (res.status === 200) {
+      removeByName(selectedProfile);
       setSelectedProfile("");
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   return (
