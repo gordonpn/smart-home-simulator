@@ -74,6 +74,11 @@ public class DashboardController {
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
+  /**
+   * http response with all rooms
+   *
+   * @return all rooms and OK status
+   */
   @GetMapping("/rooms")
   public ResponseEntity<Object> getRooms() {
     Map<String, HashMap> resMap = new HashMap<>();
@@ -81,6 +86,12 @@ public class DashboardController {
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
+  /**
+   * http response with all windows of a specific room
+   *
+   * @param requestBody
+   * @return all windows ina specific room and OK status
+   */
   @PutMapping("/rooms/windows")
   public ResponseEntity<Object> getWindows(@RequestBody Map<String, String> requestBody) {
     String roomNumber = requestBody.get("roomNumber");
@@ -89,6 +100,11 @@ public class DashboardController {
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
 
+  /**
+   * block a window
+   * @param requestBody
+   * @return window number and OK status
+   */
   @PutMapping("/rooms/windows/block-window")
   public ResponseEntity<Object> blockWindow(@RequestBody Map<String, String> requestBody) {
     String windowNumber = requestBody.get("windowNumber");

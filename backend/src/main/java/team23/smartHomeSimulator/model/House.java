@@ -179,6 +179,11 @@ public class House {
     return this.rooms;
   }
 
+  /**
+   * get one specific room based on roomNumber
+   * @param roomNumber
+   * @return the room
+   */
   public Room getOneRoom(String roomNumber){
     return rooms.get(roomNumber);
   }
