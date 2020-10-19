@@ -52,9 +52,7 @@ public class HouseController {
    */
   @GetMapping("/rooms")
   public ResponseEntity<Object> getRooms() {
-    Map<String, HashMap> resMap = new HashMap<>();
-    resMap.get(house.getRooms());
-    return new ResponseEntity<>(resMap, HttpStatus.OK);
+    return new ResponseEntity<>(house.getRooms(), HttpStatus.OK);
   }
 
   /**
@@ -65,9 +63,7 @@ public class HouseController {
    */
   @GetMapping("/rooms/windows")
   public ResponseEntity<Object> getWindows(@RequestParam(name = "roomNumber") String roomNumber) {
-    Map<String, HashMap> resMap =new HashMap<>();
-    resMap.get(house.getOneRoom(roomNumber).getWindows());
-    return new ResponseEntity<>(resMap, HttpStatus.OK);
+    return new ResponseEntity<>(house.getOneRoom(roomNumber).getWindows(), HttpStatus.OK);
   }
 
   /**
