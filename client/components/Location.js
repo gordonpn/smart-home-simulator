@@ -17,7 +17,7 @@ import HouseStore from "../stores/HouseStore";
 export default function Location() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
-  const { currentProfile, changeLocation } = ProfileStore();
+  const { currentProfile, changeLocation, setProfiles } = ProfileStore();
   const [location, setLocation] = useState("");
   const { currentHouse } = HouseStore();
 
@@ -39,7 +39,11 @@ export default function Location() {
     const res = await axios.put("/api/profiles/location", putBody);
     if (res.status === 200) {
       changeLocation(location);
-      setOpen(false);
+      const response = await axios.get("/api/profiles");
+      if (response.status === 200) {
+        setProfiles(response.data);
+        setOpen(false);
+      }
     }
   };
 
