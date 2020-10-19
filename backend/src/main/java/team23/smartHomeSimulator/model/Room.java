@@ -183,7 +183,7 @@ public class Room {
    *
    * @return Window
    */
-  public Window getOneWindow(String windowNumber){
+  public Window getOneWindow(String windowNumber) {
     return windows.get(windowNumber);
   }
 }

@@ -2,13 +2,11 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.House;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /** Controller for The House Model Class */
 @RestController
@@ -68,6 +66,7 @@ public class HouseController {
 
   /**
    * block a window
+   *
    * @param requestBody
    * @return window number and OK status
    */
@@ -81,6 +80,7 @@ public class HouseController {
 
   /**
    * unblock window
+   *
    * @param requestBody
    * @return
    */

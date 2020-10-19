@@ -27,16 +27,12 @@ export default function BlockWindow() {
 
   const handleOpen = () => {
     setOpen(true);
-    axios
-      .get("/api/rooms")
-      .then((res => {
-        if (res.status===200){
-          
-        }
-        else{
-          console.log("error");
-        }
-    }))
+    axios.get("/api/rooms").then((res) => {
+      if (res.status === 200) {
+      } else {
+        console.log("error");
+      }
+    });
   };
 
   const handleClose = () => {

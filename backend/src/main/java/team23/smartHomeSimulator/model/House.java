@@ -190,10 +190,11 @@ public class House {
 
   /**
    * get one specific room based on roomNumber
+   *
    * @param roomName
    * @return the room
    */
-  public Room getOneRoom(String roomName){
+  public Room getOneRoom(String roomName) {
     return rooms.get(roomName);
   }
 }

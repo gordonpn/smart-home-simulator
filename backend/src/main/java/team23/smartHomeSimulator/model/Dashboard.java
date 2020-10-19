@@ -30,8 +30,11 @@ public class Dashboard {
     isRunning = running;
   }
 
-  public void setHouse(House houseData) {house = houseData;}
+  public void setHouse(House houseData) {
+    house = houseData;
+  }
 
-  public House getHouse() {return house;}
-
+  public House getHouse() {
+    return house;
+  }
 }

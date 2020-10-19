@@ -19,46 +19,46 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @AutoConfigureMockMvc
 public class BlockWindowsTest {
 
-    @Autowired private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    public void shouldReturnRooms() throws Exception {
-        this.mockMvc
-                .perform(get("/api/rooms"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("rooms")));
-    }
+  @Test
+  public void shouldReturnRooms() throws Exception {
+    this.mockMvc
+        .perform(get("/api/rooms"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("rooms")));
+  }
 
-    @Test
-    public void shouldReturnWindows() throws Exception {
-        MockHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.put("/api/rooms/windows")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content("{\"roomName\": \"kitchen\"");
+  @Test
+  public void shouldReturnWindows() throws Exception {
+    MockHttpServletRequestBuilder builder =
+        MockMvcRequestBuilders.put("/api/rooms/windows")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"roomName\": \"kitchen\"");
 
-        this.mockMvc
-                .perform(builder)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("windows")));
-    }
+    this.mockMvc
+        .perform(builder)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("windows")));
+  }
 
-    @Test
-    public void shouldReturnOneWindow() throws Exception {
-        MockHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.put("/api/rooms/windows/block-window")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-                        .content("{\"windowNumber\": \"1\"");
+  @Test
+  public void shouldReturnOneWindow() throws Exception {
+    MockHttpServletRequestBuilder builder =
+        MockMvcRequestBuilders.put("/api/rooms/windows/block-window")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"windowNumber\": \"1\"");
 
-        this.mockMvc
-                .perform(builder)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("1")));
-    }
+    this.mockMvc
+        .perform(builder)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
+  }
 }

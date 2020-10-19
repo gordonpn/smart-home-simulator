@@ -21,7 +21,6 @@ public class DashboardController {
     this.dashboard = dashboard;
   }
 
-
   /** @return current state of simulation, true || false */
   @GetMapping("/running")
   public ResponseEntity<Object> getRunning() {
@@ -73,7 +72,4 @@ public class DashboardController {
     resMap.put("currentTime", dashboard.getDateTime());
     return new ResponseEntity<>(resMap, HttpStatus.OK);
   }
-
-
-
 }
