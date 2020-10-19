@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Stage, Layer, Rect, Text } from "react-konva";
+import React, { useEffect, useState } from "react";
+import { Layer, Rect, Stage, Text } from "react-konva";
 import HouseStore from "../stores/HouseStore";
 import Legend from "./Legend";
+import ProfileStore from "../stores/ProfileStore";
 
 export default function HouseLayout() {
   const { currentHouse } = HouseStore();
+  const { profiles } = ProfileStore();
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -12,15 +14,15 @@ export default function HouseLayout() {
   useEffect(() => {
     const renderRooms = () => {
       const elements = [];
-      const components = currentHouse.houseCoor;
+      const { houseCoor: components } = currentHouse;
       for (const data in components) {
         const subComp = components[data];
-        var width = 50;
-        var height = 50;
-        var shapeColor = null;
-        var textY = 30;
-        var textX = 30;
-        var fontSize = 7;
+        let width = 50;
+        let height = 50;
+        let shapeColor = null;
+        let textY = 30;
+        let textX = 30;
+        let fontSize = 7;
         const shiftFactorX = 0.5;
 
         switch (data) {
@@ -81,7 +83,7 @@ export default function HouseLayout() {
             textY = 5;
             break;
         }
-        for (var i = 0; i < subComp.length; i++) {
+        for (let i = 0; i < subComp.length; i++) {
           elements.push(
             <Rect
               key={subComp[i].name ? subComp[i].name : data + i}
@@ -97,13 +99,43 @@ export default function HouseLayout() {
           if (subComp[i].name !== null) {
             elements.push(
               <Text
-                key={"name-" + (subComp[i].name ? subComp[i].name : data + i)}
+                key={
+                  "name-" +
+                  (subComp[i].name ? subComp[i].name : data + i.toString())
+                }
                 x={subComp[i].x + textX}
                 y={subComp[i].y + textY}
                 text={subComp[i].name}
                 fontSize={fontSize}
               />
             );
+          }
+
+          if (!profiles.length) {
+            continue;
+          }
+
+          let personAlreadyInRoom = 0;
+          for (const profile of profiles) {
+            const { location, name } = profile;
+            if (subComp[i].name === location.toString()) {
+              personAlreadyInRoom++;
+              elements.push(
+                <Text
+                  key={
+                    "profile-" +
+                    (subComp[i].name
+                      ? subComp[i].name + name
+                      : name + i.toString())
+                  }
+                  x={subComp[i].x + textX}
+                  y={subComp[i].y + textY + personAlreadyInRoom * 5}
+                  text={name}
+                  fontSize={4}
+                  fill="orange"
+                />
+              );
+            }
           }
         }
       }
@@ -116,11 +148,11 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse]);
+  }, [currentHouse, profiles]);
 
   return (
     <Stage width={0.7 * windowWidth} height={0.6 * windowHeight}>
-      <Layer scaleX={2} scaleY={2} x={50} y={50}>
+      <Layer scaleX={3} scaleY={3} x={50} y={50}>
         {roomElements}
       </Layer>
       {roomElements.length ? <Legend /> : false}

@@ -2,8 +2,8 @@ import React from "react";
 import { Layer, Rect, Text } from "react-konva";
 
 export default function Legend() {
-  const shapeX = 300;
-  const textX = 350;
+  const shapeX = 350;
+  const textX = 400;
   return (
     <Layer scaleX={2} scaleY={2} x={shapeX} y={0}>
       <Text x={shapeX} y={0} text={"Legend"} fontStyle={"bold"} />
