@@ -58,12 +58,12 @@ public class HouseController {
   /**
    * http response with all windows of a specific room
    *
-   * @param roomNumber
+   * @param roomName
    * @return all windows ina specific room and OK status
    */
   @GetMapping("/rooms/windows")
-  public ResponseEntity<Object> getWindows(@RequestParam(name = "roomNumber") String roomNumber) {
-    return new ResponseEntity<>(house.getOneRoom(roomNumber).getWindows(), HttpStatus.OK);
+  public ResponseEntity<Object> getWindows(@RequestParam(name = "roomName") String roomName) {
+    return new ResponseEntity<>(house.getOneRoom(roomName).getWindows(), HttpStatus.OK);
   }
 
   /**
@@ -74,8 +74,8 @@ public class HouseController {
   @PutMapping("/rooms/windows/block-window")
   public ResponseEntity<Object> blockWindow(@RequestBody Map<String, String> requestBody) {
     String windowNumber = requestBody.get("windowNumber");
-    String roomNumber = requestBody.get("roomNumber");
-    house.getOneRoom(roomNumber).getOneWindow(windowNumber).setIsBlocked(true);
+    String roomName = requestBody.get("roomName");
+    house.getOneRoom(roomName).getOneWindow(windowNumber).setIsBlocked(true);
     return new ResponseEntity<>(windowNumber, HttpStatus.OK);
   }
 
@@ -87,8 +87,8 @@ public class HouseController {
   @DeleteMapping("/rooms/windows/block-window")
   public ResponseEntity<Object> unblockWindow(@RequestBody Map<String, String> requestBody) {
     String windowNumber = requestBody.get("windowNumber");
-    String roomNumber = requestBody.get("roomNumber");
-    house.getOneRoom(roomNumber).getOneWindow(windowNumber).setIsBlocked(false);
+    String roomName = requestBody.get("roomName");
+    house.getOneRoom(roomName).getOneWindow(windowNumber).setIsBlocked(false);
     return new ResponseEntity<>(windowNumber, HttpStatus.OK);
   }
 }
