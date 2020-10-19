@@ -14,6 +14,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
 import formStyles from "../styles/formStyles";
+import ProfileStore from "../stores/ProfileStore";
 
 export default function AddUser() {
   const classes = formStyles();
@@ -24,6 +25,7 @@ export default function AddUser() {
   const [permission, setPermission] = useState("");
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
+  const { setProfiles } = ProfileStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -47,7 +49,11 @@ export default function AddUser() {
       setLocation("");
       setRole("");
       setPermission("");
-      setOpen(false);
+      const response = await axios.get("/api/profiles");
+      if (response.status === 200) {
+        setProfiles(response.data);
+        setOpen(false);
+      }
     }
   };
 
@@ -76,9 +82,10 @@ export default function AddUser() {
                 You must stop the simulation to add a profile
               </Typography>
             ) : currentHouse ? (
-              <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <form autoComplete="off" onSubmit={handleSubmit}>
                 <Box p={1}>
                   <TextField
+                    required
                     type="text"
                     label="Name"
                     value={name}
@@ -92,6 +99,7 @@ export default function AddUser() {
                   <FormControl className={classes.formControl}>
                     <InputLabel>Location</InputLabel>
                     <Select
+                      required
                       value={location}
                       onChange={(e) => {
                         const { value } = e.target;
@@ -103,6 +111,9 @@ export default function AddUser() {
                           {room}
                         </MenuItem>
                       ))}
+                      <MenuItem key="outside" value="outside">
+                        outside
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Box>

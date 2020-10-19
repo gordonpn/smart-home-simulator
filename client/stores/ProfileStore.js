@@ -1,16 +1,22 @@
 import create from "zustand";
 
-const ProfileStore = create((set) => ({
+const ProfileStore = create((set, get) => ({
   currentProfile: undefined,
   setCurrentProfile: (profile) => set({ currentProfile: profile }),
   profiles: [],
-  appendProfiles: (profile) =>
-    set((state) => ({ profiles: state.profiles.push(profile) })),
-  clearProfiles: () => ({ profiles: [] }),
   setProfiles: (profiles) => set({ profiles: profiles }),
   changeLocation: (location) =>
     set((state) => ({
       currentProfile: { ...state.currentProfile, location: location },
     })),
+  removeByName: (name) => {
+    const updatedProfiles = [];
+    for (const profile of get().profiles) {
+      if (profile.name !== name) {
+        updatedProfiles.push(profile);
+      }
+    }
+    set({ profiles: updatedProfiles });
+  },
 }));
 export default ProfileStore;
