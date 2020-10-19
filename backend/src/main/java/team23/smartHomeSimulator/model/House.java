@@ -180,6 +180,15 @@ public class House {
   }
 
   /**
+   * Getter for components' coordinates in house
+   *
+   * @return Hash map of Coordinates
+   */
+  public HashMap<String, List<Coordinates>> getHouseCoor() {
+    return houseCoor;
+  }
+
+  /**
    * get one specific room based on roomNumber
    * @param roomNumber
    * @return the room
