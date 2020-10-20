@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Layer, Rect, Stage, Text } from "react-konva";
+import { Layer, Rect, Stage, Text, Circle } from "react-konva";
 import HouseStore from "../stores/HouseStore";
 import Legend from "./Legend";
 import ProfileStore from "../stores/ProfileStore";
 
 export default function HouseLayout() {
-  const { currentHouse } = HouseStore();
+  const { currentHouse, windows, triggerRender } = HouseStore();
   const { profiles } = ProfileStore();
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -15,8 +15,8 @@ export default function HouseLayout() {
     const renderRooms = () => {
       const elements = [];
       const { houseCoor: components } = currentHouse;
-      for (const data in components) {
-        const subComp = components[data];
+      for (const roomName in components) {
+        const subComp = components[roomName];
         let width = 50;
         let height = 50;
         let shapeColor = null;
@@ -25,7 +25,7 @@ export default function HouseLayout() {
         let fontSize = 7;
         const shiftFactorX = 0.5;
 
-        switch (data) {
+        switch (roomName) {
           case "bathrooms":
             width = 20;
             textX = width / 2;
@@ -86,7 +86,7 @@ export default function HouseLayout() {
         for (let i = 0; i < subComp.length; i++) {
           elements.push(
             <Rect
-              key={subComp[i].name ? subComp[i].name : data + i}
+              key={subComp[i].name ? subComp[i].name : roomName + i}
               x={subComp[i].x}
               y={subComp[i].y}
               width={width}
@@ -101,12 +101,31 @@ export default function HouseLayout() {
               <Text
                 key={
                   "name-" +
-                  (subComp[i].name ? subComp[i].name : data + i.toString())
+                  (subComp[i].name ? subComp[i].name : roomName + i.toString())
                 }
                 x={subComp[i].x + textX}
                 y={subComp[i].y + textY}
                 text={subComp[i].name}
                 fontSize={fontSize}
+              />
+            );
+          }
+
+          if (roomName === "windows") {
+            elements.push(
+              <Circle
+                key={"block-" + subComp[i].name}
+                x={subComp[i].x + width * 0.5}
+                y={subComp[i].y}
+                visible={
+                  windows !== undefined
+                    ? windows.get(
+                        subComp[i].name.substr(0, subComp[i].name.indexOf("-w"))
+                      )
+                    : false
+                }
+                radius={4}
+                fill={"red"}
               />
             );
           }
@@ -165,11 +184,11 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse, profiles]);
+  }, [currentHouse, profiles, triggerRender, windows]);
 
   return (
     <Stage width={0.7 * windowWidth} height={0.6 * windowHeight}>
-      <Layer scaleX={3} scaleY={3} x={50} y={50}>
+      <Layer scaleX={2.5} scaleY={2.5} x={50} y={50}>
         {roomElements}
       </Layer>
       {roomElements.length ? <Legend /> : false}

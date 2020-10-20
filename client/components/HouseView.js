@@ -7,7 +7,7 @@ import HouseLayout from "./HouseLayout";
 import Input from "@material-ui/core/Input";
 
 export default function HouseView() {
-  const { setHouse } = HouseStore();
+  const { setHouse, setWindows } = HouseStore();
 
   const processFile = (event) => {
     const file = event.target.files[0];
@@ -24,6 +24,15 @@ export default function HouseView() {
           .then((res) => {
             if (res.status === 200) {
               setHouse(res.data);
+              const windowsArr = res.data.houseCoor.windows;
+              const windowsMap = new Map();
+              windowsArr.forEach((window) => {
+                windowsMap.set(
+                  window.name.substr(0, window.name.indexOf("-w")),
+                  false
+                );
+              });
+              setWindows(windowsMap);
             }
           })
           .catch((err) => {
