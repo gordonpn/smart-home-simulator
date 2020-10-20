@@ -90,7 +90,7 @@ To run the tests, `./backend/gradlew test`
 
 ### Video Demonstration Deliverable 1 (2020-10-20)
 
-<https://drive.google.com/file/d/18IchrM_fx2RPG7htC2o-axLhFi8enGwY/view?usp=sharing>
+<https://youtu.be/vRoCYK2vc2o>
 
 ### Coding Standards
 
