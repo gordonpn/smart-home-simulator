@@ -90,6 +90,14 @@ To run the tests, `./backend/gradlew test`
 
 ### Video Demonstration Deliverable 1 (2020-10-20)
 
+### Coding Standards
+
+Java source code is held up to Google standards with Google Java Format plugin and with CI pipelines.
+
+JavaScript source code is held up to ESLint and Prettier opinionated standards with CI pipelines.
+
+The pipelines can be seen on the Actions tab <https://github.com/gordonpn/soen343/actions>.
+
 ### House Layout .txt File Format
 
 There are some naming conventions for the room names that are **NECESSARY** to generate the 2D layout.
