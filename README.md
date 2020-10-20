@@ -22,26 +22,26 @@ Clone the repository:
 
 **Inside the `backend` folder.**
 
-| Action                              | Command             |
-| ----------------------------------- | ------------------- |
-| 1. Install dependencies             | `./gradlew build`   |
-| 2 optional. Build                   | `./gradlew build`   |
-| 3. Start backend development server | `./gradlew bootRun` |
-| 4 optional. Format Java code        | `./gradlew goJF`    |
-| 5. Run tests                        | `./gradlew test`    |
+| Step Order | Action                           | Command             |
+| ---------- | -------------------------------- | ------------------- |
+| 1          | Install dependencies             | `./gradlew build`   |
+| 2 optional | Build                            | `./gradlew build`   |
+| 3          | Start backend development server | `./gradlew bootRun` |
+| 4 optional | Format Java code                 | `./gradlew goJF`    |
+| 5          | Run tests                        | `./gradlew test`    |
 
 #### Frontend (client)
 
 **Inside the `client` folder.**
 
-| Action                                              | Command          |
-| --------------------------------------------------- | ---------------- |
-| 1. Install dependencies                             | `npm install`    |
-| 2. Start frontend development server                | `npm run dev`    |
-| 2 alt. Start frontend development server on Windows | `npm run dev2`   |
-| 3 optional. Build                                   | `npm run build`  |
-| 4 optional. Format with Prettier                    | `npm run format` |
-| 5 optional. Lint with ESLint                        | `npm run lint`   |
+| Step Order    | Action                                       | Command          |
+| ------------- | -------------------------------------------- | ---------------- |
+| 1             | Install dependencies                         | `npm install`    |
+| 2             | Start frontend development server            | `npm run dev`    |
+| 2 alternative | Start frontend development server on Windows | `npm run dev2`   |
+| 3 optional    | Build                                        | `npm run build`  |
+| 4 optional    | Format with Prettier                         | `npm run format` |
+| 5 optional    | Lint with ESLint                             | `npm run lint`   |
 
 ### Dependencies
 
