@@ -22,26 +22,26 @@ Clone the repository:
 
 **Inside the `backend` folder.**
 
-| Action                           | Command             |
-| -------------------------------- | ------------------- |
-| Install dependencies             | `./gradlew build`   |
-| Build                            | `./gradlew build`   |
-| Start backend development server | `./gradlew bootRun` |
-| Format Java code                 | `./gradlew goJF`    |
-| Run tests                        | `./gradlew test`    |
+| Action                              | Command             |
+| ----------------------------------- | ------------------- |
+| 1. Install dependencies             | `./gradlew build`   |
+| 2 optional. Build                   | `./gradlew build`   |
+| 3. Start backend development server | `./gradlew bootRun` |
+| 4 optional. Format Java code        | `./gradlew goJF`    |
+| 5. Run tests                        | `./gradlew test`    |
 
 #### Frontend (client)
 
 **Inside the `client` folder.**
 
-| Action                                       | Command          |
-| -------------------------------------------- | ---------------- |
-| Install dependencies                         | `npm install`    |
-| Start frontend development server            | `npm run dev`    |
-| Start frontend development server on Windows | `npm run dev2`   |
-| Build                                        | `npm run build`  |
-| Format with Prettier                         | `npm run format` |
-| Lint with ESLint                             | `npm run lint`   |
+| Action                                              | Command          |
+| --------------------------------------------------- | ---------------- |
+| 1. Install dependencies                             | `npm install`    |
+| 2. Start frontend development server                | `npm run dev`    |
+| 2 alt. Start frontend development server on Windows | `npm run dev2`   |
+| 3 optional. Build                                   | `npm run build`  |
+| 4 optional. Format with Prettier                    | `npm run format` |
+| 5 optional. Lint with ESLint                        | `npm run lint`   |
 
 ### Dependencies
 
@@ -55,7 +55,7 @@ We are using the following plugins:
 We are using the following dependencies:
 
 - Spring Boot Starter Web
-- Spring BOot Starter Test
+- Spring Boot Starter Test
 
 More details can be found in `./backend/build.gradle` file.
 
@@ -89,6 +89,8 @@ There is a unit test for **each** of the controller methods, testing their funct
 To run the tests, `./backend/gradlew test`
 
 ### Video Demonstration Deliverable 1 (2020-10-20)
+
+<https://drive.google.com/file/d/18IchrM_fx2RPG7htC2o-axLhFi8enGwY/view?usp=sharing>
 
 ### Coding Standards
 
@@ -210,10 +212,10 @@ There is a JSON format template in the repo located in the doc folder
 
 ## Authors
 
-| Name                 | GitHub                          |
-| -------------------- | ------------------------------- |
-| David Liang          | https://github.com/DavidLiang01 |
-| Gordon Pham-Nguyen   | https://github.com/gordonpn     |
-| Olivier Su           | https://github.com/olivier-su   |
-| Radu Stefan Plotoaga | https://github.com/RaduP13      |
-| Tigran Karapetyan    | https://github.com/Tigrankar    |
+| Name                 | GitHub                            |
+| -------------------- | --------------------------------- |
+| David Liang          | <https://github.com/DavidLiang01> |
+| Gordon Pham-Nguyen   | <https://github.com/gordonpn>     |
+| Olivier Su           | <https://github.com/olivier-su>   |
+| Radu Stefan Plotoaga | <https://github.com/RaduP13>      |
+| Tigran Karapetyan    | <https://github.com/Tigrankar>    |
