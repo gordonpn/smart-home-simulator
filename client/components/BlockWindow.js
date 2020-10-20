@@ -1,43 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Modal, Backdrop, Box, Fade, Button, List, ListItem, ListItemText, ListItemIcon, Checkbox } from "@material-ui/core";
-import HouseStore from "../stores/HouseStore"
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+import {
+  Modal,
+  Backdrop,
+  Box,
+  Fade,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Checkbox,
+} from "@material-ui/core";
+import HouseStore from "../stores/HouseStore";
+import formStyles from "../styles/formStyles";
+import axios from "axios";
 
 export default function BlockWindow() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
-  const { windows, setWindows, currentHouse } = HouseStore();
-  const [tempWindows, setTempWindows] = useState(new Map())
-  
+  const {
+    windows,
+    setWindows,
+    currentHouse,
+    setTriggerRender,
+    triggerRender,
+  } = HouseStore();
+  const [windowListTemp, setWindowListTemp] = useState(new Map());
+  const [renderList, setRenderList] = useState(false);
+
   useEffect(() => {
     if (currentHouse !== undefined) {
-      const windowsMap = new Map()
-      const windowsArr = currentHouse.houseCoor.windows
-      windowsArr.forEach((window)=>{
-        windowsMap.set(window.name,window)
-      })
-
-      setWindows(windowsMap)
-      // console.log(currentHouse.houseCoor.windows)
-      // const windowsJSON = currentHouse.houseCoor.windows
+      setWindowListTemp(windows);
     }
+  }, [currentHouse, renderList, windows]);
 
-
-  }, [currentHouse])
   const handleOpen = () => {
     setOpen(true);
   };
@@ -46,26 +42,49 @@ export default function BlockWindow() {
     setOpen(false);
   };
 
-  const handleSubmit =  (event) =>{
-    console.log("hey")
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    windowListTemp.forEach(async (value, key) => {
+      const requestBody = {
+        windowName: "window-1",
+        roomName: key,
+        state: value,
+      };
 
-  }
- 
-  const handleSelect = (event) =>{
-    console.log(event.target.checked)
-    console.log(event.target.value)
-    windows.get(event.target.value)
+      const res = await axios.put(
+        "/api/rooms/windows/block-window",
+        requestBody
+      );
 
-    const selectedWin = tempWindows
-    // selectedWin.set(event.target.value,{})
-    setTempWindows()
-    
+      if (res.status === 200) {
+        console.warn("block/unblock window successfully");
+      }
+    });
+    setWindows(windowListTemp);
+    setTriggerRender(!triggerRender);
+    setOpen(false);
+  };
 
-  }
+  const handleSelect = (event) => {
+    const blockState = event.target.checked;
+    const winMap = windowListTemp;
+    winMap.set(modifyString(event.target.value), blockState);
+    setWindowListTemp(winMap);
+    setRenderList(!renderList);
+  };
+
+  const modifyString = (string) => {
+    return string.substr(0, string.indexOf("-w"));
+  };
 
   return (
     <>
-      <Button color="primary" size="large" onClick={handleOpen}>
+      <Button
+        color="primary"
+        size="large"
+        variant="outlined"
+        onClick={handleOpen}
+      >
         Block Windows
       </Button>
       <Modal
@@ -81,29 +100,38 @@ export default function BlockWindow() {
         <Fade in={open}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Select Windows to block</h2>
-            <form onSubmit={handleSubmit}>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
               <List>
-                {currentHouse && currentHouse.houseCoor.windows.length ?
-                  currentHouse.houseCoor.windows.map((window) => (
-                    <ListItem key={window.name} value={window.name}>
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          value={window.name}
-                          onChange={handleSelect}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary={window.name} />
-                    </ListItem>
-                  ))
+                {currentHouse && currentHouse.houseCoor.windows.length
+                  ? currentHouse.houseCoor.windows.map((window) => (
+                      <ListItem key={window.name} value={window.name}>
+                        <ListItemIcon>
+                          <Checkbox
+                            edge="start"
+                            value={window.name}
+                            onChange={handleSelect}
+                            checked={
+                              windowListTemp !== undefined
+                                ? windowListTemp.get(
+                                    window.name.substr(
+                                      0,
+                                      window.name.indexOf("-w")
+                                    )
+                                  )
+                                : false
+                            }
+                          />
+                        </ListItemIcon>
+                        <ListItemText primary={window.name} />
+                      </ListItem>
+                    ))
                   : false}
               </List>
               <Box p={1} display="flex" justifyContent="flex-end">
                 <Button variant="outlined" color="primary" type="submit">
                   Save
-                  </Button>
+                </Button>
               </Box>
-
             </form>
           </div>
         </Fade>

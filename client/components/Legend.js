@@ -1,5 +1,5 @@
 import React from "react";
-import { Layer, Rect, Text } from "react-konva";
+import { Layer, Rect, Text, Circle } from "react-konva";
 
 export default function Legend() {
   const shapeX = 300;
@@ -25,6 +25,8 @@ export default function Legend() {
         stroke="black"
       />
       <Text x={textX} y={40} text={"Door"} />
+      <Circle x={shapeX + 5} y={65} radius={8} fill={"red"} />
+      <Text x={textX} y={60} text={"Window Blocked"} />
     </Layer>
   );
 }

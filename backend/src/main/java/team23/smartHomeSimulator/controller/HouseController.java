@@ -75,23 +75,7 @@ public class HouseController {
     house
         .getOneRoom(requestBody.getRoomName())
         .getOneWindow(requestBody.getWindowName())
-        .setIsBlocked(true);
-    return new ResponseEntity<>(
-        house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
-  }
-
-  /**
-   * unblock window
-   *
-   * @param requestBody with windowName and roomName
-   * @return room windows information
-   */
-  @DeleteMapping("/rooms/windows/block-window")
-  public ResponseEntity<Object> unblockWindow(@RequestBody WindowRequestBody requestBody) {
-    house
-        .getOneRoom(requestBody.getRoomName())
-        .getOneWindow(requestBody.getWindowName())
-        .setIsBlocked(false);
+        .setIsBlocked(requestBody.getState());
     return new ResponseEntity<>(
         house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
   }

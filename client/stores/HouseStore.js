@@ -4,7 +4,9 @@ const HouseStore = create((set) => ({
   currentHouse: undefined,
   setHouse: (houseLayout) => set({ currentHouse: houseLayout }),
   windows: undefined,
-  setWindows: (windows)=> set({windows: windows}),
+  triggerRender: false,
+  setTriggerRender: (newState) => set({ triggerRender: newState }),
+  setWindows: (windows) => set({ windows: windows }),
   currentTemperature: undefined,
   setTemperature: (newTemperature) =>
     set({ currentTemperature: newTemperature }),

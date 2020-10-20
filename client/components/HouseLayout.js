@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Layer, Rect, Stage, Text, Circle} from "react-konva";
+import { Layer, Rect, Stage, Text, Circle } from "react-konva";
 import HouseStore from "../stores/HouseStore";
 import Legend from "./Legend";
 import ProfileStore from "../stores/ProfileStore";
 
 export default function HouseLayout() {
-  const { currentHouse } = HouseStore();
+  const { currentHouse, windows, triggerRender } = HouseStore();
   const { profiles } = ProfileStore();
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -111,20 +111,24 @@ export default function HouseLayout() {
             );
           }
 
-          if(roomName === "windows"){
+          if (roomName === "windows") {
             elements.push(
               <Circle
-              key={"block-"+subComp[i].name}
-              x={subComp[i].x+(width*0.5)}
-              y={subComp[i].y}
-              visible={true}
-              radius={4}
-              fill={"red"}
+                key={"block-" + subComp[i].name}
+                x={subComp[i].x + width * 0.5}
+                y={subComp[i].y}
+                visible={
+                  windows !== undefined
+                    ? windows.get(
+                        subComp[i].name.substr(0, subComp[i].name.indexOf("-w"))
+                      )
+                    : false
+                }
+                radius={4}
+                fill={"red"}
               />
-            )
-
+            );
           }
-
 
           if (!profiles.length) {
             continue;
@@ -180,7 +184,7 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse, profiles]);
+  }, [currentHouse, profiles, triggerRender, windows]);
 
   return (
     <Stage width={0.7 * windowWidth} height={0.6 * windowHeight}>
