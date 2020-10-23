@@ -1,7 +1,5 @@
 package team23.smartHomeSimulator.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +7,9 @@ import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Controller for The Profile Model Class */
 @RestController
@@ -18,18 +19,24 @@ public class ProfileController {
   /** Private Attribute for matching name keys and Profile values */
   private HashMap<String, Profile> profiles;
 
-  /** Constructor for the Class */
+  /** Constructor for the Class, instantiates an empty hashmap */
   public ProfileController() {
     this.profiles = new HashMap<>();
   }
 
-  /** @return the profile list */
+  /**
+   * get all the profiles create
+   *
+   * @return the profile list
+   */
   @GetMapping("/profiles")
   public ResponseEntity<ArrayList<Profile>> getProfiles() {
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
   /**
+   * get a specific profile given the name
+   *
    * @param name of the profile we want
    * @return the profile in question
    */
@@ -81,6 +88,8 @@ public class ProfileController {
   }
 
   /**
+   * set a specific profile as active given the name
+   *
    * @param name of the profile we'd like to login
    * @return all profiles after logging in
    */
@@ -90,7 +99,11 @@ public class ProfileController {
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
-  /** @return all profiles after logging out */
+  /**
+   * set all profiles as inactive
+   *
+   * @return all profiles after logging out
+   */
   @PutMapping("/profiles/logout")
   public ResponseEntity<ArrayList<Profile>> setInactive() {
     profiles.forEach((profileName, profile) -> profile.setActive(false));
@@ -98,6 +111,8 @@ public class ProfileController {
   }
 
   /**
+   * updates the location of one profile
+   *
    * @param requestBody containing name and new location
    * @return the updated profile
    */

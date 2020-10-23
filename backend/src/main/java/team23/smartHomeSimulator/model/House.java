@@ -189,9 +189,9 @@ public class House {
   }
 
   /**
-   * get one specific room based on roomNumber
+   * get one specific room based on roomName
    *
-   * @param roomName
+   * @param roomName of the room to get all of its info
    * @return the room
    */
   public Room getOneRoom(String roomName) {

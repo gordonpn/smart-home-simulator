@@ -1,11 +1,12 @@
 package team23.smartHomeSimulator.controller;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Dashboard;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The DashboardController allows to call actions inside the various modules such SHH, SHC, and SHP
@@ -17,11 +18,20 @@ public class DashboardController {
   /** Instantiate the dashboard controller */
   private final Dashboard dashboard;
 
+  /**
+   * injection of dependency
+   *
+   * @param dashboard object
+   */
   public DashboardController(Dashboard dashboard) {
     this.dashboard = dashboard;
   }
 
-  /** @return current state of simulation, true || false */
+  /**
+   * get the current runningStatus as a boolean
+   *
+   * @return current state of simulation
+   */
   @GetMapping("/running")
   public ResponseEntity<Object> getRunning() {
     Map<String, Boolean> resMap = new HashMap<>();
@@ -32,7 +42,7 @@ public class DashboardController {
   /**
    * set running state to true
    *
-   * @return 200 OK, no exception handling for now
+   * @return 200 OK, no exception handling for now and new status
    */
   @PutMapping("/running")
   public ResponseEntity<Object> runningOn() {
@@ -45,7 +55,7 @@ public class DashboardController {
   /**
    * set running state to false
    *
-   * @return 200 OK, no exception handling for now
+   * @return 200 OK, no exception handling for now and new status
    */
   @DeleteMapping("/running")
   public ResponseEntity<Object> runningOff() {
@@ -56,6 +66,8 @@ public class DashboardController {
   }
 
   /**
+   * updates the date time string in the backend
+   *
    * @param requestBody JSON request body in this format { "currentTime": "2020-10-15" }
    * @return the JSON sent from the client
    */
@@ -65,7 +77,11 @@ public class DashboardController {
     return new ResponseEntity<>(requestBody, HttpStatus.OK);
   }
 
-  /** @return the date time saved in JSON format */
+  /**
+   * controller method to return the date time to the frontend
+   *
+   * @return the date time saved in JSON format
+   */
   @GetMapping("/date-time")
   public ResponseEntity<Object> getDateTime() {
     Map<String, String> resMap = new HashMap<>();
