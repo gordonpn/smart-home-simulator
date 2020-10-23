@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
-  Modal,
   Backdrop,
   Box,
-  Fade,
   Button,
+  Checkbox,
+  Fade,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
-  Checkbox,
+  ListItemText,
+  Modal,
 } from "@material-ui/core";
-import HouseStore from "../stores/HouseStore";
-import formStyles from "../styles/formStyles";
+import HouseStore from "@/src/stores/HouseStore";
+import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
 
 export default function BlockWindow() {

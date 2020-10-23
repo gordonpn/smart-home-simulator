@@ -3,18 +3,18 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import RunningStateStore from "../stores/RunningStateStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
-import HouseStore from "../stores/HouseStore";
+import HouseStore from "@/src/stores/HouseStore";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
-import formStyles from "../styles/formStyles";
-import ProfileStore from "../stores/ProfileStore";
+import formStyles from "@/src/styles/formStyles";
+import ProfileStore from "@/src/stores/ProfileStore";
 
 export default function AddUser() {
   const classes = formStyles();

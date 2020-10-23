@@ -10,9 +10,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
-import RunningStateStore from "../stores/RunningStateStore";
-import ProfileStore from "../stores/ProfileStore";
-import formStyles from "../styles/formStyles";
+import RunningStateStore from "@/src/stores/RunningStateStore";
+import ProfileStore from "@/src/stores/ProfileStore";
+import formStyles from "@/src/styles/formStyles";
 
 export default function RemoveUser() {
   const classes = formStyles();

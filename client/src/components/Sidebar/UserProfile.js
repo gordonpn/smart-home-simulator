@@ -6,13 +6,13 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
-import ProfileStore from "../stores/ProfileStore";
+import ProfileStore from "@/src/stores/ProfileStore";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import RunningStateStore from "../stores/RunningStateStore";
-import formStyles from "../styles/formStyles";
+import RunningStateStore from "@/src/stores/RunningStateStore";
+import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
 
 export default function UserProfile() {

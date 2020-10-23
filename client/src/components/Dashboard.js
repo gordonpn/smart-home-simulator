@@ -9,15 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import HouseView from "./HouseView";
+import HouseView from "./HouseView/HouseView";
 import Console from "./Console";
-import Modules from "./Modules";
-import Box from "@material-ui/core/Box";
-import Toggle from "./Toggle";
-import UserProfile from "./UserProfile";
-import Location from "./Location";
-import OutsideTemp from "./OutsideTemp";
-import DateTime from "./DateTime";
+import Modules from "./Modules/Modules";
+import Sidebar from "./Sidebar/Sidebar";
 
 const drawerWidth = 280;
 
@@ -74,18 +69,7 @@ export default function Dashboard() {
         }}
         open={true}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-        >
-          <Toggle />
-          <UserProfile />
-          <Location />
-          <OutsideTemp />
-          <DateTime />
-        </Box>
+        <Sidebar />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

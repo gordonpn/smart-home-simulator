@@ -1,8 +1,8 @@
 import React from "react";
-import Title from "./Title";
+import Title from "../Title";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-import HouseStore from "../stores/HouseStore";
+import HouseStore from "@/src/stores/HouseStore";
 import HouseLayout from "./HouseLayout";
 import Input from "@material-ui/core/Input";
 

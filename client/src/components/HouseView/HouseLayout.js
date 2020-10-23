@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Layer, Rect, Stage, Text, Circle } from "react-konva";
-import HouseStore from "../stores/HouseStore";
+import { Circle, Layer, Rect, Stage, Text } from "react-konva";
+import HouseStore from "@/src/stores/HouseStore";
 import Legend from "./Legend";
-import ProfileStore from "../stores/ProfileStore";
+import ProfileStore from "@/src/stores/ProfileStore";
 
 export default function HouseLayout() {
   const { currentHouse, windows, triggerRender } = HouseStore();
