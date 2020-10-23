@@ -1,12 +1,11 @@
 package team23.smartHomeSimulator.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Dashboard;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The DashboardController allows to call actions inside the various modules such SHH, SHC, and SHP
