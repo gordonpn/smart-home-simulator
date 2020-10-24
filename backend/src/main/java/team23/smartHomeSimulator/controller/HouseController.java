@@ -34,6 +34,8 @@ public class HouseController {
   }
 
   /**
+   * updates the outside temperature in the backend
+   *
    * @param requestBody JSON request body in this format {"outTemp": 20}
    * @return the new outside house temperature
    */
@@ -56,7 +58,7 @@ public class HouseController {
   /**
    * http response with all windows of a specific room
    *
-   * @param roomName
+   * @param roomName is the room name for which we'd like to get all windows
    * @return all windows in a specific room and OK status
    */
   @GetMapping("/rooms/windows")
@@ -67,7 +69,7 @@ public class HouseController {
   /**
    * block window
    *
-   * @param requestBody with windowName and roomName
+   * @param requestBody object
    * @return room windows information
    */
   @PutMapping("/rooms/windows/block-window")
