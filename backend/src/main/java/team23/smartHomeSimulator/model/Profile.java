@@ -23,8 +23,7 @@ public class Profile {
   private boolean isActive;
 
   /**
-   * Parametrised Constructor
-   *
+   * @param location assigned to profile being created
    * @param name name of the profile
    * @param role role attributed to the profile
    * @param permission permission level profile has
@@ -51,71 +50,91 @@ public class Profile {
     this.isActive = false;
   }
 
-  /** @return returns the name of the profile */
+  /**
+   * get name of profile
+   *
+   * @return returns the name of the profile
+   */
   public String getName() {
     return name;
-  }
-
-  /** @return returns the location of the profile */
-  public String getLocation() {
-    return location;
-  }
-
-  /** @return the role of the profile */
-  public String getRole() {
-    return role;
-  }
-
-  /** @return the permission level of the profile */
-  public String getPermission() {
-    return permission;
-  }
-
-  /** @return the state of the profile */
-  public boolean getActive() {
-    return isActive;
   }
 
   /**
    * sets the name of the profile
    *
-   * @param name
+   * @param name string to be set as name
    */
   public void setName(String name) {
     this.name = name;
   }
 
   /**
+   * get location of profile
+   *
+   * @return returns the location of the profile
+   */
+  public String getLocation() {
+    return location;
+  }
+
+  /**
    * sets the location of the profile
    *
-   * @param location
+   * @param location string to be set as location
    */
   public void setLocation(String location) {
     this.location = location;
   }
 
   /**
+   * get role
+   *
+   * @return the role of the profile
+   */
+  public String getRole() {
+    return role;
+  }
+
+  /**
    * sets the role of the profile
    *
-   * @param role
+   * @param role string to be set as role
    */
   public void setRole(String role) {
     this.role = role;
   }
 
   /**
+   * get permission of profile
+   *
+   * @return the permission level of the profile
+   */
+  public String getPermission() {
+    return permission;
+  }
+
+  /**
    * sets the permission level of the profile
    *
-   * @param permission
+   * @param permission string to be set as permission
    */
   public void setPermission(String permission) {
     this.permission = permission;
   }
 
   /**
+   * get active status of profile
+   *
+   * @return the state of the profile
+   */
+  public boolean getActive() {
+    return isActive;
+  }
+
+  /**
    * sets the state of the profile in relation to the dashboard
    *
-   * @param active
+   * @param active boolean to be set as active
    */
   public void setActive(boolean active) {
     isActive = active;
