@@ -106,7 +106,7 @@ The pipelines can be seen on the Actions tab <https://github.com/gordonpn/soen34
 
 ### Javadoc
 
-Generated HTML hosted here: <https://gordonpn.github.io/soen343-team23/docs/index.html>
+Generated HTML hosted here: <https://gordonpn.github.io/soen343-team23/>
 
 ### House Layout .txt File Format
 
