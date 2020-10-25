@@ -5,14 +5,14 @@ import Box from "@material-ui/core/Box";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import ProfileStore from "../stores/ProfileStore";
+import ProfileStore from "@/src/stores/ProfileStore";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import formStyles from "../styles/formStyles";
+import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
-import HouseStore from "../stores/HouseStore";
+import HouseStore from "@/src/stores/HouseStore";
 
 export default function Location() {
   const classes = formStyles();
