@@ -1,10 +1,12 @@
 package team23.smartHomeSimulator.controller;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team23.smartHomeSimulator.model.Permission;
 import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
@@ -120,5 +122,12 @@ public class ProfileController {
       @RequestBody LocationChangeRequestBody requestBody) {
     profiles.get(requestBody.getName().toLowerCase()).setLocation(requestBody.getLocation());
     return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
+  }
+
+  @GetMapping("/profiles/permissions")
+  public ResponseEntity<ArrayList<String>> getPermissions() {
+    ArrayList<String> permissions = new ArrayList<>();
+    EnumSet.allOf(Permission.class).forEach(permission -> permissions.add(permission.getType()));
+    return new ResponseEntity<>(permissions, HttpStatus.OK);
   }
 }

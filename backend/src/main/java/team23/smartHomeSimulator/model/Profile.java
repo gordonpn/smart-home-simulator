@@ -4,7 +4,6 @@ package team23.smartHomeSimulator.model;
  * This class is made for instantiating various profile within the smart home dashboard and handle
  * operations related to dashboard functionalities
  */
-// @Component
 public class Profile {
 
   /** The name of the profile */
@@ -29,7 +28,6 @@ public class Profile {
    * @param permission permission level profile has
    */
   public Profile(String name, String location, String role, String permission) {
-
     this.name = name;
     this.location = location;
     this.role = role;
