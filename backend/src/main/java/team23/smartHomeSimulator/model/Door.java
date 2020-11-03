@@ -40,7 +40,7 @@ public class Door {
    *
    * @return boolean
    */
-  public boolean isLockable(){
+  public boolean isLockable() {
     return this.isLockable;
   }
 }
