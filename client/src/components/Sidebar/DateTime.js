@@ -3,11 +3,11 @@ import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import RunningStateStore from "../stores/RunningStateStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
-import formStyles from "../styles/formStyles";
+import formStyles from "@/src/styles/formStyles";
 
 export default function DateTime() {
   const [currentTime, setCurrentTime] = useState(new Date());

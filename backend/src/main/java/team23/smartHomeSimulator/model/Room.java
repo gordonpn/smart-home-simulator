@@ -181,7 +181,8 @@ public class Room {
   /**
    * Getter for one window
    *
-   * @return Window
+   * @param windowName name of the window we want to get information
+   * @return window object
    */
   public Window getOneWindow(String windowName) {
     return this.windows.get(windowName);

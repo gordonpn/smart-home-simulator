@@ -4,8 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import RunningStateStore from "../stores/RunningStateStore";
-import ProfileStore from "../stores/ProfileStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
+import ProfileStore from "@/src/stores/ProfileStore";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 

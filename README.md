@@ -102,6 +102,12 @@ JavaScript source code is held up to ESLint and Prettier opinionated standards w
 
 The pipelines can be seen on the Actions tab <https://github.com/gordonpn/soen343/actions>.
 
+## Documentation
+
+### Javadoc
+
+Generated HTML hosted here: <https://gordonpn.github.io/soen343-team23/>
+
 ### House Layout .txt File Format
 
 There are some naming conventions for the room names that are **NECESSARY** to generate the 2D layout.
