@@ -155,4 +155,14 @@ public class ProfileTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("\"location\":\"garage\"")));
   }
+
+  @Test
+  public void shouldReturnAllPermissions() throws Exception {
+    this.mockMvc
+        .perform(get("/api/profiles/permissions"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content().string(containsString("[\"Parent\",\"Children\",\"Guest\",\"Stranger\"]")));
+  }
 }

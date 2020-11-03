@@ -122,6 +122,11 @@ public class ProfileController {
     return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
   }
 
+  /**
+   * Return all available permissions
+   *
+   * @return list of permissions
+   */
   @GetMapping("/profiles/permissions")
   public ResponseEntity<ArrayList<String>> getPermissions() {
     ArrayList<String> permissions = new ArrayList<>();
