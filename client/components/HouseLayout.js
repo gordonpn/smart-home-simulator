@@ -3,10 +3,12 @@ import { Layer, Rect, Stage, Text, Circle } from "react-konva";
 import HouseStore from "../stores/HouseStore";
 import Legend from "./Legend";
 import ProfileStore from "../stores/ProfileStore";
+import RunningStateStore from "../stores/RunningStateStore";
 
 export default function HouseLayout() {
   const { currentHouse, windows, triggerRender } = HouseStore();
   const { profiles } = ProfileStore();
+  const { currentState } = RunningStateStore();
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -187,7 +189,11 @@ export default function HouseLayout() {
   }, [currentHouse, profiles, triggerRender, windows]);
 
   return (
-    <Stage width={0.7 * windowWidth} height={0.6 * windowHeight}>
+    <Stage
+      width={0.7 * windowWidth}
+      height={0.6 * windowHeight}
+      opacity={currentState ? 1 : 0.2}
+    >
       <Layer scaleX={2.5} scaleY={2.5} x={50} y={50}>
         {roomElements}
       </Layer>
