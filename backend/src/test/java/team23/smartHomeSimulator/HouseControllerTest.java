@@ -62,7 +62,7 @@ public class HouseControllerTest {
     Room lockableRoom = new Room("room1", "deck", 1, 1, 1);
     Room nonLockableRoom = new Room("room2", "bathroom", 1, 1, 1);
 
-    assertEquals(lockableRoom.getDoors().get("door-1").getIsLockable(), true);
-    assertEquals(nonLockableRoom.getDoors().get("door-1").getIsLockable(), false);
+    assertEquals(lockableRoom.getDoors().get("door-1").isLockable(), true);
+    assertEquals(nonLockableRoom.getDoors().get("door-1").isLockable(), false);
   }
 }

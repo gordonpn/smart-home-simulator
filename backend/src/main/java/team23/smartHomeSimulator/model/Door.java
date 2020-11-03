@@ -36,20 +36,11 @@ public class Door {
   }
 
   /**
-   * Setter for the ability to be locked for a door
-   *
-   * @param lockable the new permission to be locked or not
-   */
-  public void setIsLockable(boolean lockable) {
-    this.isLockable = lockable;
-  }
-
-  /**
    * Getter for checking if the door can be locked
    *
    * @return boolean
    */
-  public boolean getIsLockable() {
+  public boolean isLockable(){
     return this.isLockable;
   }
 }

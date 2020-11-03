@@ -70,8 +70,7 @@ public class Room {
     for (int i = 0; i < numDoors; i++) {
       this.doors.put("door-" + (i + 1), new Door(isExternalDoor));
     }
-
-    }
+    
   }
 
   /**
