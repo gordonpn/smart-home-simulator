@@ -7,14 +7,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.House;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
+import team23.smartHomeSimulator.service.PermissionService;
 
 /** Controller for The House Model Class */
 @RestController
 @RequestMapping("/api")
 public class HouseController {
 
-  /** Instantiate the house controller */
+  private final PermissionService permissionService;
   private House house;
+
+  /**
+   * Constructor for dependency injection
+   *
+   * @param permissionService the permission service
+   */
+  public HouseController(PermissionService permissionService) {
+    this.permissionService = permissionService;
+  }
 
   /**
    * Create the house object

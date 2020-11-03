@@ -17,12 +17,17 @@ import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
 @RequestMapping("/api")
 public class ProfileController {
 
+  private static Profile activeProfile;
   /** Private Attribute for matching name keys and Profile values */
   private HashMap<String, Profile> profiles;
 
   /** Constructor for the Class, instantiates an empty hashmap */
   public ProfileController() {
     this.profiles = new HashMap<>();
+  }
+
+  public static Profile getActiveProfile() {
+    return activeProfile;
   }
 
   /**
@@ -94,7 +99,9 @@ public class ProfileController {
    */
   @PutMapping("/profiles/login")
   public ResponseEntity<ArrayList<Profile>> setActive(@RequestParam(name = "name") String name) {
-    profiles.get(name.toLowerCase()).setActive(true);
+    Profile profile = profiles.get(name.toLowerCase());
+    profile.setActive(true);
+    activeProfile = profile;
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
@@ -106,6 +113,7 @@ public class ProfileController {
   @PutMapping("/profiles/logout")
   public ResponseEntity<ArrayList<Profile>> setInactive() {
     profiles.forEach((profileName, profile) -> profile.setActive(false));
+    activeProfile = null;
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 

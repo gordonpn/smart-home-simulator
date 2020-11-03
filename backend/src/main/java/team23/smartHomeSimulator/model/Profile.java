@@ -108,6 +108,15 @@ public class Profile {
   }
 
   /**
+   * Getter for permission Enum
+   *
+   * @return Enum
+   */
+  public Permission getPermissionEnum() {
+    return permission;
+  }
+
+  /**
    * Getter for active
    *
    * @return boolean
