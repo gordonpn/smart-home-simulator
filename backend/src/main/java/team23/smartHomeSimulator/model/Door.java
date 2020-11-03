@@ -5,11 +5,18 @@ public class Door {
   /** The state of the door (is the door open?) */
   private boolean isOpen;
 
+  private boolean isLockable;
+
   /** Default constructor */
   public Door() {
     this.isOpen = false;
+    this.isLockable = false;
   }
 
+  public Door(boolean lockable) {
+    this.isOpen = false;
+    this.isLockable = lockable;
+  }
   /**
    * Getter for checking if the door is open
    *
@@ -26,5 +33,23 @@ public class Door {
    */
   public void setIsOpen(boolean open) {
     this.isOpen = open;
+  }
+
+  /**
+   * Setter for the ability to be locked for a door
+   *
+   * @param lockable the new permission to be locked or not
+   */
+  public void setIsLockable(boolean lockable) {
+    this.isLockable = lockable;
+  }
+
+  /**
+   * Getter for checking if the door can be locked
+   *
+   * @return boolean
+   */
+  public boolean getIsLockable() {
+    return this.isLockable;
   }
 }

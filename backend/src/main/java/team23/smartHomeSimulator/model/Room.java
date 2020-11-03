@@ -56,13 +56,20 @@ public class Room {
   }
 
   /**
-   * Initialize the doors in the room
+   * Initialize the doors in the room and makes sure if a room is an outside room to allow the door
+   * to be locked
    *
    * @param numDoors the number of doors in a room
    */
   private void createDoors(int numDoors) {
-    for (int i = 0; i < numDoors; i++) {
-      this.doors.put("door-" + (i + 1), new Door());
+    if (this.roomName == "deck" || this.roomName == "garage" || this.roomName == "entrance") {
+      for (int i = 0; i < numDoors; i++) {
+        this.doors.put("door-" + (i + 1), new Door(true));
+      }
+    } else {
+      for (int i = 0; i < numDoors; i++) {
+        this.doors.put("door-" + (i + 1), new Door());
+      }
     }
   }
 

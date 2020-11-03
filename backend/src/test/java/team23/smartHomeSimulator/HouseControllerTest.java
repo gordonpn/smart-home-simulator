@@ -1,6 +1,7 @@
 package team23.smartHomeSimulator;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import team23.smartHomeSimulator.model.Room;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -53,5 +55,14 @@ public class HouseControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("{\"outTemp\":20.0")));
+  }
+
+  @Test
+  public void shouldBeLockableOrNot() throws Exception {
+    Room lockableRoom = new Room("room1", "deck", 1, 1, 1);
+    Room nonLockableRoom = new Room("room2", "bathroom", 1, 1, 1);
+
+    assertEquals(lockableRoom.getDoors().get("door-1").getIsLockable(), true);
+    assertEquals(nonLockableRoom.getDoors().get("door-1").getIsLockable(), false);
   }
 }
