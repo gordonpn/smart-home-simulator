@@ -1,5 +1,6 @@
 package team23.smartHomeSimulator.model;
 
+/** Enum class for actions dependent on permissions */
 public enum ProtectedAction {
   WINDOWS("windows"),
   UNLOCK_DOORS("(un)locking doors"),
@@ -13,6 +14,11 @@ public enum ProtectedAction {
     this.description = description;
   }
 
+  /**
+   * Return description of action
+   *
+   * @return String description
+   */
   public String getDescription() {
     return description;
   }

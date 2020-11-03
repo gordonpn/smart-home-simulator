@@ -18,7 +18,6 @@ import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
 public class ProfileController {
 
   private static Profile activeProfile;
-  /** Private Attribute for matching name keys and Profile values */
   private HashMap<String, Profile> profiles;
 
   /** Constructor for the Class, instantiates an empty hashmap */
@@ -26,6 +25,11 @@ public class ProfileController {
     this.profiles = new HashMap<>();
   }
 
+  /**
+   * Static method to get the current active profile
+   *
+   * @return Profile that is active
+   */
   public static Profile getActiveProfile() {
     return activeProfile;
   }
