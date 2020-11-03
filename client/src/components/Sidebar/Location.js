@@ -95,7 +95,7 @@ export default function Location() {
                                 {room}
                               </MenuItem>
                             ))
-                          : false}
+                          : null}
                         <MenuItem key="outside" value="outside">
                           outside
                         </MenuItem>
