@@ -89,11 +89,13 @@ export default function Location() {
                           return setLocation(value);
                         }}
                       >
-                        {Object.keys(currentHouse.rooms).map((room) => (
-                          <MenuItem key={room} value={room}>
-                            {room}
-                          </MenuItem>
-                        ))}
+                        {currentHouse
+                          ? Object.keys(currentHouse.rooms).map((room) => (
+                              <MenuItem key={room} value={room}>
+                                {room}
+                              </MenuItem>
+                            ))
+                          : null}
                         <MenuItem key="outside" value="outside">
                           outside
                         </MenuItem>

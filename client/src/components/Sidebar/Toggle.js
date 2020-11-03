@@ -92,7 +92,7 @@ export default function Toggle() {
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={openAlert}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="error">
@@ -104,7 +104,7 @@ export default function Toggle() {
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={onSuccess}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="success">
@@ -116,7 +116,7 @@ export default function Toggle() {
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={logOutAlert}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="success">
