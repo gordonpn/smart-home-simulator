@@ -16,18 +16,18 @@ public class Profile {
   private String role;
 
   /** Permission level that he profile has access */
-  private String permission;
+  private Permission permission;
 
   /** Current Status of the Profile, is it he current connected one or not */
   private boolean isActive;
 
   /**
-   * @param location assigned to profile being created
    * @param name name of the profile
+   * @param location assigned to profile being created
    * @param role role attributed to the profile
    * @param permission permission level profile has
    */
-  public Profile(String name, String location, String role, String permission) {
+  public Profile(String name, String location, String role, Permission permission) {
     this.name = name;
     this.location = location;
     this.role = role;
@@ -36,40 +36,27 @@ public class Profile {
   }
 
   /**
-   * Base Profile Constructor Initialising a Profile with only a name
+   * Getter for name
    *
-   * @param name name of the base profile
-   */
-  public Profile(String name) {
-    this.name = name;
-    this.location = "Outside";
-    this.role = "Guest";
-    this.permission = "none";
-    this.isActive = false;
-  }
-
-  /**
-   * get name of profile
-   *
-   * @return returns the name of the profile
+   * @return name as string
    */
   public String getName() {
     return name;
   }
 
   /**
-   * sets the name of the profile
+   * Setter for name
    *
-   * @param name string to be set as name
+   * @param name string
    */
   public void setName(String name) {
     this.name = name;
   }
 
   /**
-   * get location of profile
+   * Getter for location
    *
-   * @return returns the location of the profile
+   * @return location as string
    */
   public String getLocation() {
     return location;
@@ -85,47 +72,47 @@ public class Profile {
   }
 
   /**
-   * get role
+   * Getter for role
    *
-   * @return the role of the profile
+   * @return role as string
    */
   public String getRole() {
     return role;
   }
 
   /**
-   * sets the role of the profile
+   * Setter for role
    *
-   * @param role string to be set as role
+   * @param role strin
    */
   public void setRole(String role) {
     this.role = role;
   }
 
   /**
-   * get permission of profile
+   * Getter for permission
    *
-   * @return the permission level of the profile
+   * @return Permission enum
    */
   public String getPermission() {
-    return permission;
+    return permission.getType();
   }
 
   /**
-   * sets the permission level of the profile
+   * Setter for permission
    *
-   * @param permission string to be set as permission
+   * @param permission Enum
    */
-  public void setPermission(String permission) {
+  public void setPermission(Permission permission) {
     this.permission = permission;
   }
 
   /**
-   * get active status of profile
+   * Getter for active
    *
-   * @return the state of the profile
+   * @return boolean
    */
-  public boolean getActive() {
+  public boolean isActive() {
     return isActive;
   }
 
@@ -136,23 +123,5 @@ public class Profile {
    */
   public void setActive(boolean active) {
     isActive = active;
-  }
-
-  /**
-   * Method to set all the attributes of a profile
-   *
-   * @param name new name of profile
-   * @param location new location of profile
-   * @param role new role of profile
-   * @param permission new permission of profile
-   * @param isActive new active status of profile
-   */
-  public void setAll(
-      String name, String location, String role, String permission, boolean isActive) {
-    this.name = name;
-    this.location = location;
-    this.role = role;
-    this.permission = permission;
-    this.isActive = isActive;
   }
 }

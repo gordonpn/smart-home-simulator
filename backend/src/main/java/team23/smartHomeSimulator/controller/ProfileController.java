@@ -78,13 +78,11 @@ public class ProfileController {
    */
   @PostMapping("/profiles")
   public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
-    profiles.put(
-        requestBody.getName().toLowerCase(),
+    Permission permission = Permission.valueOf(requestBody.getPermission().toUpperCase());
+    Profile newProfile =
         new Profile(
-            requestBody.getName(),
-            requestBody.getLocation(),
-            requestBody.getRole(),
-            requestBody.getPermission()));
+            requestBody.getName(), requestBody.getLocation(), requestBody.getRole(), permission);
+    profiles.put(requestBody.getName().toLowerCase(), newProfile);
     return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
   }
 
