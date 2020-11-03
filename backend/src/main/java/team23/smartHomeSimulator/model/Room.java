@@ -62,14 +62,15 @@ public class Room {
    * @param numDoors the number of doors in a room
    */
   private void createDoors(int numDoors) {
-    if (this.roomName == "deck" || this.roomName == "garage" || this.roomName == "entrance") {
-      for (int i = 0; i < numDoors; i++) {
-        this.doors.put("door-" + (i + 1), new Door(true));
-      }
-    } else {
-      for (int i = 0; i < numDoors; i++) {
-        this.doors.put("door-" + (i + 1), new Door());
-      }
+    boolean isExternalDoor =
+        this.roomName != null
+            && (this.roomName.contains("deck")
+                || this.roomName.contains("garage")
+                || this.roomName.contains("entrance"));
+    for (int i = 0; i < numDoors; i++) {
+      this.doors.put("door-" + (i + 1), new Door(isExternalDoor));
+    }
+
     }
   }
 
