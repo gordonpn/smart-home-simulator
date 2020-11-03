@@ -6,7 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import SHSTab from "./SHSTab";
 import SHCTab from "./SHCTab";
-import RunningStateStore from "../stores/RunningStateStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

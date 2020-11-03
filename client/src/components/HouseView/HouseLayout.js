@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Circle, Layer, Rect, Stage, Text } from "react-konva";
 import HouseStore from "@/src/stores/HouseStore";
 import Legend from "./Legend";
-import RunningStateStore from "../stores/RunningStateStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
 import ProfileStore from "@/src/stores/ProfileStore";
 
 export default function HouseLayout() {
