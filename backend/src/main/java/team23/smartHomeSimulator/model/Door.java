@@ -26,7 +26,7 @@ public class Door {
    *
    * @return boolean
    */
-  public boolean getIsOpen() {
+  public boolean isOpen() {
     return this.isOpen;
   }
 
@@ -54,6 +54,7 @@ public class Door {
    * @return boolean
    */
   public boolean isLocked() {
+    this.isOpen = false;
     return this.isLocked;
   }
 

@@ -1,10 +1,5 @@
 package team23.smartHomeSimulator;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,15 +38,15 @@ public class LockDoorsTest {
   }
 
   @Test
-  public void shouldBlockAndUnblockDoors() throws Exception {
+  public void shouldLockAndUnlockDoors() throws Exception {
     MockHttpServletRequestBuilder builderLock =
-        MockMvcRequestBuilders.put("/api/rooms/door/lock-door")
+        MockMvcRequestBuilders.put("/api/rooms/doors/lock-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsLock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":true}}";
+    String resultsLock = "{\"door-1\":{\"open\":false,\"locked\":true,\"lockable\":true}}";
 
     this.mockMvc
         .perform(builderLock)
@@ -55,13 +55,13 @@ public class LockDoorsTest {
         .andExpect(content().string(containsString(resultsLock)));
 
     MockHttpServletRequestBuilder builderUnlock =
-        MockMvcRequestBuilders.put("/api/rooms/door/lock-door")
+        MockMvcRequestBuilders.put("/api/rooms/doors/lock-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
-    String resultsUnlock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":false}}";
+    String resultsUnlock = "{\"door-1\":{\"open\":false,\"locked\":false,\"lockable\":true}}";
 
     this.mockMvc
         .perform(builderUnlock)

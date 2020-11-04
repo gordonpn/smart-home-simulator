@@ -2,6 +2,7 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import team23.smartHomeSimulator.model.House;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
+import team23.smartHomeSimulator.utility.ErrorResponse;
 
 /** Controller for The House Model Class */
 @RestController
@@ -100,7 +102,7 @@ public class HouseController {
    * @param requestBody object
    * @return room door information
    */
-  @PutMapping("/rooms/door/lock-door")
+  @PutMapping("/rooms/doors/lock-door")
   public ResponseEntity<Object> lockDoor(@RequestBody DoorRequestBody requestBody) {
     Door thisDoor =
         house.getOneRoom(requestBody.getRoomName()).getOneDoor(requestBody.getDoorName());
@@ -109,8 +111,10 @@ public class HouseController {
       return new ResponseEntity<>(
           house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(
-          house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.FORBIDDEN);
+      Map<String, String> response =
+          ErrorResponse.getCustomError(
+              String.format("Cannot lock this door %s", requestBody.getDoorName()));
+      return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
   }
 }
