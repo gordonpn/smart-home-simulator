@@ -107,7 +107,7 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-                .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+            .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
     String resultsBlock = "{\"door-1\":{\"open\":true,\"locked\":false,\"lockable\":false}}";
 
