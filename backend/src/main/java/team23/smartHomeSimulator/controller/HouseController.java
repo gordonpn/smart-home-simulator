@@ -2,12 +2,16 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team23.smartHomeSimulator.model.Door;
 import team23.smartHomeSimulator.model.House;
+import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
+import team23.smartHomeSimulator.utility.ErrorResponse;
 
 /** Controller for The House Model Class */
 @RestController
@@ -90,5 +94,27 @@ public class HouseController {
         .setIsBlocked(requestBody.getState());
     return new ResponseEntity<>(
         house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
+  }
+
+  /**
+   * lock door
+   *
+   * @param requestBody object
+   * @return room door information
+   */
+  @PutMapping("/rooms/doors/lock-door")
+  public ResponseEntity<Object> lockDoor(@RequestBody DoorRequestBody requestBody) {
+    Door thisDoor =
+        house.getOneRoom(requestBody.getRoomName()).getOneDoor(requestBody.getDoorName());
+    if (thisDoor.isLockable()) {
+      thisDoor.setLocked(requestBody.getState());
+      return new ResponseEntity<>(
+          house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
+    } else {
+      Map<String, String> response =
+          ErrorResponse.getCustomError(
+              String.format("Cannot lock this door %s", requestBody.getDoorName()));
+      return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
   }
 }

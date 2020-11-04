@@ -15,7 +15,7 @@ public final class ErrorResponse {
    * @param action action they would like to perform
    * @return Map {"message": "..."}
    */
-  public static Map<String, String> getErrorResponse(Profile profile, ProtectedAction action) {
+  public static Map<String, String> getPermissionError(Profile profile, ProtectedAction action) {
     String profileName = profile == null ? "null" : profile.getName();
     HashMap<String, String> response = new HashMap<>();
     response.put(
@@ -23,6 +23,12 @@ public final class ErrorResponse {
         String.format(
             "Profile %s is not allowed to perform actions with %s",
             profileName, action.getDescription()));
+    return response;
+  }
+
+  public static Map<String, String> getCustomError(String message) {
+    HashMap<String, String> response = new HashMap<>();
+    response.put("message", message);
     return response;
   }
 }
