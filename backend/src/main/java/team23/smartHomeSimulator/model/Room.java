@@ -203,4 +203,14 @@ public class Room {
   public Door getOneDoor(String doorName) {
     return this.doors.get(doorName);
   }
+
+  /**
+   * Getter for one light
+   *
+   * @param lightName name of the light we want to get information
+   * @return door object
+   */
+  public Light getOneLight(String lightName) {
+    return this.lights.get(lightName);
+  }
 }

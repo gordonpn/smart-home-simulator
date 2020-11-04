@@ -32,7 +32,7 @@ public class HouseControllerTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"rooms\":{\"room1\":{\"roomNumber\":\"41\",\"numDoors\":4,\"numWindows\":1,\"numLights\":10},\"room2\":{\"roomNumber\":\"2\",\"numDoors\":4,\"numWindows\":1,\"numLights\":10}}}");
+                "{\"rooms\":{\"room1\":{\"roomNumber\":\"41\",\"numDoors\":1,\"numWindows\":1,\"numLights\":1},\"room2\":{\"roomNumber\":\"2\",\"numDoors\":4,\"numWindows\":1,\"numLights\":10}}}");
 
     this.mockMvc
         .perform(builder)
@@ -65,5 +65,104 @@ public class HouseControllerTest {
 
     assertTrue(lockableRoom.getDoors().get("door-1").isLockable());
     assertFalse(nonLockableRoom.getDoors().get("door-1").isLockable());
+  }
+
+  @Test
+  public void shouldOpenAndCloseWindow() throws Exception {
+    MockHttpServletRequestBuilder builderBlock =
+        MockMvcRequestBuilders.put("/api/rooms/windows/open-window")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+
+    String resultsBlock = "{\"window-1\":{\"isOpen\":true,\"isBlocked\":false}}";
+
+    this.mockMvc
+        .perform(builderBlock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(resultsBlock)));
+
+    MockHttpServletRequestBuilder builderUnblock =
+        MockMvcRequestBuilders.put("/api/rooms/windows/open-window")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+
+    String resultsUnblock = "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false}";
+
+    this.mockMvc
+        .perform(builderUnblock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(resultsUnblock)));
+  }
+
+  @Test
+  public void shouldOpenAndCloseDoor() throws Exception {
+    MockHttpServletRequestBuilder builderBlock =
+        MockMvcRequestBuilders.put("/api/rooms/doors/open-door")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+
+    String resultsBlock = "{\"door-1\":{\"lockable\":false,\"locked\":false,\"open\":true}}";
+
+    this.mockMvc
+        .perform(builderBlock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(resultsBlock)));
+
+    MockHttpServletRequestBuilder builderUnblock =
+        MockMvcRequestBuilders.put("/api/rooms/doors/open-door")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+
+    String resultsUnblock = "{\"door-1\":{\"lockable\":false,\"locked\":false,\"open\":false}}";
+
+    this.mockMvc
+        .perform(builderUnblock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(resultsUnblock)));
+  }
+
+  @Test
+  public void shouldOpenAndCloseLights() throws Exception {
+    MockHttpServletRequestBuilder builderBlock =
+        MockMvcRequestBuilders.put("/api/rooms/lights/open-light")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+
+    String resultsBlock = "{\"light-1\":{\"isOpen\":true}";
+
+    this.mockMvc
+        .perform(builderBlock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(resultsBlock)));
+
+    MockHttpServletRequestBuilder builderUnblock =
+        MockMvcRequestBuilders.put("/api/rooms/lights/open-light")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+
+    String resultsUnblock = "{\"light-1\":{\"isOpen\":false}";
+
+    this.mockMvc
+        .perform(builderUnblock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(resultsUnblock)));
   }
 }

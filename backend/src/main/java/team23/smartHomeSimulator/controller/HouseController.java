@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Door;
 import team23.smartHomeSimulator.model.House;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
+import team23.smartHomeSimulator.model.request_body.LightRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
 import team23.smartHomeSimulator.utility.ErrorResponse;
@@ -116,5 +117,53 @@ public class HouseController {
               String.format("Cannot lock this door %s", requestBody.getDoorName()));
       return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
+  }
+
+  /**
+   * open window
+   *
+   * @param requestBody object
+   * @return room windows information
+   */
+  @PutMapping("/rooms/windows/open-window")
+  public ResponseEntity<Object> openWindow(@RequestBody WindowRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneWindow(requestBody.getWindowName())
+        .setIsOpen(requestBody.getState());
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
+  }
+
+  /**
+   * open door
+   *
+   * @param requestBody object
+   * @return room door information
+   */
+  @PutMapping("/rooms/doors/open-door")
+  public ResponseEntity<Object> openDoor(@RequestBody DoorRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneDoor(requestBody.getDoorName())
+        .setIsOpen(requestBody.getState());
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
+  }
+
+  /**
+   * open light
+   *
+   * @param requestBody object
+   * @return room light information
+   */
+  @PutMapping("/rooms/lights/open-light")
+  public ResponseEntity<Object> openLight(@RequestBody LightRequestBody requestBody) {
+    house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneLight(requestBody.getLightName())
+        .setIsOn(requestBody.getState());
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
   }
 }
