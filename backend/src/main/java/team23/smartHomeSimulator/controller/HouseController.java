@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team23.smartHomeSimulator.model.Door;
 import team23.smartHomeSimulator.model.House;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
@@ -91,14 +92,10 @@ public class HouseController {
    */
   @PutMapping("/rooms/door/lock-door")
   public ResponseEntity<Object> lockDoor(@RequestBody DoorRequestBody requestBody) {
-    if (house
-        .getOneRoom(requestBody.getRoomName())
-        .getOneDoor(requestBody.getDoorName())
-        .isLockable()) {
-      house
-          .getOneRoom(requestBody.getRoomName())
-          .getOneDoor(requestBody.getDoorName())
-          .setLocked(requestBody.getState());
+    Door thisDoor =
+        house.getOneRoom(requestBody.getRoomName()).getOneDoor(requestBody.getDoorName());
+    if (thisDoor.isLockable()) {
+      thisDoor.setLocked(requestBody.getState());
       return new ResponseEntity<>(
           house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
     } else {

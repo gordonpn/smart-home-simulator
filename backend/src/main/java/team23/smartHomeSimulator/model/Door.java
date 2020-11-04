@@ -51,7 +51,7 @@ public class Door {
   /**
    * Getter for the locking state of the door
    *
-   * @return
+   * @return boolean
    */
   public boolean isLocked() {
     return this.isLocked;

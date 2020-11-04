@@ -39,34 +39,34 @@ public class LockDoorsTest {
 
   @Test
   public void shouldBlockAndUnblockDoors() throws Exception {
-    MockHttpServletRequestBuilder builderBlock =
+    MockHttpServletRequestBuilder builderLock =
         MockMvcRequestBuilders.put("/api/rooms/door/lock-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":true}}";
+    String resultsLock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":true}}";
 
     this.mockMvc
-        .perform(builderBlock)
+        .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsBlock)));
+        .andExpect(content().string(containsString(resultsLock)));
 
-    MockHttpServletRequestBuilder builderUnblock =
+    MockHttpServletRequestBuilder builderUnlock =
         MockMvcRequestBuilders.put("/api/rooms/door/lock-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":false}}";
+    String resultsUnlock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":false}}";
 
     this.mockMvc
-        .perform(builderUnblock)
+        .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsUnblock)));
+        .andExpect(content().string(containsString(resultsUnlock)));
   }
 }

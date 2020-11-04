@@ -1,7 +1,8 @@
 package team23.smartHomeSimulator;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,7 +63,7 @@ public class HouseControllerTest {
     Room lockableRoom = new Room("room1", "deck", 1, 1, 1);
     Room nonLockableRoom = new Room("room2", "bathroom", 1, 1, 1);
 
-    assertEquals(lockableRoom.getDoors().get("door-1").isLockable(), true);
-    assertEquals(nonLockableRoom.getDoors().get("door-1").isLockable(), false);
+    assertTrue(lockableRoom.getDoors().get("door-1").isLockable());
+    assertFalse(nonLockableRoom.getDoors().get("door-1").isLockable());
   }
 }
