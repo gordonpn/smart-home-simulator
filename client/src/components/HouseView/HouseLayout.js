@@ -153,7 +153,7 @@ export default function HouseLayout() {
                   y={subComp[i].y + textY + personAlreadyInRoom * 5}
                   text={name}
                   fontSize={4}
-                  fill="orange"
+                  fill="red"
                 />
               );
             }
@@ -173,7 +173,7 @@ export default function HouseLayout() {
               y={160 + personAlreadyOutside * 5}
               text={name}
               fontSize={4}
-              fill="orange"
+              fill="red"
             />
           );
         }

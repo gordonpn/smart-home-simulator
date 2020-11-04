@@ -33,6 +33,7 @@ export default function EditUser() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [permission, setPermission] = useState("");
+  const [permissionsAvail, setPermissionsAvail] = useState([]);
 
   const loadProfiles = async () => {
     const res = await axios.get("/api/profiles");
@@ -42,8 +43,12 @@ export default function EditUser() {
   };
 
   const handleOpen = async () => {
-    loadProfiles().then(() => {
-      setOpen(true);
+    loadProfiles().then(async () => {
+      const res = await axios.get("/api/profiles/permissions");
+      if (res.status === 200) {
+        setPermissionsAvail(res.data);
+        setOpen(true);
+      }
     });
   };
 
@@ -180,14 +185,23 @@ export default function EditUser() {
                           />
                         </Box>
                         <Box p={1}>
-                          <TextField
-                            label="Permission"
-                            value={permission}
-                            onChange={(e) => {
-                              const { value } = e.target;
-                              return setPermission(value);
-                            }}
-                          />
+                          <FormControl className={classes.formControl}>
+                            <InputLabel>Permission</InputLabel>
+                            <Select
+                              required
+                              value={permission}
+                              onChange={(e) => {
+                                const { value } = e.target;
+                                return setPermission(value);
+                              }}
+                            >
+                              {permissionsAvail.map((permission) => (
+                                <MenuItem key={permission} value={permission}>
+                                  {permission}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
                         </Box>
                       </>
                     )}

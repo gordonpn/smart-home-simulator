@@ -23,12 +23,17 @@ export default function AddUser() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [permission, setPermission] = useState("");
+  const [permissionsAvail, setPermissionsAvail] = useState([]);
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
   const { setProfiles } = ProfileStore();
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = async () => {
+    const res = await axios.get("/api/profiles/permissions");
+    if (res.status === 200) {
+      setPermissionsAvail(res.data);
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -128,14 +133,23 @@ export default function AddUser() {
                   />
                 </Box>
                 <Box p={1}>
-                  <TextField
-                    label="Permission"
-                    value={permission}
-                    onChange={(e) => {
-                      const { value } = e.target;
-                      return setPermission(value);
-                    }}
-                  />
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Permission</InputLabel>
+                    <Select
+                      required
+                      value={permission}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        return setPermission(value);
+                      }}
+                    >
+                      {permissionsAvail.map((permission) => (
+                        <MenuItem key={permission} value={permission}>
+                          {permission}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Box>
                 <Box p={1} display="flex" justifyContent="flex-end">
                   <Button variant="outlined" color="primary" type="submit">
