@@ -46,7 +46,7 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"door-1\":{\"isOpen\":false,\"locked\":true,\"lockable\":true}}";
+    String resultsBlock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":true}}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -61,7 +61,7 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"door-1\":{\"isOpen\":false,\"locked\":false,\"lockable\":true}}";
+    String resultsUnblock = "{\"door-1\":{\"isOpen\":false,\"lockable\":true,\"locked\":false}}";
 
     this.mockMvc
         .perform(builderUnblock)
