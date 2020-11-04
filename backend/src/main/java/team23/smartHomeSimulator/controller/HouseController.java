@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.House;
+import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 
 /** Controller for The House Model Class */
@@ -80,5 +81,29 @@ public class HouseController {
         .setIsBlocked(requestBody.getState());
     return new ResponseEntity<>(
         house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
+  }
+
+  /**
+   * lock door
+   *
+   * @param requestBody object
+   * @return room door information
+   */
+  @PutMapping("/rooms/door/lock-door")
+  public ResponseEntity<Object> lockDoor(@RequestBody DoorRequestBody requestBody) {
+    if (house
+        .getOneRoom(requestBody.getRoomName())
+        .getOneDoor(requestBody.getDoorName())
+        .isLockable()) {
+      house
+          .getOneRoom(requestBody.getRoomName())
+          .getOneDoor(requestBody.getDoorName())
+          .setLocked(requestBody.getState());
+      return new ResponseEntity<>(
+          house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(
+          house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.FORBIDDEN);
+    }
   }
 }

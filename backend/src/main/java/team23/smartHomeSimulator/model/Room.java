@@ -193,4 +193,14 @@ public class Room {
   public Window getOneWindow(String windowName) {
     return this.windows.get(windowName);
   }
+
+  /**
+   * Getter for one door
+   *
+   * @param doorName name of the door we want to get information
+   * @return door object
+   */
+  public Door getOneDoor(String doorName) {
+    return this.doors.get(doorName);
+  }
 }

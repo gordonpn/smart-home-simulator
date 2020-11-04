@@ -7,15 +7,19 @@ public class Door {
 
   private boolean isLockable;
 
+  private boolean isLocked;
+
   /** Default constructor */
   public Door() {
     this.isOpen = false;
     this.isLockable = false;
+    this.isLocked = false;
   }
 
   public Door(boolean lockable) {
     this.isOpen = false;
     this.isLockable = lockable;
+    this.isLocked = false;
   }
   /**
    * Getter for checking if the door is open
@@ -42,5 +46,23 @@ public class Door {
    */
   public boolean isLockable() {
     return this.isLockable;
+  }
+
+  /**
+   * Getter for the locking state of the door
+   *
+   * @return
+   */
+  public boolean isLocked() {
+    return this.isLocked;
+  }
+
+  /**
+   * Setter for the locking state of the door
+   *
+   * @param locked locked state boolean
+   */
+  public void setLocked(boolean locked) {
+    this.isLocked = locked;
   }
 }
