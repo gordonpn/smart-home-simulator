@@ -107,9 +107,9 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+                .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"door-1\":{\"lockable\":false,\"locked\":false,\"open\":true}}";
+    String resultsBlock = "{\"door-1\":{\"open\":true,\"locked\":false,\"lockable\":false}}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -124,7 +124,7 @@ public class HouseControllerTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"door-1\":{\"lockable\":false,\"locked\":false,\"open\":false}}";
+    String resultsUnblock = "{\"door-1\":{\"open\":false,\"locked\":false,\"lockable\":false}}";
 
     this.mockMvc
         .perform(builderUnblock)
