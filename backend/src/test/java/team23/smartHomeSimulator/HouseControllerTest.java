@@ -3,6 +3,8 @@ package team23.smartHomeSimulator;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import team23.smartHomeSimulator.model.Room;
 
 @SpringBootTest
@@ -27,7 +28,7 @@ public class HouseControllerTest {
   @BeforeEach
   public void shouldReturnHouseLayout() throws Exception {
     MockHttpServletRequestBuilder builder =
-        MockMvcRequestBuilders.post("/api/upload-house")
+        post("/api/upload-house")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
@@ -40,12 +41,26 @@ public class HouseControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("room1")))
         .andExpect(content().string(containsString("room2")));
+
+    MockHttpServletRequestBuilder createProfileBuilder =
+        post("/api/profiles")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content(
+                "{\"name\":\"Gordon\",\"location\":\"location\",\"role\":\"role\",\"permission\":\"Parent\"}");
+
+    this.mockMvc.perform(createProfileBuilder).andDo(print()).andExpect(status().isOk());
+
+    this.mockMvc
+        .perform(put("/api/profiles/login").param("name", "Gordon"))
+        .andExpect(status().isOk());
   }
 
   @Test
   public void shouldReturnValueSent() throws Exception {
     MockHttpServletRequestBuilder builder =
-        MockMvcRequestBuilders.put("/api/outside-temperature")
+        put("/api/outside-temperature")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
@@ -70,13 +85,13 @@ public class HouseControllerTest {
   @Test
   public void shouldOpenAndCloseWindow() throws Exception {
     MockHttpServletRequestBuilder builderBlock =
-        MockMvcRequestBuilders.put("/api/rooms/windows/open-window")
+        put("/api/rooms/windows/open-window")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"window-1\":{\"isOpen\":true,\"isBlocked\":false}}";
+    String resultsBlock = "{\"window-1\":{\"isOpen\":true,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -85,13 +100,13 @@ public class HouseControllerTest {
         .andExpect(content().string(containsString(resultsBlock)));
 
     MockHttpServletRequestBuilder builderUnblock =
-        MockMvcRequestBuilders.put("/api/rooms/windows/open-window")
+        put("/api/rooms/windows/open-window")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false}";
+    String resultsUnblock = "{\"window-1\":{\"isOpen\":false,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builderUnblock)
@@ -103,7 +118,7 @@ public class HouseControllerTest {
   @Test
   public void shouldOpenAndCloseDoor() throws Exception {
     MockHttpServletRequestBuilder builderLock =
-        MockMvcRequestBuilders.put("/api/rooms/doors/open-door")
+        put("/api/rooms/doors/open-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
@@ -118,25 +133,25 @@ public class HouseControllerTest {
         .andExpect(content().string(containsString(resultsLock)));
 
     MockHttpServletRequestBuilder builderUnlock =
-        MockMvcRequestBuilders.put("/api/rooms/doors/open-door")
+        put("/api/rooms/doors/open-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
-    String resultsUnlock = "{\"door-1\":{\"lockable\":false,\"locked\":false,\"open\":false}}";
-
     this.mockMvc
         .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsUnlock)));
+        .andExpect(content().string(containsString("\"lockable\":false")))
+        .andExpect(content().string(containsString("\"locked\":false")))
+        .andExpect(content().string(containsString("\"open\":false")));
   }
 
   @Test
   public void shouldOpenAndCloseLights() throws Exception {
     MockHttpServletRequestBuilder builderBlock =
-        MockMvcRequestBuilders.put("/api/rooms/lights/open-light")
+        put("/api/rooms/lights/open-light")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
@@ -151,7 +166,7 @@ public class HouseControllerTest {
         .andExpect(content().string(containsString(resultsBlock)));
 
     MockHttpServletRequestBuilder builderUnblock =
-        MockMvcRequestBuilders.put("/api/rooms/lights/open-light")
+        put("/api/rooms/lights/open-light")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")

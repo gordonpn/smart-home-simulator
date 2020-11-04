@@ -53,7 +53,7 @@ public class BlockWindowsTest {
         MockMvcRequestBuilders.get("/api/rooms/windows").param("roomName", "bedroom3");
 
     String results =
-        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}";
+        "{\"window-1\":{\"isOpen\":false,\"blocked\":false},\"window-2\":{\"isOpen\":false,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builder)
@@ -72,7 +72,7 @@ public class BlockWindowsTest {
             .content("{\"windowName\":\"window-1\",\"roomName\":\"bedroom3\",\"state\":\"true\"}");
 
     String resultsBlock =
-        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":true},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}";
+        "{\"window-1\":{\"isOpen\":false,\"blocked\":true},\"window-2\":{\"isOpen\":false,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -87,13 +87,13 @@ public class BlockWindowsTest {
             .characterEncoding("UTF-8")
             .content("{\"windowName\":\"window-1\",\"roomName\":\"bedroom3\",\"state\":\"false\"}");
 
-    String resultsUnblock =
-        "{\"window-1\":{\"isOpen\":false,\"isBlocked\":false},\"window-2\":{\"isOpen\":false,\"isBlocked\":false}}";
-
     this.mockMvc
         .perform(builderUnblock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsUnblock)));
+        .andExpect(
+            content().string(containsString("\"window-1\":{\"isOpen\":false,\"blocked\":false}")))
+        .andExpect(
+            content().string(containsString("\"window-2\":{\"isOpen\":false,\"blocked\":false}")));
   }
 }

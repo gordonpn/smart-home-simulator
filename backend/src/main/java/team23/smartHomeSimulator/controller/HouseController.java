@@ -1,7 +1,10 @@
 package team23.smartHomeSimulator.controller;
 
+import static team23.smartHomeSimulator.controller.ProfileController.getActiveProfile;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +14,6 @@ import team23.smartHomeSimulator.model.request_body.LightRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
 import team23.smartHomeSimulator.utility.ErrorResponse;
-
-import java.util.Map;
-
-import static team23.smartHomeSimulator.controller.ProfileController.getActiveProfile;
 
 /** Controller for The House Model Class */
 @RestController
@@ -120,6 +119,9 @@ public class HouseController {
       return new ResponseEntity<>(
           ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.UNLOCK_DOORS),
           HttpStatus.FORBIDDEN);
+    }
+    if (requestBody.getState()) {
+      thisDoor.setIsOpen(false);
     }
     thisDoor.setLocked(requestBody.getState());
     return new ResponseEntity<>(
