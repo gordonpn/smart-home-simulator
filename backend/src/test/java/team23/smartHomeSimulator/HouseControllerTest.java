@@ -155,7 +155,7 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+            .content("{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
     String resultsUnblock = "{\"light-1\":{\"isOn\":false}";
 
