@@ -142,7 +142,7 @@ public class HouseControllerTest {
             .characterEncoding("UTF-8")
             .content("{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"light-1\":{\"isOpen\":true}";
+    String resultsBlock = "{\"light-1\":{\"isOn\":true}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -157,7 +157,7 @@ public class HouseControllerTest {
             .characterEncoding("UTF-8")
             .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"light-1\":{\"isOpen\":false}";
+    String resultsUnblock = "{\"light-1\":{\"isOn\":false}";
 
     this.mockMvc
         .perform(builderUnblock)
