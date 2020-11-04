@@ -32,7 +32,7 @@ public class ProfileTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"name\":\"Gordon\",\"location\":\"Outside\",\"role\":\"Owner\",\"permission\":\"Parents\"}");
+                "{\"name\":\"Gordon\",\"location\":\"Outside\",\"role\":\"Owner\",\"permission\":\"Parent\"}");
 
     MockHttpServletRequestBuilder builderDavid =
         MockMvcRequestBuilders.post("/api/profiles")
@@ -40,7 +40,7 @@ public class ProfileTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"name\":\"David\",\"location\":\"Kitchen\",\"role\":\"Owner\",\"permission\":\"Parents\"}");
+                "{\"name\":\"David\",\"location\":\"Kitchen\",\"role\":\"Owner\",\"permission\":\"Parent\"}");
 
     this.mockMvc.perform(builderGordon).andExpect(status().isOk());
     this.mockMvc.perform(builderDavid).andExpect(status().isOk());
@@ -89,7 +89,7 @@ public class ProfileTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"oldName\":\"gordon\",\"name\":\"newName\",\"location\":\"location\",\"role\":\"role\",\"permission\":\"permission\"}");
+                "{\"oldName\":\"gordon\",\"name\":\"newName\",\"location\":\"location\",\"role\":\"role\",\"permission\":\"Parent\"}");
 
     this.mockMvc.perform(builderUpdate);
 
@@ -154,5 +154,15 @@ public class ProfileTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("\"location\":\"garage\"")));
+  }
+
+  @Test
+  public void shouldReturnAllPermissions() throws Exception {
+    this.mockMvc
+        .perform(get("/api/profiles/permissions"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content().string(containsString("[\"Parent\",\"Children\",\"Guest\",\"Stranger\"]")));
   }
 }

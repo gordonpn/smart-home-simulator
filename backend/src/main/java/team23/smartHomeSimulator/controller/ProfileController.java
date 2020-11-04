@@ -1,10 +1,12 @@
 package team23.smartHomeSimulator.controller;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team23.smartHomeSimulator.model.Permission;
 import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
@@ -15,12 +17,21 @@ import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
 @RequestMapping("/api")
 public class ProfileController {
 
-  /** Private Attribute for matching name keys and Profile values */
+  private static Profile activeProfile;
   private HashMap<String, Profile> profiles;
 
   /** Constructor for the Class, instantiates an empty hashmap */
   public ProfileController() {
     this.profiles = new HashMap<>();
+  }
+
+  /**
+   * Static method to get the current active profile
+   *
+   * @return Profile that is active
+   */
+  public static Profile getActiveProfile() {
+    return activeProfile;
   }
 
   /**
@@ -76,13 +87,11 @@ public class ProfileController {
    */
   @PostMapping("/profiles")
   public ResponseEntity<Profile> createProfile(@RequestBody ProfileRequestBody requestBody) {
-    profiles.put(
-        requestBody.getName().toLowerCase(),
+    Permission permission = Permission.valueOf(requestBody.getPermission().toUpperCase());
+    Profile newProfile =
         new Profile(
-            requestBody.getName(),
-            requestBody.getLocation(),
-            requestBody.getRole(),
-            requestBody.getPermission()));
+            requestBody.getName(), requestBody.getLocation(), requestBody.getRole(), permission);
+    profiles.put(requestBody.getName().toLowerCase(), newProfile);
     return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
   }
 
@@ -94,7 +103,9 @@ public class ProfileController {
    */
   @PutMapping("/profiles/login")
   public ResponseEntity<ArrayList<Profile>> setActive(@RequestParam(name = "name") String name) {
-    profiles.get(name.toLowerCase()).setActive(true);
+    Profile profile = profiles.get(name.toLowerCase());
+    profile.setActive(true);
+    activeProfile = profile;
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
@@ -106,6 +117,7 @@ public class ProfileController {
   @PutMapping("/profiles/logout")
   public ResponseEntity<ArrayList<Profile>> setInactive() {
     profiles.forEach((profileName, profile) -> profile.setActive(false));
+    activeProfile = null;
     return new ResponseEntity<>(new ArrayList<>(profiles.values()), HttpStatus.OK);
   }
 
@@ -120,5 +132,17 @@ public class ProfileController {
       @RequestBody LocationChangeRequestBody requestBody) {
     profiles.get(requestBody.getName().toLowerCase()).setLocation(requestBody.getLocation());
     return new ResponseEntity<>(profiles.get(requestBody.getName().toLowerCase()), HttpStatus.OK);
+  }
+
+  /**
+   * Return all available permissions
+   *
+   * @return list of permissions
+   */
+  @GetMapping("/profiles/permissions")
+  public ResponseEntity<ArrayList<String>> getPermissions() {
+    ArrayList<String> permissions = new ArrayList<>();
+    EnumSet.allOf(Permission.class).forEach(permission -> permissions.add(permission.getType()));
+    return new ResponseEntity<>(permissions, HttpStatus.OK);
   }
 }
