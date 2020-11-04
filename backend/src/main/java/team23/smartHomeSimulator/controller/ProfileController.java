@@ -1,8 +1,5 @@
 package team23.smartHomeSimulator.controller;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +8,10 @@ import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
 
 /** Controller for The Profile Model Class */
 @RestController

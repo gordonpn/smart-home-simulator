@@ -29,7 +29,7 @@ public class Window {
    *
    * @return boolean
    */
-  public boolean getIsBlocked() {
+  public boolean isBlocked() {
     return this.isBlocked;
   }
 

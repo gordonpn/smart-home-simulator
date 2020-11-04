@@ -2,17 +2,19 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team23.smartHomeSimulator.model.Door;
-import team23.smartHomeSimulator.model.House;
+import team23.smartHomeSimulator.model.*;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.LightRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
 import team23.smartHomeSimulator.utility.ErrorResponse;
+
+import java.util.Map;
+
+import static team23.smartHomeSimulator.controller.ProfileController.getActiveProfile;
 
 /** Controller for The House Model Class */
 @RestController
@@ -105,18 +107,23 @@ public class HouseController {
    */
   @PutMapping("/rooms/doors/lock-door")
   public ResponseEntity<Object> lockDoor(@RequestBody DoorRequestBody requestBody) {
-    Door thisDoor =
-        house.getOneRoom(requestBody.getRoomName()).getOneDoor(requestBody.getDoorName());
-    if (thisDoor.isLockable()) {
-      thisDoor.setLocked(requestBody.getState());
-      return new ResponseEntity<>(
-          house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
-    } else {
+    Room thisRoom = house.getOneRoom(requestBody.getRoomName());
+    Door thisDoor = thisRoom.getOneDoor(requestBody.getDoorName());
+    if (!thisDoor.isLockable()) {
       Map<String, String> response =
           ErrorResponse.getCustomError(
               String.format("Cannot lock this door %s", requestBody.getDoorName()));
       return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
+
+    if (!permissionService.isAllowed(getActiveProfile(), ProtectedAction.UNLOCK_DOORS, thisRoom)) {
+      return new ResponseEntity<>(
+          ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.UNLOCK_DOORS),
+          HttpStatus.FORBIDDEN);
+    }
+    thisDoor.setLocked(requestBody.getState());
+    return new ResponseEntity<>(
+        house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
   }
 
   /**
@@ -127,10 +134,24 @@ public class HouseController {
    */
   @PutMapping("/rooms/windows/open-window")
   public ResponseEntity<Object> openWindow(@RequestBody WindowRequestBody requestBody) {
-    house
-        .getOneRoom(requestBody.getRoomName())
-        .getOneWindow(requestBody.getWindowName())
-        .setIsOpen(requestBody.getState());
+    Room thisRoom = house.getOneRoom(requestBody.getRoomName());
+    Window thisWindow = thisRoom.getOneWindow(requestBody.getWindowName());
+    if (thisWindow.isBlocked()) {
+      Map<String, String> response =
+          ErrorResponse.getCustomError(
+              String.format(
+                  "Cannot %s this window %s because it is blocked",
+                  requestBody.getState(), requestBody.getWindowName()));
+      return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    if (!permissionService.isAllowed(getActiveProfile(), ProtectedAction.WINDOWS, thisRoom)) {
+      return new ResponseEntity<>(
+          ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.WINDOWS),
+          HttpStatus.FORBIDDEN);
+    }
+
+    thisWindow.setIsOpen(requestBody.getState());
     return new ResponseEntity<>(
         house.getOneRoom(requestBody.getRoomName()).getWindows(), HttpStatus.OK);
   }
@@ -143,10 +164,17 @@ public class HouseController {
    */
   @PutMapping("/rooms/doors/open-door")
   public ResponseEntity<Object> openDoor(@RequestBody DoorRequestBody requestBody) {
-    house
-        .getOneRoom(requestBody.getRoomName())
-        .getOneDoor(requestBody.getDoorName())
-        .setIsOpen(requestBody.getState());
+    boolean isGarage = requestBody.getRoomName().toLowerCase().contains("garage");
+    Room thisRoom = house.getOneRoom(requestBody.getRoomName());
+    Door thisDoor = thisRoom.getOneDoor(requestBody.getDoorName());
+    if (isGarage) {
+      if (!permissionService.isAllowed(getActiveProfile(), ProtectedAction.GARAGE, thisRoom)) {
+        return new ResponseEntity<>(
+            ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.GARAGE),
+            HttpStatus.FORBIDDEN);
+      }
+    }
+    thisDoor.setIsOpen(requestBody.getState());
     return new ResponseEntity<>(
         house.getOneRoom(requestBody.getRoomName()).getDoors(), HttpStatus.OK);
   }
@@ -159,11 +187,16 @@ public class HouseController {
    */
   @PutMapping("/rooms/lights/open-light")
   public ResponseEntity<Object> openLight(@RequestBody LightRequestBody requestBody) {
-    house
-        .getOneRoom(requestBody.getRoomName())
-        .getOneLight(requestBody.getLightName())
-        .setIsOn(requestBody.getState());
-    return new ResponseEntity<>(
-        house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
+    Room thisRoom = house.getOneRoom(requestBody.getRoomName());
+    if (permissionService.isAllowed(getActiveProfile(), ProtectedAction.LIGHTS, thisRoom)) {
+      Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
+      thisLight.setIsOn(requestBody.getState());
+      return new ResponseEntity<>(
+          house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(
+          ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.LIGHTS),
+          HttpStatus.FORBIDDEN);
+    }
   }
 }
