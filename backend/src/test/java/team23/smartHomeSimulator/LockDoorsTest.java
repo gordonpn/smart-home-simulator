@@ -1,5 +1,10 @@
 package team23.smartHomeSimulator;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,7 +46,7 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsLock = "{\"door-1\":{\"open\":false,\"locked\":true,\"lockable\":true}}";
+    String resultsLock = "{\"door-1\":{\"lockable\":true,\"locked\":true,\"open\":false}}";
 
     this.mockMvc
         .perform(builderLock)
@@ -61,7 +61,7 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
-    String resultsUnlock = "{\"door-1\":{\"open\":false,\"locked\":false,\"lockable\":true}}";
+    String resultsUnlock = "{\"door-1\":{\"lockable\":true,\"locked\":false,\"open\":false}}";
 
     this.mockMvc
         .perform(builderUnlock)
