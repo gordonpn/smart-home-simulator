@@ -2,13 +2,17 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.Door;
 import team23.smartHomeSimulator.model.House;
+import team23.smartHomeSimulator.model.modules.SHP;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
+import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
 import team23.smartHomeSimulator.utility.ErrorResponse;
@@ -41,6 +45,9 @@ public class HouseController {
   public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
       throws JsonProcessingException {
     this.house = new House(houseData.getRooms());
+//    new SHP(this.house);
+    this.house.addModuleObserver(new SHP());
+
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(house);
 
@@ -117,4 +124,26 @@ public class HouseController {
       return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
   }
+
+  //add and modify
+  @PutMapping("/house-users")
+  public ResponseEntity<Object> setUserLocation(@RequestBody LocationChangeRequestBody user){
+    house.setUsersLocation(user.getName(),user.getLocation());
+    LocationChangeRequestBody userLocation = new LocationChangeRequestBody(user.getName(), house.getUsersLocation().get(user.getName()));
+    return new ResponseEntity<>(userLocation,HttpStatus.OK);
+  }
+
+  @DeleteMapping("/house-users")
+  public ResponseEntity<Object> removeUserLocation(@RequestBody LocationChangeRequestBody user){
+    house.deleteUsersLocation(user.getName());
+    return new ResponseEntity<>("Removed "+user.getName(),HttpStatus.OK);
+  }
+
+  //get
+  @GetMapping("/house-users")
+  public ResponseEntity<Object> getUserLocation(){
+    return new ResponseEntity<>(house.getUsersLocation(),HttpStatus.OK);
+  }
+
+
 }

@@ -1,5 +1,8 @@
 package team23.smartHomeSimulator.model;
 
+import team23.smartHomeSimulator.model.modules.SHP;
+import team23.smartHomeSimulator.model.modules.modulesObserver;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +18,10 @@ public class House {
 
   /** The list of all components' coordinates in 2D plane */
   private HashMap<String, List<Coordinates>> houseCoor = new HashMap<String, List<Coordinates>>();
+
+  private List<modulesObserver>  modulesObserver = new ArrayList<modulesObserver>();
+
+  private HashMap<String, String> usersLocation= new HashMap<String, String>();
 
   /** Default constructor to deserialize JSON object */
   public House() {}
@@ -196,5 +203,37 @@ public class House {
    */
   public Room getOneRoom(String roomName) {
     return rooms.get(roomName);
+  }
+
+  public HashMap<String, String> getUsersLocation() {
+    return usersLocation;
+  }
+
+  //add and modify
+  public void setUsersLocation(String name, String location) {
+    this.usersLocation.put(name,location);
+    notifyModules();
+  }
+
+  public void deleteUsersLocation(String name){
+    this.usersLocation.remove(name);
+  }
+
+  public void addModuleObserver(modulesObserver module){
+    this.modulesObserver.add(module);
+  }
+
+  public void removeModuleObserver(modulesObserver module){
+    this.modulesObserver.remove(module);
+  }
+
+  private void notifyModules(){
+    for(modulesObserver module: modulesObserver){
+      module.update(this);
+    }
+  }
+
+  public List<modulesObserver> getModulesObserver() {
+    return modulesObserver;
   }
 }
