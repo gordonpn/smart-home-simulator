@@ -1,11 +1,9 @@
 package team23.smartHomeSimulator.model;
 
-import team23.smartHomeSimulator.model.modules.SHP;
-import team23.smartHomeSimulator.model.modules.modulesObserver;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import team23.smartHomeSimulator.model.modules.modulesObserver;
 
 /** The House class that includes the outside temperature and the list of rooms */
 public class House {
@@ -19,9 +17,11 @@ public class House {
   /** The list of all components' coordinates in 2D plane */
   private HashMap<String, List<Coordinates>> houseCoor = new HashMap<String, List<Coordinates>>();
 
-  private List<modulesObserver>  modulesObserver = new ArrayList<modulesObserver>();
+  /** The list of the observers for house */
+  private HashMap<String, modulesObserver> modulesObserver = new HashMap<String, modulesObserver>();
 
-  private HashMap<String, String> usersLocation= new HashMap<String, String>();
+  /** The list of users' location in the house */
+  private HashMap<String, String> usersLocation = new HashMap<String, String>();
 
   /** Default constructor to deserialize JSON object */
   public House() {}
@@ -205,35 +205,68 @@ public class House {
     return rooms.get(roomName);
   }
 
+  /**
+   * Getter for usersLocation
+   *
+   * @return hash map of type string and string
+   */
   public HashMap<String, String> getUsersLocation() {
-    return usersLocation;
+    return this.usersLocation;
   }
 
-  //add and modify
+  /**
+   * Setter for usersLocation
+   *
+   * @param name name of the user
+   * @param location location of the user
+   */
   public void setUsersLocation(String name, String location) {
-    this.usersLocation.put(name,location);
+    this.usersLocation.put(name, location);
     notifyModules();
   }
 
-  public void deleteUsersLocation(String name){
+  /**
+   * Remove user from house
+   *
+   * @param name name of the user to be removed
+   */
+  public void deleteUsersLocation(String name) {
     this.usersLocation.remove(name);
   }
 
-  public void addModuleObserver(modulesObserver module){
-    this.modulesObserver.add(module);
+  /**
+   * Add observer to house
+   *
+   * @param moduleName the name of the module
+   * @param module the moduleObserver object
+   */
+  public void addModuleObserver(String moduleName, modulesObserver module) {
+    this.modulesObserver.put(moduleName, module);
   }
 
-  public void removeModuleObserver(modulesObserver module){
-    this.modulesObserver.remove(module);
+  /**
+   * Remove observer from house
+   *
+   * @param moduleName name of the module to be removed
+   */
+  public void removeModuleObserver(String moduleName) {
+    this.modulesObserver.remove(moduleName);
   }
 
-  private void notifyModules(){
-    for(modulesObserver module: modulesObserver){
-      module.update(this);
-    }
+  /** Notify all observers that there is a change */
+  private void notifyModules() {
+    modulesObserver.forEach(
+        (key, value) -> {
+          value.update(this);
+        });
   }
 
-  public List<modulesObserver> getModulesObserver() {
+  /**
+   * Getter for modulesObserver
+   *
+   * @return Hash map of String, modulesObserver
+   */
+  public HashMap<String, modulesObserver> getModulesObserver() {
     return modulesObserver;
   }
 }

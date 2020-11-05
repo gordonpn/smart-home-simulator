@@ -3,9 +3,9 @@ package team23.smartHomeSimulator;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,5 +65,59 @@ public class HouseControllerTest {
 
     assertTrue(lockableRoom.getDoors().get("door-1").isLockable());
     assertFalse(nonLockableRoom.getDoors().get("door-1").isLockable());
+  }
+
+  @Test
+  public void shouldAddUser() throws Exception {
+    MockHttpServletRequestBuilder builder =
+        MockMvcRequestBuilders.put("/api/house-users")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"name\": \"user1\",\"location\":\"kitchen\"}");
+    this.mockMvc
+        .perform(builder)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.location").value("kitchen"));
+  }
+
+  @Test
+  public void shouldChangeUserLocation() throws Exception {
+    MockHttpServletRequestBuilder builder =
+        MockMvcRequestBuilders.put("/api/house-users")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"name\": \"user1\",\"location\":\"kitchen\"}");
+    this.mockMvc.perform(builder);
+    MockHttpServletRequestBuilder builderUpdate =
+        MockMvcRequestBuilders.put("/api/house-users")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"name\": \"user1\",\"location\":\"garage\"}");
+    this.mockMvc
+        .perform(builderUpdate)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.location").value("garage"));
+  }
+
+  @Test
+  public void shouldRemoveUser() throws Exception {
+    MockHttpServletRequestBuilder builder =
+        MockMvcRequestBuilders.put("/api/house-users")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content("{\"name\": \"user1\",\"location\":\"kitchen\"}");
+    this.mockMvc
+        .perform(builder)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.location").value("kitchen"));
+
+    this.mockMvc
+        .perform(delete("/api/house-users").param("name", "user1"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("Removed user1 successfully")));
   }
 }
