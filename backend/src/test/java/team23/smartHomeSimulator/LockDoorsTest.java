@@ -1,11 +1,9 @@
 package team23.smartHomeSimulator;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,13 +60,13 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsLock = "{\"door-1\":{\"lockable\":true,\"locked\":true,\"open\":false}}";
-
     this.mockMvc
         .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsLock)));
+        .andExpect(jsonPath("$.door-1.lockable").value(true))
+        .andExpect(jsonPath("$.door-1.locked").value(true))
+        .andExpect(jsonPath("$.door-1.open").value(false));
 
     MockHttpServletRequestBuilder builderUnlock =
         MockMvcRequestBuilders.put("/api/rooms/doors/lock-door")
@@ -77,12 +75,12 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
-    String resultsUnlock = "{\"door-1\":{\"lockable\":true,\"locked\":false,\"open\":false}}";
-
     this.mockMvc
         .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsUnlock)));
+        .andExpect(jsonPath("$.door-1.lockable").value(true))
+        .andExpect(jsonPath("$.door-1.locked").value(false))
+        .andExpect(jsonPath("$.door-1.open").value(false));
   }
 }
