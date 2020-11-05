@@ -29,7 +29,7 @@ public class Window {
    *
    * @return boolean
    */
-  public boolean getIsBlocked() {
+  public boolean isBlocked() {
     return this.isBlocked;
   }
 
@@ -48,8 +48,6 @@ public class Window {
    * @param open the new state of isOpen
    */
   public void setIsOpen(boolean open) {
-    if (this.isBlocked == false) {
-      this.isOpen = open;
-    }
+    this.isOpen = open;
   }
 }

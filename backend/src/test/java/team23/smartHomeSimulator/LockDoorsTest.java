@@ -1,5 +1,7 @@
 package team23.smartHomeSimulator;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,6 +35,20 @@ public class LockDoorsTest {
             .content(content);
 
     this.mockMvc.perform(builder).andDo(print()).andExpect(status().isOk());
+
+    MockHttpServletRequestBuilder createProfileBuilder =
+        post("/api/profiles")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8")
+            .content(
+                "{\"name\":\"Gordon\",\"location\":\"location\",\"role\":\"role\",\"permission\":\"Parent\"}");
+
+    this.mockMvc.perform(createProfileBuilder).andDo(print()).andExpect(status().isOk());
+
+    this.mockMvc
+        .perform(put("/api/profiles/login").param("name", "Gordon"))
+        .andExpect(status().isOk());
   }
 
   @Test
