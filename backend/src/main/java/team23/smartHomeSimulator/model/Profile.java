@@ -35,6 +35,7 @@ public class Profile {
     this.isActive = false;
   }
 
+  /** An empty constructor */
   public Profile() {}
 
   /**
@@ -85,7 +86,7 @@ public class Profile {
   /**
    * Setter for role
    *
-   * @param role strin
+   * @param role string
    */
   public void setRole(String role) {
     this.role = role;

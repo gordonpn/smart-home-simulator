@@ -2,12 +2,6 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +11,13 @@ import team23.smartHomeSimulator.model.repository.ProfileRepository;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 /** Controller for The Profile Model Class */
 @RestController
@@ -103,10 +104,7 @@ public class ProfileController {
         new Profile(
             requestBody.getName(), requestBody.getLocation(), requestBody.getRole(), permission);
     Profile newProfile = profiles.add(profile);
-    if (newProfile != null) {
-      return new ResponseEntity<>(newProfile, HttpStatus.OK);
-    }
-    return new ResponseEntity<>(new Profile(), HttpStatus.CONFLICT);
+    return new ResponseEntity<>(newProfile, HttpStatus.OK);
   }
 
   /**
@@ -163,9 +161,9 @@ public class ProfileController {
   }
 
   /**
-   * Saves profiles to a file named profiles.json
+   * Saves current profiles in memory on the filesystem
    *
-   * @return an HTTP response
+   * @return HTTP response. 500 when exception is caught, otherwise 200
    */
   @GetMapping("/profiles/save")
   public ResponseEntity<Object> saveToFile() {
@@ -182,6 +180,11 @@ public class ProfileController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
+  /**
+   * Load the profiles from a previously saved file into memory
+   *
+   * @return HTTP response. 500 when exception is caught, otherwise 200
+   */
   @GetMapping("/profiles/load")
   public ResponseEntity<Object> loadFromFile() {
     HashMap<String, String> response = new HashMap<>();

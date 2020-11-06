@@ -1,1 +1,19 @@
-{"profiles":[{"name":"gordon","location":"kitchen","role":"role","permission":"GUEST","active":false},{"name":"david","location":"bedroom3","role":"role","permission":"STRANGER","active":false}],"activeProfile":null}
+{
+  "profiles": [
+    {
+      "name": "gordon",
+      "location": "kitchen",
+      "role": "role",
+      "permission": "GUEST",
+      "active": false
+    },
+    {
+      "name": "david",
+      "location": "bedroom3",
+      "role": "role",
+      "permission": "STRANGER",
+      "active": false
+    }
+  ],
+  "activeProfile": null
+}
