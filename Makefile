@@ -9,6 +9,9 @@ server:
 buildc:
 	cd ./backend && ./gradlew build --continuous
 
+build:
+	cd ./backend && ./gradlew build
+
 test:
 	cd ./backend && ./gradlew test
 
