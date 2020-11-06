@@ -163,6 +163,6 @@ public class ProfileTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(
-            content().string(containsString("[\"Parent\",\"Children\",\"Guest\",\"Stranger\"]")));
+            content().string(containsString("[\"PARENT\",\"CHILDREN\",\"GUEST\",\"STRANGER\"]")));
   }
 }

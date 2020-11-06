@@ -46,13 +46,14 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsLock = "{\"door-1\":{\"lockable\":true,\"locked\":true,\"open\":false}}";
-
     this.mockMvc
         .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsLock)));
+        .andExpect(content().string(containsString("door-1")))
+        .andExpect(content().string(containsString("\"lockable\":true")))
+        .andExpect(content().string(containsString("\"locked\":true")))
+        .andExpect(content().string(containsString("\"open\":false")));
 
     MockHttpServletRequestBuilder builderUnlock =
         MockMvcRequestBuilders.put("/api/rooms/doors/lock-door")
@@ -61,12 +62,13 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
-    String resultsUnlock = "{\"door-1\":{\"lockable\":true,\"locked\":false,\"open\":false}}";
-
     this.mockMvc
         .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsUnlock)));
+        .andExpect(content().string(containsString("door-1")))
+        .andExpect(content().string(containsString("\"lockable\":true")))
+        .andExpect(content().string(containsString("\"locked\":false")))
+        .andExpect(content().string(containsString("\"open\":false")));
   }
 }
