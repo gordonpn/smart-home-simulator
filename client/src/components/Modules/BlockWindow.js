@@ -46,7 +46,7 @@ export default function BlockWindow() {
     event.preventDefault();
     windowListTemp.forEach(async (value, key) => {
       const requestBody = {
-        windowName: "window-1",
+        windowName: key+"-w1",
         roomName: key,
         state: value,
       };

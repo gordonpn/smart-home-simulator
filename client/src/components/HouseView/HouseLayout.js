@@ -6,7 +6,7 @@ import RunningStateStore from "@/src/stores/RunningStateStore";
 import ProfileStore from "@/src/stores/ProfileStore";
 
 export default function HouseLayout() {
-  const { currentHouse, windows, triggerRender } = HouseStore();
+  const { currentHouse, windows, triggerRender, doors, lights } = HouseStore();
   const { profiles } = ProfileStore();
   const { currentState } = RunningStateStore();
   const [roomElements, setRoomElements] = useState([]);
@@ -17,7 +17,33 @@ export default function HouseLayout() {
     const renderRooms = () => {
       const elements = [];
       const { houseCoor: components } = currentHouse;
+      // if(doors!== undefined)  
+      // console.log(doors.get("bedroom1-d1"))
+      // console.log(windows)
+
+      const shapeColorState = (componentType, componentName)=>{
+        if(doors!== undefined && componentType === "doors"){
+          return doors.get(componentName).open ? null : "brown"
+        }
+        // else if(lights !== undefined && componentType ==="lights"){
+        //   return lights.get(componentName).isOn ? "yellow": null
+        // }
+        else if(windows !== undefined && componentType ==="windows"){
+          return "#00D2FF"//windows.get(componentName.substr(0,componentName.indexOf("-w"))) 
+        }
+        else if(lights !== undefined){
+          // var obj=lights.get("bedroom3-l1")
+          // lights.set("bedroom3-l1",{isOn: true})
+          //componentName.substr(0,componentName.indexOf("-w"))
+          return lights.get(componentName+"-l1").isOn ? "yellow": null
+        }
+        return null
+
+      }
+
       for (const roomName in components) {
+        // console.log(roomName)
+        // console.log(components[roomName])
         const subComp = components[roomName];
         let width = 50;
         let height = 50;
@@ -85,6 +111,8 @@ export default function HouseLayout() {
             textY = 5;
             break;
         }
+
+        if(roomName!== "lights"){
         for (let i = 0; i < subComp.length; i++) {
           elements.push(
             <Rect
@@ -93,12 +121,14 @@ export default function HouseLayout() {
               y={subComp[i].y}
               width={width}
               height={height}
-              fill={shapeColor}
+              //fill={shapeColor}
+              fill={shapeColorState(roomName,subComp[i].name)}
               stroke="black"
             />
           );
+        
 
-          if (subComp[i].name !== null) {
+          if (subComp[i].name !== null && roomName !== "doors"&& roomName!== "lights") {
             elements.push(
               <Text
                 key={
@@ -160,6 +190,7 @@ export default function HouseLayout() {
           }
         }
       }
+      }
 
       let personAlreadyOutside = 0;
       for (const profile of profiles) {
@@ -186,7 +217,7 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse, profiles, triggerRender, windows]);
+  }, [currentHouse, profiles, triggerRender, windows,doors,lights]);
 
   return (
     <Stage

@@ -58,7 +58,7 @@ public class House {
     this.houseCoor.put("living", new ArrayList<Coordinates>());
     this.houseCoor.put("kitchen", new ArrayList<Coordinates>());
     this.houseCoor.put("bathrooms", new ArrayList<Coordinates>());
-    this.houseCoor.put("dining", new ArrayList<Coordinates>());
+    this.houseCoor.put("lights", new ArrayList<Coordinates>());
     this.houseCoor.put("deck", new ArrayList<Coordinates>());
     this.houseCoor.put("entrance", new ArrayList<Coordinates>());
     this.houseCoor.put("garage", new ArrayList<Coordinates>());
@@ -151,11 +151,16 @@ public class House {
    */
   private void addDoorWindowCoord(Room room, String key, int winX, int winY, int doorX, int doorY) {
     if (room.getNumDoors() != 0) {
-      this.houseCoor.get("doors").add(new Coordinates(doorX, doorY));
+      //this.houseCoor.get("doors").add(new Coordinates(doorX, doorY));
+      this.houseCoor.get("doors").add(new Coordinates((key + "-d1"),doorX, doorY));
     }
 
     if (room.getNumWindows() != 0) {
       this.houseCoor.get("windows").add(new Coordinates((key + "-w1"), winX, winY));
+    }
+
+    if (room.getNumLights() != 0) {
+      this.houseCoor.get("lights").add(new Coordinates((key + "-l1"), 0, 0));
     }
   }
 

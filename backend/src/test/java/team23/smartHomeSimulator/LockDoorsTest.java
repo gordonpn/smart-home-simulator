@@ -58,29 +58,29 @@ public class LockDoorsTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
+            .content("{\"doorName\":\"deck-d1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
     this.mockMvc
         .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.door-1.lockable").value(true))
-        .andExpect(jsonPath("$.door-1.locked").value(true))
-        .andExpect(jsonPath("$.door-1.open").value(false));
+        .andExpect(jsonPath("$.deck-d1.lockable").value(true))
+        .andExpect(jsonPath("$.deck-d1.locked").value(true))
+        .andExpect(jsonPath("$.deck-d1.open").value(false));
 
     MockHttpServletRequestBuilder builderUnlock =
         MockMvcRequestBuilders.put("/api/rooms/doors/lock-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
+            .content("{\"doorName\":\"deck-d1\",\"roomName\":\"deck\",\"state\":\"false\"}");
 
     this.mockMvc
         .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.door-1.lockable").value(true))
-        .andExpect(jsonPath("$.door-1.locked").value(false))
-        .andExpect(jsonPath("$.door-1.open").value(false));
+        .andExpect(jsonPath("$.deck-d1.lockable").value(true))
+        .andExpect(jsonPath("$.deck-d1.locked").value(false))
+        .andExpect(jsonPath("$.deck-d1.open").value(false));
   }
 }
