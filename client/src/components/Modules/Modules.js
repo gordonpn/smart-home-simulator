@@ -36,35 +36,38 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Modules() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const { currentState } = RunningStateStore();
+  const { currentState, activeTab, setActiveTab } = RunningStateStore();
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setActiveTab(newValue);
   };
 
   useEffect(() => {
     if (!currentState) {
-      setValue(0);
+      setActiveTab(0);
     }
   }, [currentState]);
 
   return (
     <div className={classes.root}>
-      <Tabs value={value} onChange={handleChange} className={classes.tabBorder}>
+      <Tabs
+        value={activeTab}
+        onChange={handleChange}
+        className={classes.tabBorder}
+      >
         <Tab label="SHS" />
         <Tab label="SHC" disabled={!currentState} />
-        <Tab label="SHH" disabled={!currentState} />
+        <Tab label="SHP" disabled={!currentState} />
         <Tab label="+" />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={activeTab} index={0}>
         <SHSTab />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={activeTab} index={1}>
         <SHCTab />
       </TabPanel>
-      <TabPanel value={value} index={2} />
-      <TabPanel value={value} index={3} />
+      <TabPanel value={activeTab} index={2} />
+      <TabPanel value={activeTab} index={3} />
     </div>
   );
 }
