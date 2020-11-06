@@ -1,1 +1,19 @@
-{"profiles":[{"name":"Gordon","location":"Outside","role":"Owner","permission":"PARENT","active":false},{"name":"David","location":"Kitchen","role":"Owner","permission":"PARENT","active":false}],"activeProfile":null}
+{
+  "profiles": [
+    {
+      "name": "Gordon",
+      "location": "Outside",
+      "role": "Owner",
+      "permission": "PARENT",
+      "active": false
+    },
+    {
+      "name": "David",
+      "location": "Kitchen",
+      "role": "Owner",
+      "permission": "PARENT",
+      "active": false
+    }
+  ],
+  "activeProfile": null
+}

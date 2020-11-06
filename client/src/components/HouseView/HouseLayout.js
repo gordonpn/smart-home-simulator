@@ -139,7 +139,7 @@ export default function HouseLayout() {
           let personAlreadyInRoom = 0;
           for (const profile of profiles) {
             const { location, name } = profile;
-            if (subComp[i].name === location.toString()) {
+            if (subComp[i].name === location.toString().toLowerCase()) {
               personAlreadyInRoom++;
               elements.push(
                 <Text
@@ -164,7 +164,7 @@ export default function HouseLayout() {
       let personAlreadyOutside = 0;
       for (const profile of profiles) {
         const { location, name } = profile;
-        if (location.toString() === "outside") {
+        if (location.toString().toLowerCase() === "outside") {
           personAlreadyOutside++;
           elements.push(
             <Text
