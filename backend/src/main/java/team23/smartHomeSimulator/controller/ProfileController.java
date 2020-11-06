@@ -160,14 +160,32 @@ public class ProfileController {
   public ResponseEntity<Object> saveToFile() {
     HashMap<String, String> response = new HashMap<>();
     String fileName = "profiles.json";
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-      String jsonData = new ObjectMapper().writeValueAsString(profiles);
-      writer.write(jsonData);
+    try {
+      new ObjectMapper().writeValue(new File(fileName), profiles);
     } catch (IOException e) {
       response.put("message", String.format("An error has occurred while saving %s", fileName));
+      response.put("error", e.toString());
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     response.put("message", String.format("Saved as %s", fileName));
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
+  @GetMapping("/profiles/load")
+  public ResponseEntity<Object> loadFromFile() {
+    HashMap<String, String> response = new HashMap<>();
+    String fileName = "profiles.json";
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      profiles.setProfiles(
+          mapper.readValue(new File(fileName), ProfileRepository.class).getProfiles());
+    } catch (IOException e) {
+      response.put("message", "An error occurred while reading from file");
+      response.put("error", e.toString());
+      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    response.put("message", "Successfully loaded from file");
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 }
