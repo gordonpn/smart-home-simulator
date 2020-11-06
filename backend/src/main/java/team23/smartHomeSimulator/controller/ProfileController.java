@@ -2,6 +2,12 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +17,6 @@ import team23.smartHomeSimulator.model.repository.ProfileRepository;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 
 /** Controller for The Profile Model Class */
 @RestController

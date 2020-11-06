@@ -2,12 +2,14 @@ package team23.smartHomeSimulator;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,5 +166,23 @@ public class ProfileTest {
         .andExpect(status().isOk())
         .andExpect(
             content().string(containsString("[\"PARENT\",\"CHILDREN\",\"GUEST\",\"STRANGER\"]")));
+  }
+
+  @Test
+  public void shouldSaveProfiles() throws Exception {
+    this.mockMvc.perform(get("/api/profiles/save")).andDo(print()).andExpect(status().isOk());
+    File file = new File("profiles.json");
+    assertTrue(file.exists());
+  }
+
+  @Test
+  public void shouldLoadProfiles() throws Exception {
+    this.mockMvc.perform(get("/api/profiles/save")).andDo(print()).andExpect(status().isOk());
+    this.mockMvc.perform(get("/api/profiles/load")).andDo(print()).andExpect(status().isOk());
+    this.mockMvc
+        .perform(get("/api/profiles"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(not(containsString("[]"))));
   }
 }

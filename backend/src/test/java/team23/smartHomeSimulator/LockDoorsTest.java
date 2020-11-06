@@ -3,7 +3,8 @@ package team23.smartHomeSimulator;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,8 +61,6 @@ public class LockDoorsTest {
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
 
-    String resultsLock = "{\"door-1\":{\"lockable\":true,\"locked\":true,\"open\":false}}";
-
     this.mockMvc
         .perform(builderLock)
         .andDo(print())
@@ -76,8 +75,6 @@ public class LockDoorsTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
-
-    String resultsUnlock = "{\"door-1\":{\"lockable\":true,\"locked\":false,\"open\":false}}";
 
     this.mockMvc
         .perform(builderUnlock)

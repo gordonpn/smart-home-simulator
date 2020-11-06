@@ -1,12 +1,11 @@
 package team23.smartHomeSimulator.model.repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import team23.smartHomeSimulator.model.Permission;
 import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** Represents a repository pattern class to access profiles */
 public class ProfileRepository {
