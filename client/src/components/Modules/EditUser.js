@@ -67,8 +67,14 @@ export default function EditUser() {
       role: role,
       permission: permission,
     };
+
+    const postBody2 = {
+      name: name,
+      location: location,
+    };
     const res = await axios.put("/api/profiles", putBody);
-    if (res.status === 200) {
+    const res2 = await axios.put("/api/house-users", postBody2);
+    if (res.status === 200 && res2.status === 200) {
       setSelectedProfile("");
       setShowEditForm(false);
       if (currentProfile && selectedProfile === currentProfile.name) {
