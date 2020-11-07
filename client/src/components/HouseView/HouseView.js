@@ -9,7 +9,7 @@ import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function HouseView() {
   const { setHouse, setWindows } = HouseStore();
-  const { appendToLogsSHS } = ConsoleStore();
+  const { appendToLogs } = ConsoleStore();
 
   const processFile = (event) => {
     const file = event.target.files[0];
