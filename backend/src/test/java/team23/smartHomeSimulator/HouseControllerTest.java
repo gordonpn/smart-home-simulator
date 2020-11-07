@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import team23.smartHomeSimulator.model.Room;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class HouseControllerTest {
@@ -233,5 +235,24 @@ public class HouseControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString(resultsUnblock)));
+  }
+
+  @Test
+  public void shouldSetAwayModeLightsOn() throws Exception {
+    LocalDate date = LocalDate.now();
+    MockHttpServletRequestBuilder builderBlock =
+            put("/api/awayMode-lights")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
+                    .content("{{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"true\"}, {\"startTime\":\""+date+" 12:12:12\" , \"endTime\":\""+date+" 22:12:12\"}}");
+
+    String resultsBlock = "{\"light-1\":{\"isOn\":true}";
+
+    this.mockMvc
+            .perform(builderBlock)
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString(resultsBlock)));
   }
 }
