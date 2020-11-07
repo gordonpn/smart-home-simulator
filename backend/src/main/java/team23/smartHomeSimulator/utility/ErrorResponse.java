@@ -1,10 +1,9 @@
 package team23.smartHomeSimulator.utility;
 
-import team23.smartHomeSimulator.model.Profile;
-import team23.smartHomeSimulator.model.ProtectedAction;
-
 import java.util.HashMap;
 import java.util.Map;
+import team23.smartHomeSimulator.model.Profile;
+import team23.smartHomeSimulator.model.ProtectedAction;
 
 /** Utility class to create error (Map/JSON) messages */
 public final class ErrorResponse {

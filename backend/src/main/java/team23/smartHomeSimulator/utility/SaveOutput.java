@@ -1,12 +1,11 @@
 package team23.smartHomeSimulator.utility;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /** Utility class to save to filesystem */
 public final class SaveOutput {

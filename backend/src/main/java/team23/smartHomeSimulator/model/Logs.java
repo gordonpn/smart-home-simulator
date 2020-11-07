@@ -1,9 +1,8 @@
 package team23.smartHomeSimulator.model;
 
-import team23.smartHomeSimulator.model.request_body.LogItem;
-
 import java.util.ArrayList;
 import java.util.List;
+import team23.smartHomeSimulator.model.request_body.LogItem;
 
 /** POJO for Logs */
 public class Logs {
