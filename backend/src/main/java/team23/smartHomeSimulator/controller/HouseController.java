@@ -241,6 +241,15 @@ public class HouseController {
     return new ResponseEntity<>("Removed " + name + " " + success, HttpStatus.OK);
   }
 
+
+  /**
+   * when awayMode is on, lights in specific rooms will turn on for a given amount of time
+   *
+   * @param requestBody
+   * @param startTimeString
+   * @param endTimeString
+   * @return light that is turned on
+   */
   @PutMapping("/awayMode-lights")
   public ResponseEntity<Object> setAwayModeLight(@RequestBody LightRequestBody requestBody, @RequestParam(name = "startTime") String startTimeString, @RequestParam(name = "endTime") String endTimeString ){
     SHP shp = (SHP) house.getModulesObserver().get("SHP");
@@ -274,8 +283,6 @@ public class HouseController {
         }
         Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
         thisLight.setIsOn(requestBody.getState());
-        startTime = startTime.plusDays(1);
-        endTime = endTime.plusDays(1);
         return new ResponseEntity<>(
                 house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
       } else {
