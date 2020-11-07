@@ -15,6 +15,7 @@ import ProfileStore from "@/src/stores/ProfileStore";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import formStyles from "@/src/styles/formStyles";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function EditUser() {
   const classes = formStyles();
@@ -34,6 +35,7 @@ export default function EditUser() {
   const [role, setRole] = useState("");
   const [permission, setPermission] = useState("");
   const [permissionsAvail, setPermissionsAvail] = useState([]);
+  const { appendToLogs } = ConsoleStore();
 
   const loadProfiles = async () => {
     const res = await axios.get("/api/profiles");
@@ -60,6 +62,11 @@ export default function EditUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Modified profile "${name}"`,
+      module: "SHS",
+    });
     const putBody = {
       oldName: selectedProfile,
       name: name,

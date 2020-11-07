@@ -8,6 +8,7 @@ import RunningStateStore from "@/src/stores/RunningStateStore";
 import ProfileStore from "@/src/stores/ProfileStore";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function Toggle() {
   const { currentState, setRunningState } = RunningStateStore();
@@ -15,6 +16,8 @@ export default function Toggle() {
   const [openAlert, setOpenAlert] = useState(false);
   const [onSuccess, setOnSuccess] = useState(false);
   const [logOutAlert, setLogOutAlert] = useState(false);
+  const { appendToLogs } = ConsoleStore();
+  const { currentTime } = RunningStateStore();
 
   const handleRunningState = async (event, newRunningState) => {
     if (newRunningState) {
@@ -31,6 +34,11 @@ export default function Toggle() {
         if (runningRes.status === 200 && loginRes.status === 200) {
           setOnSuccess(true);
           setRunningState(newRunningState);
+          appendToLogs({
+            timestamp: new Date(),
+            message: "Simulation started",
+            module: "SHS",
+          });
         }
       }
     } else {
@@ -40,6 +48,11 @@ export default function Toggle() {
         setLogOutAlert(true);
         setCurrentProfile(undefined);
         setRunningState(newRunningState);
+        appendToLogs({
+          timestamp: new Date(),
+          message: "Simulation stopped",
+          module: "SHS",
+        });
       }
     }
   };

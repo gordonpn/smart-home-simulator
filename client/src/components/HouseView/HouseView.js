@@ -36,7 +36,11 @@ export default function HouseView() {
               });
               setWindows(windowsMap);
             }
-            appendToLogsSHS("House layout loaded.");
+            appendToLogs({
+              timestamp: new Date(),
+              message: "House layout loaded",
+              module: "SHS",
+            });
           })
           .catch((err) => {
             console.warn(err);
