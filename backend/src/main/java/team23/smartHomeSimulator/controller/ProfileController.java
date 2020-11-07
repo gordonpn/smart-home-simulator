@@ -2,12 +2,6 @@ package team23.smartHomeSimulator.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +11,14 @@ import team23.smartHomeSimulator.model.repository.ProfileRepository;
 import team23.smartHomeSimulator.model.request_body.EditProfileRequestBody;
 import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.ProfileRequestBody;
+import team23.smartHomeSimulator.utility.SaveOutput;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 /** Controller for The Profile Model Class */
 @RestController
@@ -166,17 +168,7 @@ public class ProfileController {
    */
   @GetMapping("/profiles/save")
   public ResponseEntity<Object> saveToFile() {
-    HashMap<String, String> response = new HashMap<>();
-    String fileName = "profiles.json";
-    try {
-      new ObjectMapper().writeValue(new File(fileName), profiles);
-    } catch (IOException e) {
-      response.put("message", String.format("An error has occurred while saving %s", fileName));
-      response.put("error", e.toString());
-      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    response.put("message", String.format("Saved as %s", fileName));
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return SaveOutput.saveToFile("profiles.json", profiles);
   }
 
   /**
