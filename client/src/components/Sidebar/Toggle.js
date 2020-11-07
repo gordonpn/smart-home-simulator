@@ -17,7 +17,6 @@ export default function Toggle() {
   const [onSuccess, setOnSuccess] = useState(false);
   const [logOutAlert, setLogOutAlert] = useState(false);
   const { appendToLogs } = ConsoleStore();
-  const { currentTime } = RunningStateStore();
 
   const handleRunningState = async (event, newRunningState) => {
     if (newRunningState) {

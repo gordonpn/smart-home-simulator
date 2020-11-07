@@ -46,7 +46,7 @@ export default function Modules() {
     if (!currentState) {
       setActiveTab(0);
     }
-  }, [currentState]);
+  }, [currentState, setActiveTab]);
 
   return (
     <div className={classes.root}>

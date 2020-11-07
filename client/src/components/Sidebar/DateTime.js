@@ -114,7 +114,7 @@ export default function DateTime() {
 
       return () => clearInterval(interval);
     }
-  }, [currentState, currentTime]);
+  }, [currentState, currentTime, setCurrentTime]);
 
   return (
     <>
