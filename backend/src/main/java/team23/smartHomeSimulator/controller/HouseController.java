@@ -4,7 +4,11 @@ import static team23.smartHomeSimulator.controller.ProfileController.getActivePr
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,8 @@ import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
 import team23.smartHomeSimulator.utility.ErrorResponse;
+
+
 
 /** Controller for The House Model Class */
 @RestController
@@ -233,5 +239,52 @@ public class HouseController {
     house.deleteUsersLocation(name);
     String success = house.getUsersLocation().get(name) == null ? "successfully" : "unsuccessfully";
     return new ResponseEntity<>("Removed " + name + " " + success, HttpStatus.OK);
+  }
+
+  @PutMapping("/awayMode-lights")
+  public ResponseEntity<Object> setAwayModeLight(@RequestBody LightRequestBody requestBody, @RequestParam(name = "startTime") String startTimeString, @RequestParam(name = "endTime") String endTimeString ){
+    SHP shp = (SHP) house.getModulesObserver().get("SHP");
+    boolean awayMode = shp.getIsAwayModeOn();
+
+    Room thisRoom = house.getOneRoom(requestBody.getRoomName());
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    LocalDateTime startTime = LocalDateTime.parse(startTimeString, formatter);
+    LocalDateTime endTime = LocalDateTime.parse(endTimeString, formatter);
+    LocalDateTime currentTime = LocalDateTime.now();
+
+    int compareValue1 = startTime.compareTo(currentTime);
+    int compareValue2 = endTime.compareTo(currentTime);
+
+    if(awayMode && permissionService.isAllowed(getActiveProfile(), ProtectedAction.LIGHTS, thisRoom)){
+      if(compareValue1 < 0){
+        while(compareValue1 < 0){ }
+        Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
+        thisLight.setIsOn(requestBody.getState());
+        return new ResponseEntity<>(
+                house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
+      } else if (compareValue1 > 0 && compareValue2 < 0) {
+        Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
+        thisLight.setIsOn(requestBody.getState());
+        return new ResponseEntity<>(
+                house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
+
+      } else if (compareValue2 < 0) {
+        while (compareValue2 < 0) {
+        }
+        Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
+        thisLight.setIsOn(requestBody.getState());
+        startTime = startTime.plusDays(1);
+        endTime = endTime.plusDays(1);
+        return new ResponseEntity<>(
+                house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+      }
+    }else {
+      return new ResponseEntity<>(
+              ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.LIGHTS),
+              HttpStatus.FORBIDDEN);
+    }
   }
 }
