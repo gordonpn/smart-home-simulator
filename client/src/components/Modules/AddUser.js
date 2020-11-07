@@ -155,9 +155,9 @@ export default function AddUser() {
                         return setPermission(value);
                       }}
                     >
-                      {permissionsAvail.map((permission) => (
-                        <MenuItem key={permission} value={permission}>
-                          {permission}
+                      {permissionsAvail.map((thisPermission) => (
+                        <MenuItem key={thisPermission} value={thisPermission}>
+                          {thisPermission}
                         </MenuItem>
                       ))}
                     </Select>
