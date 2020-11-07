@@ -1,12 +1,16 @@
 package team23.smartHomeSimulator.utility;
 
-import java.util.HashMap;
-import java.util.Map;
 import team23.smartHomeSimulator.model.Profile;
 import team23.smartHomeSimulator.model.ProtectedAction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** Utility class to create error (Map/JSON) messages */
 public final class ErrorResponse {
+
+  /** private constructor for utility classes */
+  private ErrorResponse() {}
 
   /**
    * The error message when a user is not allowed to perform a certain action
