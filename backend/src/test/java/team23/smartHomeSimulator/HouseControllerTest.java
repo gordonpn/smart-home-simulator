@@ -241,12 +241,10 @@ public class HouseControllerTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8");
 
-    String resultsBlock = "false";
-
     this.mockMvc
         .perform(builderBlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsBlock)));
+        .andExpect(content().string(containsString("false")));
   }
 }
