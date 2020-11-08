@@ -15,6 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
 import formStyles from "@/src/styles/formStyles";
 import ProfileStore from "@/src/stores/ProfileStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function AddUser() {
   const classes = formStyles();
@@ -27,6 +28,7 @@ export default function AddUser() {
   const { currentState } = RunningStateStore();
   const { currentHouse } = HouseStore();
   const { setProfiles } = ProfileStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleOpen = async () => {
     const res = await axios.get("/api/profiles/permissions");
@@ -55,6 +57,11 @@ export default function AddUser() {
     const res = await axios.post("/api/profiles", postBody);
     const res2 = await axios.put("/api/house-users", postBody2);
     if (res.status === 200 && res2.status === 200) {
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Created new profile "${name}"`,
+        module: "SHS",
+      });
       setName("");
       setLocation("");
       setRole("");
@@ -148,9 +155,9 @@ export default function AddUser() {
                         return setPermission(value);
                       }}
                     >
-                      {permissionsAvail.map((permission) => (
-                        <MenuItem key={permission} value={permission}>
-                          {permission}
+                      {permissionsAvail.map((thisPermission) => (
+                        <MenuItem key={thisPermission} value={thisPermission}>
+                          {thisPermission}
                         </MenuItem>
                       ))}
                     </Select>

@@ -19,4 +19,5 @@ const ProfileStore = create((set, get) => ({
     set({ profiles: updatedProfiles });
   },
 }));
+
 export default ProfileStore;
