@@ -187,7 +187,9 @@ export default function UserProfile() {
                 </Box>
                 {selectedProfile && (
                   <>
-                    <Typography variant="body1">Permissions</Typography>
+                    <Typography variant="body1">
+                      Permissions: {permissions}
+                    </Typography>
                     <PermissionText type={permissions} />
                   </>
                 )}
