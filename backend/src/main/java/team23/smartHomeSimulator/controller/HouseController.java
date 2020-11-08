@@ -234,4 +234,16 @@ public class HouseController {
     String success = house.getUsersLocation().get(name) == null ? "successfully" : "unsuccessfully";
     return new ResponseEntity<>("Removed " + name + " " + success, HttpStatus.OK);
   }
+
+  /**
+   * Getting the state of away mode of the house
+   *
+   * @return boolean
+   */
+  @GetMapping("/house/away-mode")
+  public ResponseEntity<Object> getAwayMode() {
+    SHP shp = (SHP) house.getModulesObserver().get("SHP");
+    boolean awayMode = shp.getIsAwayModeOn();
+    return new ResponseEntity<>(awayMode, HttpStatus.OK);
+  }
 }
