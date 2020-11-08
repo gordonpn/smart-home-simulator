@@ -1,24 +1,25 @@
-import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
 import React, { useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import ProfileStore from "@/src/stores/ProfileStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
+import formStyles from "@/src/styles/formStyles";
+import axios from "axios";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import Typography from "@material-ui/core/Typography";
-import ProfileStore from "@/src/stores/ProfileStore";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import RunningStateStore from "@/src/stores/RunningStateStore";
-import formStyles from "@/src/styles/formStyles";
-import axios from "axios";
 
 export default function UserProfile() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
+  const [permissions, setPermissions] = useState("");
   const {
     currentProfile,
     setCurrentProfile,
@@ -42,6 +43,11 @@ export default function UserProfile() {
 
   const handleProfileChange = (event) => {
     const { value } = event.target;
+    profiles.forEach((profile) => {
+      if (profile.name.toLowerCase() === value.toLowerCase()) {
+        setPermissions(profile.permission.toLowerCase());
+      }
+    });
     return setSelectedProfile(value);
   };
 
@@ -54,6 +60,66 @@ export default function UserProfile() {
     });
     setOpen(false);
   };
+
+  function PermissionText({ type }) {
+    switch (type) {
+      case "parent":
+        return (
+          <>
+            <Typography variant="body1">
+              SHC: All permissions granted to open/close windows, unlock doors,
+              open/close garage and turn on/off lights.
+            </Typography>
+            <Typography variant="body1">
+              SHP: All permissions granted to set away mode on/off when they are
+              away.
+            </Typography>
+          </>
+        );
+      case "children":
+        return (
+          <>
+            <Typography variant="body1">
+              SHC: Limited permissions to turn on/off lights and open/close
+              windows on the room that they are located. If they are not at
+              home, all permissions are revoked.
+            </Typography>
+            <Typography variant="body1">
+              SHP: All permissions granted to set away mode on/off when they are
+              away.
+            </Typography>
+          </>
+        );
+      case "guest":
+        return (
+          <>
+            <Typography variant="body1">
+              SHC: Limited permissions to turn on/off lights and open/close
+              windows on the room that they are located. If they are not at
+              home, all permissions are revoked.
+            </Typography>
+            <Typography variant="body1">
+              SHP: Guest do not have permissions to set away mode on/off.
+            </Typography>
+          </>
+        );
+      case "stranger":
+        return (
+          <>
+            <Typography variant="body1">
+              SHC: Non identified users have no permissions no matter where they
+              are located.
+            </Typography>
+            <Typography variant="body1">
+              SHP: Non identified users have no permissions to set away mode
+              on/off.
+            </Typography>
+          </>
+        );
+      default:
+        return <></>;
+    }
+  }
 
   return (
     <>
@@ -114,11 +180,17 @@ export default function UserProfile() {
                     </Select>
                   </FormControl>
                 </Box>
-                <Box p={1} display="flex" justifyContent="flex-end">
+                <Box p={1} display="flex">
                   <Button variant="outlined" color="primary" type="submit">
                     Select Profile
                   </Button>
                 </Box>
+                {selectedProfile && (
+                  <>
+                    <Typography variant="body1">Permissions</Typography>
+                    <PermissionText type={permissions} />
+                  </>
+                )}
               </form>
             ) : (
               <Typography variant="body1">
