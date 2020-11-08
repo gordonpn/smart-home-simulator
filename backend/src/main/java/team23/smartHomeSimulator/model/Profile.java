@@ -35,6 +35,9 @@ public class Profile {
     this.isActive = false;
   }
 
+  /** An empty constructor */
+  public Profile() {}
+
   /**
    * Getter for name
    *
@@ -83,7 +86,7 @@ public class Profile {
   /**
    * Setter for role
    *
-   * @param role strin
+   * @param role string
    */
   public void setRole(String role) {
     this.role = role;
@@ -94,8 +97,8 @@ public class Profile {
    *
    * @return Permission enum
    */
-  public String getPermission() {
-    return permission.getType();
+  public Permission getPermission() {
+    return permission;
   }
 
   /**
@@ -105,15 +108,6 @@ public class Profile {
    */
   public void setPermission(Permission permission) {
     this.permission = permission;
-  }
-
-  /**
-   * Getter for permission Enum
-   *
-   * @return Enum
-   */
-  public Permission getPermissionEnum() {
-    return permission;
   }
 
   /**

@@ -198,7 +198,7 @@ export default function HouseLayout() {
       let personAlreadyOutside = 0;
       for (const profile of profiles) {
         const { location, name } = profile;
-        if (location.toString() === "outside") {
+        if (location.toString().toLowerCase() === "outside") {
           personAlreadyOutside++;
           elements.push(
             <Text

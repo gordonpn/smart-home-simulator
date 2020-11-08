@@ -1,13 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Title from "../Title";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import HouseStore from "@/src/stores/HouseStore";
 import HouseLayout from "./HouseLayout";
 import Input from "@material-ui/core/Input";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function HouseView() {
   const { setHouse, setWindows, setDoors, setLights } = HouseStore();
+  const { appendToLogs } = ConsoleStore();
 
   const processFile = (event) => {
     const file = event.target.files[0];
@@ -50,6 +52,11 @@ export default function HouseView() {
               setDoors(doorsMap);
               setLights(lightsMap);
             }
+            appendToLogs({
+              timestamp: new Date(),
+              message: "House layout loaded",
+              module: "SHS",
+            });
           })
           .catch((err) => {
             console.warn(err);
@@ -59,7 +66,7 @@ export default function HouseView() {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Title>House View</Title>
       <HouseLayout />
       <Input
@@ -76,6 +83,6 @@ export default function HouseView() {
           Upload house-layout file
         </Button>
       </label>
-    </React.Fragment>
+    </Fragment>
   );
 }

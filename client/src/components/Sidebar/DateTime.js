@@ -8,14 +8,15 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import formStyles from "@/src/styles/formStyles";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function DateTime() {
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [userDateInput, setUserDateInput] = useState("");
   const [userTimeInput, setUserTimeInput] = useState("");
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
-  const { currentState } = RunningStateStore();
+  const { currentState, currentTime, setCurrentTime } = RunningStateStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -29,43 +30,44 @@ export default function DateTime() {
     event.preventDefault();
     const dateArray = userDateInput.split("-");
     const timeArray = userTimeInput.split(":");
+    let newTime = new Date();
     if (dateArray.length > 1 && timeArray.length > 1) {
-      setCurrentTime(
-        new Date(
-          parseInt(dateArray[0]),
-          parseInt(dateArray[1]) - 1,
-          parseInt(dateArray[2]),
-          parseInt(timeArray[0]),
-          parseInt(timeArray[1]),
-          currentTime.getSeconds()
-        )
+      newTime = new Date(
+        parseInt(dateArray[0]),
+        parseInt(dateArray[1]) - 1,
+        parseInt(dateArray[2]),
+        parseInt(timeArray[0]),
+        parseInt(timeArray[1]),
+        currentTime.getSeconds()
       );
     } else if (dateArray.length > 1 && timeArray.length <= 1) {
       //  only the date is set
-      setCurrentTime(
-        new Date(
-          parseInt(dateArray[0]),
-          parseInt(dateArray[1]) - 1,
-          parseInt(dateArray[2]),
-          currentTime.getHours(),
-          currentTime.getMinutes(),
-          currentTime.getSeconds()
-        )
+      newTime = new Date(
+        parseInt(dateArray[0]),
+        parseInt(dateArray[1]) - 1,
+        parseInt(dateArray[2]),
+        currentTime.getHours(),
+        currentTime.getMinutes(),
+        currentTime.getSeconds()
       );
     } else if (dateArray.length <= 1 && timeArray.length > 1) {
       //  only the time is set
-      setCurrentTime(
-        new Date(
-          currentTime.getFullYear(),
-          currentTime.getMonth(),
-          currentTime.getDate(),
-          parseInt(timeArray[0]),
-          parseInt(timeArray[1]),
-          currentTime.getSeconds()
-        )
+      newTime = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        parseInt(timeArray[0]),
+        parseInt(timeArray[1]),
+        currentTime.getSeconds()
       );
     }
+    setCurrentTime(newTime);
     setOpen(false);
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Changed simulated date time to ${newTime.toLocaleString()}`,
+      module: "SHS",
+    });
     const postBody = {
       currentTime: currentTime,
     };
@@ -112,7 +114,7 @@ export default function DateTime() {
 
       return () => clearInterval(interval);
     }
-  }, [currentState, currentTime]);
+  }, [currentState, currentTime, setCurrentTime]);
 
   return (
     <>

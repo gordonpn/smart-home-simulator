@@ -13,6 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import axios from "axios";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function MoveUser() {
   const classes = formStyles();
@@ -27,6 +28,7 @@ export default function MoveUser() {
   } = ProfileStore();
   const [location, setLocation] = useState("");
   const [previousLocation, setPreviousLocation] = useState("");
+  const { appendToLogs } = ConsoleStore();
 
   useEffect(() => {
     var userLocation;
@@ -58,6 +60,11 @@ export default function MoveUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Moved profile "${selectedProfile}" to "${location}"`,
+      module: "SHS",
+    });
     const putBody = {
       name: selectedProfile,
       location: location,

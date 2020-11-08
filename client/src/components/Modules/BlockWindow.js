@@ -14,6 +14,7 @@ import {
 import HouseStore from "@/src/stores/HouseStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function BlockWindow() {
   const classes = formStyles();
@@ -28,6 +29,7 @@ export default function BlockWindow() {
   const [windowListTemp, setWindowListTemp] = useState(new Map());
   const [renderList, setRenderList] = useState(false);
   const [windowChanges, setWindowChanges] = useState(new Map());
+  const { appendToLogs } = ConsoleStore();
 
   useEffect(() => {
     if (currentHouse !== undefined) {
@@ -51,15 +53,14 @@ export default function BlockWindow() {
         roomName: modifyString(key),
         state: value.blocked,
       };
-
-      const res = await axios.put(
-        "/api/rooms/windows/block-window",
-        requestBody
-      );
-
-      if (res.status === 200) {
-        console.warn("block/unblock window successfully");
-      }
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Window in room "${key}" is ${
+          value ? "blocked" : "unblocked"
+        }`,
+        module: "SHS",
+      });
+      await axios.put("/api/rooms/windows/block-window", requestBody);
     });
     setWindows(windowListTemp);
     setWindowChanges(new Map());

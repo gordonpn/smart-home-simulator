@@ -13,6 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import ProfileStore from "@/src/stores/ProfileStore";
 import formStyles from "@/src/styles/formStyles";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function RemoveUser() {
   const classes = formStyles();
@@ -20,6 +21,7 @@ export default function RemoveUser() {
   const [selectedProfile, setSelectedProfile] = useState("");
   const { currentState } = RunningStateStore();
   const { profiles, removeByName, setProfiles } = ProfileStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleOpen = async () => {
     const res = await axios.get("/api/profiles");
@@ -36,6 +38,11 @@ export default function RemoveUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Removed profile "${selectedProfile}"`,
+      module: "SHS",
+    });
     const params = {
       params: {
         name: selectedProfile,

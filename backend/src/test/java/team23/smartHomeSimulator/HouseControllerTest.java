@@ -3,9 +3,7 @@ package team23.smartHomeSimulator;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -236,5 +234,20 @@ public class HouseControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString(resultsUnblock)));
+  }
+
+  @Test
+  public void shouldReturnAwayState() throws Exception {
+    MockHttpServletRequestBuilder builderBlock =
+        get("/api/house/away-mode")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8");
+
+    this.mockMvc
+        .perform(builderBlock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("false")));
   }
 }

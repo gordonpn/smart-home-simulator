@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.*;
-import team23.smartHomeSimulator.model.Door;
-import team23.smartHomeSimulator.model.House;
 import team23.smartHomeSimulator.model.modules.SHP;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.LightRequestBody;
@@ -149,7 +147,7 @@ public class HouseController {
           ErrorResponse.getCustomError(
               String.format(
                   "Cannot %s this window %s because it is blocked",
-                  requestBody.getState(), requestBody.getWindowName()));
+                  requestBody.getState() ? "open" : "close", requestBody.getWindowName()));
       return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -175,6 +173,14 @@ public class HouseController {
     boolean isGarage = requestBody.getRoomName().toLowerCase().contains("garage");
     Room thisRoom = house.getOneRoom(requestBody.getRoomName());
     Door thisDoor = thisRoom.getOneDoor(requestBody.getDoorName());
+    if (thisDoor.isLocked() && requestBody.getState()) {
+      Map<String, String> response =
+          ErrorResponse.getCustomError(
+              String.format(
+                  "Cannot %s this door %s because it is locked",
+                  requestBody.getState() ? "open" : "close", requestBody.getDoorName()));
+      return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
     if (isGarage) {
       if (!permissionService.isAllowed(getActiveProfile(), ProtectedAction.GARAGE, thisRoom)) {
         return new ResponseEntity<>(
@@ -233,5 +239,17 @@ public class HouseController {
     house.deleteUsersLocation(name);
     String success = house.getUsersLocation().get(name) == null ? "successfully" : "unsuccessfully";
     return new ResponseEntity<>("Removed " + name + " " + success, HttpStatus.OK);
+  }
+
+  /**
+   * Getting the state of away mode of the house
+   *
+   * @return boolean
+   */
+  @GetMapping("/house/away-mode")
+  public ResponseEntity<Object> getAwayMode() {
+    SHP shp = (SHP) house.getModulesObserver().get("SHP");
+    boolean awayMode = shp.getIsAwayModeOn();
+    return new ResponseEntity<>(awayMode, HttpStatus.OK);
   }
 }
