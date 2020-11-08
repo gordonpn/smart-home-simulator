@@ -18,7 +18,7 @@ public class PermissionService {
    * @return boolean true for allowed, false for not allowed
    */
   public boolean isAllowed(Profile profile, ProtectedAction action, Room room) {
-    switch (profile.getPermissionEnum()) {
+    switch (profile.getPermission()) {
       case PARENT:
         return parentsPermitted();
       case CHILDREN:
