@@ -25,41 +25,30 @@ export default function HouseView() {
             if (res.status === 200) {
               setHouse(res.data);
               const rooms = res.data.rooms;
-              const windowsArr = res.data.houseCoor.windows;
               const doorsMap = new Map();
               const lightsMap = new Map();
               const windowsMap = new Map();
-              // console.log(res.data.rooms)
-              for(const [roomkey, roomValue] of Object.entries(rooms)){
-             
-                for(const [doorKey, doorValue] of Object.entries(roomValue.doors)){
-                  doorsMap.set(doorKey, doorValue)
+              for (const [, roomValue] of Object.entries(rooms)) {
+                for (const [doorKey, doorValue] of Object.entries(
+                  roomValue.doors
+                )) {
+                  doorsMap.set(doorKey, doorValue);
                 }
-                for(const [lightKey, lightValue] of Object.entries(roomValue.lights)){
-                    lightsMap.set(lightKey, lightValue)
+                for (const [lightKey, lightValue] of Object.entries(
+                  roomValue.lights
+                )) {
+                  lightsMap.set(lightKey, lightValue);
                 }
-              //   for(const [winKey, winValue] of Object.entries(roomValue.windows)){
-              //     windowsMap.set(winKey, winValue)
-              // }
-         
+                for (const [winKey, winValue] of Object.entries(
+                  roomValue.windows
+                )) {
+                  windowsMap.set(winKey, winValue);
+                }
               }
-              console.log(doorsMap)
-              console.log(lightsMap)
-    
-              // ***TO REFACTOR***
-              windowsArr.forEach((window) => {
-                windowsMap.set(
-                  window.name.substr(0, window.name.indexOf("-w")),
-                  false
-                );
-              });
-              console.log(windowsMap)
+
               setWindows(windowsMap);
               setDoors(doorsMap);
               setLights(lightsMap);
-              
-
-
             }
           })
           .catch((err) => {

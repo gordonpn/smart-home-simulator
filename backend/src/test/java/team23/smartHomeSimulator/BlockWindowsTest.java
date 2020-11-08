@@ -69,7 +69,8 @@ public class BlockWindowsTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"bedroom3-w1\",\"roomName\":\"bedroom3\",\"state\":\"true\"}");
+            .content(
+                "{\"windowName\":\"bedroom3-w1\",\"roomName\":\"bedroom3\",\"state\":\"true\"}");
 
     String resultsBlock =
         "{\"bedroom3-w1\":{\"isOpen\":false,\"blocked\":true},\"bedroom3-w2\":{\"isOpen\":false,\"blocked\":false}}";
@@ -85,15 +86,18 @@ public class BlockWindowsTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"bedroom3-w1\",\"roomName\":\"bedroom3\",\"state\":\"false\"}");
+            .content(
+                "{\"windowName\":\"bedroom3-w1\",\"roomName\":\"bedroom3\",\"state\":\"false\"}");
 
     this.mockMvc
         .perform(builderUnblock)
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(
-            content().string(containsString("\"bedroom3-w1\":{\"isOpen\":false,\"blocked\":false}")))
+            content()
+                .string(containsString("\"bedroom3-w1\":{\"isOpen\":false,\"blocked\":false}")))
         .andExpect(
-            content().string(containsString("\"bedroom3-w2\":{\"isOpen\":false,\"blocked\":false}")));
+            content()
+                .string(containsString("\"bedroom3-w2\":{\"isOpen\":false,\"blocked\":false}")));
   }
 }

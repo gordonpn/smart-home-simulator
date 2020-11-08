@@ -76,10 +76,11 @@ public class HouseControllerTest {
 
   @Test
   public void shouldBeLockableOrNot() throws Exception {
-    Room lockableRoom = new Room("room1", "deck", 1, 1, 1);
+    // Kitchen door is the deck door
+    Room lockableRoom = new Room("room1", "kitchen", 1, 1, 1);
     Room nonLockableRoom = new Room("room2", "bathroom", 1, 1, 1);
 
-    assertTrue(lockableRoom.getDoors().get("deck-d1").isLockable());
+    assertTrue(lockableRoom.getDoors().get("kitchen-d1").isLockable());
     assertFalse(nonLockableRoom.getDoors().get("bathroom-d1").isLockable());
   }
 
@@ -184,9 +185,9 @@ public class HouseControllerTest {
         .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-            .andExpect(jsonPath("$.room1-d1.open").value(true))
-            .andExpect(jsonPath("$.room1-d1.locked").value(false))
-            .andExpect(jsonPath("$.room1-d1.lockable").value(false));
+        .andExpect(jsonPath("$.room1-d1.open").value(true))
+        .andExpect(jsonPath("$.room1-d1.locked").value(false))
+        .andExpect(jsonPath("$.room1-d1.lockable").value(false));
 
     MockHttpServletRequestBuilder builderUnlock =
         put("/api/rooms/doors/open-door")

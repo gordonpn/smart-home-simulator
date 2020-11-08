@@ -64,12 +64,11 @@ public class Room {
   private void createDoors(int numDoors) {
     boolean isExternalDoor =
         this.roomName != null
-            && (this.roomName.contains("deck")
+            && (this.roomName.contains("kitchen") // kitchen door is the deck door
                 || this.roomName.contains("garage")
-                || this.roomName.contains("entrance"));
+                || this.roomName.contains("living")); // living room door is the entrance door
     for (int i = 0; i < numDoors; i++) {
-      //this.doors.put("door-" + (i + 1), new Door(isExternalDoor));
-      this.doors.put(this.getRoomName()+"-d" + (i + 1), new Door(isExternalDoor));
+      this.doors.put(this.getRoomName() + "-d" + (i + 1), new Door(isExternalDoor));
     }
   }
 
@@ -80,8 +79,7 @@ public class Room {
    */
   private void createWindows(int numWindows) {
     for (int i = 0; i < numWindows; i++) {
-      //this.windows.put("window-" + (i + 1), new Window());
-      this.windows.put(this.getRoomName()+"-w" + (i + 1), new Window());
+      this.windows.put(this.getRoomName() + "-w" + (i + 1), new Window());
     }
   }
 
@@ -92,8 +90,7 @@ public class Room {
    */
   private void createLights(int numLights) {
     for (int i = 0; i < numLights; i++) {
-      //.lights.put("light-" + (i + 1), new Light());
-      this.lights.put(this.getRoomName()+"-l" + (i + 1), new Light());
+      this.lights.put(this.getRoomName() + "-l" + (i + 1), new Light());
     }
   }
 
