@@ -67,7 +67,7 @@ export default function Modules() {
       <TabPanel value={activeTab} index={1}>
         <SHCTab />
       </TabPanel>
-      <TabPanel value={activeTab} index={2} >
+      <TabPanel value={activeTab} index={2}>
         <SHPTab />
       </TabPanel>
       <TabPanel value={activeTab} index={3} />

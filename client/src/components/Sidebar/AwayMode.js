@@ -37,9 +37,9 @@ export default function AwayMode() {
 
   return (
     <>
-      {currentState && awayMode && (
+      {currentState && (
         <Typography variant="h6" color="primary">
-          System is in Away Mode
+          Away Mode: {awayMode ? "ON" : "OFF"}
         </Typography>
       )}
     </>
