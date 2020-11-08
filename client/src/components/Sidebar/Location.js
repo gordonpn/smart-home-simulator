@@ -13,6 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
 import HouseStore from "@/src/stores/HouseStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function Location() {
   const classes = formStyles();
@@ -20,6 +21,7 @@ export default function Location() {
   const { currentProfile, changeLocation, setProfiles } = ProfileStore();
   const [location, setLocation] = useState("");
   const { currentHouse } = HouseStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,6 +44,11 @@ export default function Location() {
       const response = await axios.get("/api/profiles");
       if (response.status === 200) {
         setProfiles(response.data);
+        appendToLogs({
+          timestamp: new Date(),
+          message: `Moved selected profile to location "${location}"`,
+          module: "SHS",
+        });
         setOpen(false);
       }
     }
