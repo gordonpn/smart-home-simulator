@@ -234,4 +234,26 @@ public class HouseController {
     String success = house.getUsersLocation().get(name) == null ? "successfully" : "unsuccessfully";
     return new ResponseEntity<>("Removed " + name + " " + success, HttpStatus.OK);
   }
+
+  /**
+   * Setter controller for the authorities delay
+   *
+   * @param delay
+   * @return
+   */
+  @PutMapping("/authorities-delay")
+  public ResponseEntity<Object> setAuthoritiesDelay(@RequestParam(name = "delay") String delay) {
+    house.setAuthoritiesDelay(Integer.parseInt(delay));
+    return new ResponseEntity<>(house, HttpStatus.OK);
+  }
+
+  /**
+   * Getter controller for the authorities delay
+   *
+   * @return authorities delay
+   */
+  @GetMapping("/authorities-delay")
+  public ResponseEntity<Object> getAuthoritiesDelay() {
+    return new ResponseEntity<>(house.getAuthoritiesDelay(), HttpStatus.OK);
+  }
 }

@@ -8,6 +8,9 @@ import team23.smartHomeSimulator.model.modules.modulesObserver;
 /** The House class that includes the outside temperature and the list of rooms */
 public class House {
 
+  /** Delay before the authorities are alerted */
+  private int authoritiesDelay;
+
   /** The outside temperature of the house */
   private double outTemp;
 
@@ -32,6 +35,7 @@ public class House {
    * @param rooms hash map of rooms
    */
   public House(HashMap<String, Room> rooms) {
+    this.authoritiesDelay = 60;
     this.outTemp = 25;
     initializeHouseLayout(rooms);
   }
@@ -268,5 +272,23 @@ public class House {
    */
   public HashMap<String, modulesObserver> getModulesObserver() {
     return modulesObserver;
+  }
+
+  /**
+   * Getter fir authoritiesDelay
+   *
+   * @return int
+   */
+  public int getAuthoritiesDelay() {
+    return authoritiesDelay;
+  }
+
+  /**
+   * Setter for authoritiesDelay
+   *
+   * @param authoritiesDelay int
+   */
+  public void setAuthoritiesDelay(int authoritiesDelay) {
+    this.authoritiesDelay = authoritiesDelay;
   }
 }
