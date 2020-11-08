@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import SHSTab from "./SHSTab";
 import SHCTab from "./SHCTab";
 import RunningStateStore from "@/src/stores/RunningStateStore";
+import SHPTab from "@/src/components/Modules/SHPTab";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,7 +67,9 @@ export default function Modules() {
       <TabPanel value={activeTab} index={1}>
         <SHCTab />
       </TabPanel>
-      <TabPanel value={activeTab} index={2} />
+      <TabPanel value={activeTab} index={2}>
+        <SHPTab />
+      </TabPanel>
       <TabPanel value={activeTab} index={3} />
     </div>
   );
