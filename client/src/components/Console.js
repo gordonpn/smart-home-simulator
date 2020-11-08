@@ -10,7 +10,7 @@ export default function Console() {
     <Fragment>
       <Title>Output Console</Title>
       {logs.map((log) => (
-        <Typography variant="body1" key={log.timestamp}>
+        <Typography variant="body1" key={`${log.timestamp}-${log.message}`}>
           {log.timestamp.toLocaleString()}
           &emsp;
           {log.module}
