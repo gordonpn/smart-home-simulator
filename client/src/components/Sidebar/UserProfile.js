@@ -14,11 +14,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function UserProfile() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
+  const { appendToLogs } = ConsoleStore();
   const {
     currentProfile,
     setCurrentProfile,
@@ -50,9 +52,14 @@ export default function UserProfile() {
     profiles.forEach((profile) => {
       if (profile.name === selectedProfile) {
         setCurrentProfile(profile);
+        appendToLogs({
+          timestamp: new Date(),
+          message: `Profile "${selectedProfile}" selected for simulation`,
+          module: "SHS",
+        });
+        setOpen(false);
       }
     });
-    setOpen(false);
   };
 
   return (

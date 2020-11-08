@@ -9,12 +9,14 @@ import formStyles from "@/src/styles/formStyles";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function OutsideTemp() {
   const classes = formStyles();
   const [outTemp, setOutTemp] = useState("");
   const [open, setOpen] = useState(false);
   const { currentHouse, currentTemperature, setTemperature } = HouseStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -33,6 +35,11 @@ export default function OutsideTemp() {
     if (res.status === 200) {
       setTemperature(outTemp);
       setOpen(false);
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Changed outside temperature to ${outTemp}`,
+        module: "SHS",
+      });
     }
   };
 
