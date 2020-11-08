@@ -69,7 +69,7 @@ public class HouseControllerTest {
         .perform(builder)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString("{\"outTemp\":20.0")));
+        .andExpect(content().string(containsString("\"outTemp\":20.0")));
   }
 
   @Test
