@@ -14,12 +14,14 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function UserProfile() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
   const [permissions, setPermissions] = useState("");
+  const { appendToLogs } = ConsoleStore();
   const {
     currentProfile,
     setCurrentProfile,
@@ -56,9 +58,14 @@ export default function UserProfile() {
     profiles.forEach((profile) => {
       if (profile.name === selectedProfile) {
         setCurrentProfile(profile);
+        appendToLogs({
+          timestamp: new Date(),
+          message: `Profile "${selectedProfile}" selected for simulation`,
+          module: "SHS",
+        });
+        setOpen(false);
       }
     });
-    setOpen(false);
   };
 
   function PermissionText({ type }) {
