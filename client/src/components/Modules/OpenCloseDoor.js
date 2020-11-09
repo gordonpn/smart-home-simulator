@@ -14,6 +14,7 @@ import {
 import HouseStore from "@/src/stores/HouseStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function OpenCloseDoor() {
   const classes = formStyles();
@@ -28,6 +29,7 @@ export default function OpenCloseDoor() {
   const [doorListTemp, setDoorListTemp] = useState(new Map());
   const [renderList, setRenderList] = useState(false);
   const [doorChanges, setDoorChanges] = useState(new Map());
+  const { appendToLogs } = ConsoleStore();
 
   useEffect(() => {
     if (currentHouse !== undefined) {
@@ -63,6 +65,11 @@ export default function OpenCloseDoor() {
         .catch((error) => {
           console.error(error.response.data.message);
         });
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Door in room "${key}" is ${value.open ? "opened" : "closed"}`,
+        module: "SHC",
+      });
     });
     setDoors(doorListTemp);
     setDoorChanges(new Map());

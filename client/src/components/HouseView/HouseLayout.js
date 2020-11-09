@@ -225,7 +225,7 @@ export default function HouseLayout() {
   return (
     <Stage
       width={0.7 * windowWidth}
-      height={0.6 * windowHeight}
+      height={0.4 * windowHeight}
       opacity={currentState ? 1 : 0.2}
     >
       <Layer scaleX={2.5} scaleY={2.5} x={50} y={50}>

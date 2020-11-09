@@ -24,7 +24,7 @@ export default function SaveProfiles() {
       setOnSuccess(true);
       appendToLogs({
         timestamp: new Date(),
-        message: `Saved profiles to filesystem "${name}"`,
+        message: `Saved profiles to filesystem`,
         module: "SHS",
       });
     } else if (response.status === 500) {
