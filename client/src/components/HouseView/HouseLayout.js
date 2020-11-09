@@ -172,7 +172,7 @@ export default function HouseLayout() {
             let personAlreadyInRoom = 0;
             for (const profile of profiles) {
               const { location, name } = profile;
-              if (subComp[i].name === location.toString()) {
+              if (subComp[i].name === location.toString().toLowerCase()) {
                 personAlreadyInRoom++;
                 elements.push(
                   <Text

@@ -157,7 +157,6 @@ public class House {
     if (room.getNumDoors() != 0
         && !key.equalsIgnoreCase("deck")
         && !key.equalsIgnoreCase("entrance")) {
-      // this.houseCoor.get("doors").add(new Coordinates(doorX, doorY));
       this.houseCoor.get("doors").add(new Coordinates((key + "-d1"), doorX, doorY));
     }
 
