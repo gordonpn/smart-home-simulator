@@ -24,7 +24,7 @@ export default function DateTime() {
     lights,
     setTriggerRender,
     triggerRender,
-    removeLightsSchedule,
+    awayMode,
   } = HouseStore();
 
   const handleOpen = () => {
@@ -113,40 +113,29 @@ export default function DateTime() {
     return `${hours}:${minutes}`;
   };
 
-  const isTimeBetween = (startTime, endTime, serverTime) => {
-    let start = moment(startTime, "H:mm");
-    let end = moment(endTime, "H:mm");
-    let server = moment(serverTime, "H:mm");
-    if (end < start) {
-      return (
-        (server >= start && server <= moment("23:59:59", "h:mm:ss")) ||
-        (server >= moment("0:00:00", "h:mm:ss") && server < end)
-      );
-    }
-    return server >= start && server < end;
-  };
-
   useEffect(() => {
     if (currentState) {
-      if (lightsSchedule.size) {
+      if (lightsSchedule.size && awayMode) {
         lightsSchedule.forEach((value, key) => {
           let currentHour = currentTime.getHours().toString();
           let currentMinute = currentTime.getMinutes().toString();
-          const hhmmStart = moment(value.startTime)._i;
-          const hhmmEnd = moment(value.endTime)._i;
-          const isHourAmPm = currentHour.length;
-          const isMinLengthOne = currentMinute.length;
-          currentHour = isHourAmPm === 1 ? "0" + currentHour : currentHour;
+          currentHour =
+            currentHour.length === 1 ? "0" + currentHour : currentHour;
           currentMinute =
-            isMinLengthOne === 1 ? "0" + currentMinute : currentMinute;
-          const both = currentHour + currentMinute;
-          const actualTime = moment(both, "hmm").format("HH:mm");
-          if (isTimeBetween(actualTime, hhmmStart, hhmmEnd)) {
+            currentMinute.length === 1 ? "0" + currentMinute : currentMinute;
+          const start = moment(value.startTime, moment.HTML5_FMT.TIME);
+          const end = moment(value.endTime, moment.HTML5_FMT.TIME);
+          const myTime = moment(
+            currentHour + ":" + currentMinute,
+            moment.HTML5_FMT.TIME
+          );
+          // const isBetween = myTime.isBetween(start,end,undefined,"[]")
+
+          if (myTime.isBetween(start, end, undefined, "[]")) {
             lights.set(key, { isOn: true });
             setTriggerRender(!triggerRender);
           } else {
             lights.set(key, { isOn: false });
-            removeLightsSchedule(key);
             setTriggerRender(!triggerRender);
           }
         });
@@ -159,7 +148,7 @@ export default function DateTime() {
 
       return () => clearInterval(interval);
     }
-  }, [currentState, currentTime, setCurrentTime, lightsSchedule]);
+  }, [currentState, currentTime, setCurrentTime, lightsSchedule, awayMode]);
 
   return (
     <>
