@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import formStyles from "@/src/styles/formStyles";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import HouseStore from "@/src/stores/HouseStore";
 
 export default function DateTime() {
   const [userDateInput, setUserDateInput] = useState("");
@@ -17,6 +18,12 @@ export default function DateTime() {
   const [open, setOpen] = React.useState(false);
   const { currentState, currentTime, setCurrentTime } = RunningStateStore();
   const { appendToLogs } = ConsoleStore();
+  const {
+    lightsSchedule,
+    lights,
+    setTriggerRender,
+    triggerRender,
+  } = HouseStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -106,6 +113,31 @@ export default function DateTime() {
 
   useEffect(() => {
     if (currentState) {
+      if (lightsSchedule.size) {
+        lightsSchedule.forEach((value, key) => {
+          let currentHour = currentTime.getHours().toString();
+          let currentMinute = currentTime.getMinutes().toString();
+          const isHourAmPm = currentHour.length;
+          const isMinLengthOne = currentMinute.length;
+          currentHour = isHourAmPm === 1 ? "0" + currentHour : currentHour;
+          currentMinute =
+            isMinLengthOne === 1 ? "0" + currentMinute : currentMinute;
+          const hhmmStart = value.startTime.split(":");
+          const hhmmEnd = value.endTime.split(":");
+          const [startHour, startMin] = hhmmStart;
+          const [endHour, endMin] = hhmmEnd;
+
+          if (startHour === currentHour && startMin === currentMinute) {
+            lights.set(key, { isOn: true });
+            setTriggerRender(!triggerRender);
+          }
+
+          if (endHour === currentHour && endMin === currentMinute) {
+            lights.set(key, { isOn: false });
+            setTriggerRender(!triggerRender);
+          }
+        });
+      }
       const interval = setInterval(() => {
         const incrementSeconds = currentTime.getSeconds() + 1;
         const newTime = currentTime.setSeconds(incrementSeconds);
@@ -114,7 +146,7 @@ export default function DateTime() {
 
       return () => clearInterval(interval);
     }
-  }, [currentState, currentTime, setCurrentTime]);
+  }, [currentState, currentTime, setCurrentTime, lightsSchedule]);
 
   return (
     <>
