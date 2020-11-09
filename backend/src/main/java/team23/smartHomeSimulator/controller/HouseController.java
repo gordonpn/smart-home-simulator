@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.model.*;
-import team23.smartHomeSimulator.model.Door;
-import team23.smartHomeSimulator.model.House;
 import team23.smartHomeSimulator.model.modules.SHP;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.LightRequestBody;
@@ -155,7 +153,7 @@ public class HouseController {
           ErrorResponse.getCustomError(
               String.format(
                   "Cannot %s this window %s because it is blocked",
-                  requestBody.getState(), requestBody.getWindowName()));
+                  requestBody.getState() ? "open" : "close", requestBody.getWindowName()));
       return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -181,6 +179,14 @@ public class HouseController {
     boolean isGarage = requestBody.getRoomName().toLowerCase().contains("garage");
     Room thisRoom = house.getOneRoom(requestBody.getRoomName());
     Door thisDoor = thisRoom.getOneDoor(requestBody.getDoorName());
+    if (thisDoor.isLocked() && requestBody.getState()) {
+      Map<String, String> response =
+          ErrorResponse.getCustomError(
+              String.format(
+                  "Cannot %s this door %s because it is locked",
+                  requestBody.getState() ? "open" : "close", requestBody.getDoorName()));
+      return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
     if (isGarage) {
       if (!permissionService.isAllowed(getActiveProfile(), ProtectedAction.GARAGE, thisRoom)) {
         return new ResponseEntity<>(
@@ -242,16 +248,17 @@ public class HouseController {
   }
 
 
+
   /**
    * when awayMode is on, lights in specific rooms will turn on for a given amount of time
    *
-   * @param requestBody
-   * @param startTimeString
-   * @param endTimeString
+   * @param requestBody LightRequestBody
+   * @param startTimeString DateTime
+   * @param endTimeString DateTime
    * @return light that is turned on
    */
   @PutMapping("/awayMode-lights")
-  public ResponseEntity<Object> setAwayModeLight(@RequestBody LightRequestBody requestBody, @RequestParam(name = "startTime") String startTimeString, @RequestParam(name = "endTime") String endTimeString ){
+  public ResponseEntity<Object> setAwayModeLight(@RequestBody LightRequestBody requestBody, @RequestParam(name = "startTime") String startTimeString, @RequestParam(name = "endTime") String endTimeString ) {
     SHP shp = (SHP) house.getModulesObserver().get("SHP");
     boolean awayMode = shp.getIsAwayModeOn();
 
@@ -262,24 +269,24 @@ public class HouseController {
     LocalDateTime endTime = LocalDateTime.parse(endTimeString, formatter);
     LocalDateTime currentTime = LocalDateTime.now();
 
-    int compareValue1 = startTime.compareTo(currentTime);
-    int compareValue2 = endTime.compareTo(currentTime);
+    if (awayMode && permissionService.isAllowed(getActiveProfile(), ProtectedAction.LIGHTS, thisRoom)) {
+      if (startTime.compareTo(currentTime) < 0) {
+        while (startTime.compareTo(currentTime) < 0) {
 
-    if(awayMode && permissionService.isAllowed(getActiveProfile(), ProtectedAction.LIGHTS, thisRoom)){
-      if(compareValue1 < 0){
-        while(compareValue1 < 0){ }
+        }
         Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
         thisLight.setIsOn(requestBody.getState());
         return new ResponseEntity<>(
                 house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
-      } else if (compareValue1 > 0 && compareValue2 < 0) {
+      } else if (startTime.compareTo(currentTime) > 0 && endTime.compareTo(currentTime) < 0) {
         Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
         thisLight.setIsOn(requestBody.getState());
         return new ResponseEntity<>(
                 house.getOneRoom(requestBody.getRoomName()).getLights(), HttpStatus.OK);
 
-      } else if (compareValue2 < 0) {
-        while (compareValue2 < 0) {
+      } else if (endTime.compareTo(currentTime) < 0) {
+        while (endTime.compareTo(currentTime) < 0) {
+
         }
         Light thisLight = thisRoom.getOneLight(requestBody.getLightName());
         thisLight.setIsOn(requestBody.getState());
@@ -288,10 +295,22 @@ public class HouseController {
       } else {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
       }
-    }else {
+    } else {
       return new ResponseEntity<>(
               ErrorResponse.getPermissionError(getActiveProfile(), ProtectedAction.LIGHTS),
               HttpStatus.FORBIDDEN);
     }
+  }
+  /**
+   * Getting the state of away mode of the house
+   *
+   * @return boolean
+   */
+  @GetMapping("/house/away-mode")
+  public ResponseEntity<Object> getAwayMode() {
+    SHP shp = (SHP) house.getModulesObserver().get("SHP");
+    boolean awayMode = shp.getIsAwayModeOn();
+    return new ResponseEntity<>(awayMode, HttpStatus.OK);
+
   }
 }

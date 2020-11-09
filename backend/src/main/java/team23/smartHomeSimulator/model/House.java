@@ -58,7 +58,7 @@ public class House {
     this.houseCoor.put("living", new ArrayList<Coordinates>());
     this.houseCoor.put("kitchen", new ArrayList<Coordinates>());
     this.houseCoor.put("bathrooms", new ArrayList<Coordinates>());
-    this.houseCoor.put("dining", new ArrayList<Coordinates>());
+    this.houseCoor.put("lights", new ArrayList<Coordinates>());
     this.houseCoor.put("deck", new ArrayList<Coordinates>());
     this.houseCoor.put("entrance", new ArrayList<Coordinates>());
     this.houseCoor.put("garage", new ArrayList<Coordinates>());
@@ -119,14 +119,18 @@ public class House {
             this.houseCoor
                 .get("deck")
                 .add(new Coordinates(key, livingRoomWidth + diningRoomWidth, sublvl2));
+            addDoorWindowCoord(room, key, 0, 0, 0, 0);
 
           } else if (key.toLowerCase().contains("garage")) {
             this.houseCoor
                 .get("garage")
                 .add(new Coordinates(key, livingRoomWidth + 30 - 80, sublvl2));
 
+            addDoorWindowCoord(room, key, 55, sublvl3 - 25, 50, sublvl3);
+
           } else if (key.toLowerCase().contains("entrance")) {
             this.houseCoor.get("entrance").add(new Coordinates(key, 0, sublvl2));
+            addDoorWindowCoord(room, key, 0, 0, 0, 0);
           }
 
           this.rooms.put(
@@ -150,12 +154,21 @@ public class House {
    * @param doorY the y coordinate for door
    */
   private void addDoorWindowCoord(Room room, String key, int winX, int winY, int doorX, int doorY) {
-    if (room.getNumDoors() != 0) {
-      this.houseCoor.get("doors").add(new Coordinates(doorX, doorY));
+    if (room.getNumDoors() != 0
+        && !key.equalsIgnoreCase("deck")
+        && !key.equalsIgnoreCase("entrance")) {
+      this.houseCoor.get("doors").add(new Coordinates((key + "-d1"), doorX, doorY));
     }
 
-    if (room.getNumWindows() != 0) {
+    if (room.getNumWindows() != 0
+        && !key.equalsIgnoreCase("garage")
+        && !key.equalsIgnoreCase("deck")
+        && !key.equalsIgnoreCase("entrance")) {
       this.houseCoor.get("windows").add(new Coordinates((key + "-w1"), winX, winY));
+    }
+
+    if (room.getNumLights() != 0) {
+      this.houseCoor.get("lights").add(new Coordinates((key + "-l1"), 0, 0));
     }
   }
 

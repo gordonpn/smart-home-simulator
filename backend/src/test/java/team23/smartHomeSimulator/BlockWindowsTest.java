@@ -53,7 +53,7 @@ public class BlockWindowsTest {
         MockMvcRequestBuilders.get("/api/rooms/windows").param("roomName", "bedroom3");
 
     String results =
-        "{\"window-1\":{\"isOpen\":false,\"blocked\":false},\"window-2\":{\"isOpen\":false,\"blocked\":false}}";
+        "{\"bedroom3-w1\":{\"isOpen\":false,\"blocked\":false},\"bedroom3-w2\":{\"isOpen\":false,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builder)
@@ -69,10 +69,11 @@ public class BlockWindowsTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"window-1\",\"roomName\":\"bedroom3\",\"state\":\"true\"}");
+            .content(
+                "{\"windowName\":\"bedroom3-w1\",\"roomName\":\"bedroom3\",\"state\":\"true\"}");
 
     String resultsBlock =
-        "{\"window-1\":{\"isOpen\":false,\"blocked\":true},\"window-2\":{\"isOpen\":false,\"blocked\":false}}";
+        "{\"bedroom3-w1\":{\"isOpen\":false,\"blocked\":true},\"bedroom3-w2\":{\"isOpen\":false,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -85,15 +86,18 @@ public class BlockWindowsTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"window-1\",\"roomName\":\"bedroom3\",\"state\":\"false\"}");
+            .content(
+                "{\"windowName\":\"bedroom3-w1\",\"roomName\":\"bedroom3\",\"state\":\"false\"}");
 
     this.mockMvc
         .perform(builderUnblock)
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(
-            content().string(containsString("\"window-1\":{\"isOpen\":false,\"blocked\":false}")))
+            content()
+                .string(containsString("\"bedroom3-w1\":{\"isOpen\":false,\"blocked\":false}")))
         .andExpect(
-            content().string(containsString("\"window-2\":{\"isOpen\":false,\"blocked\":false}")));
+            content()
+                .string(containsString("\"bedroom3-w2\":{\"isOpen\":false,\"blocked\":false}")));
   }
 }

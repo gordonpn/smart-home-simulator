@@ -5,11 +5,13 @@ import Alert from "@material-ui/lab/Alert";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import ProfileStore from "@/src/stores/ProfileStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function LoadProfiles() {
   const [onSuccess, setOnSuccess] = useState(false);
   const [onFailure, setOnFailure] = useState(false);
   const { setProfiles } = ProfileStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleClick = async () => {
     const response = await axios.get("/api/profiles/load");
@@ -18,6 +20,11 @@ export default function LoadProfiles() {
       if (res.status === 200) {
         setProfiles(res.data);
         setOnSuccess(true);
+        appendToLogs({
+          timestamp: new Date(),
+          message: `Loaded profiles from filesystem`,
+          module: "SHS",
+        });
       }
     } else if (response.status === 500) {
       setOnFailure(true);

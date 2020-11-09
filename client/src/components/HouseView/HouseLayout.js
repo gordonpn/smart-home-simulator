@@ -6,7 +6,7 @@ import RunningStateStore from "@/src/stores/RunningStateStore";
 import ProfileStore from "@/src/stores/ProfileStore";
 
 export default function HouseLayout() {
-  const { currentHouse, windows, triggerRender } = HouseStore();
+  const { currentHouse, windows, triggerRender, doors, lights } = HouseStore();
   const { profiles } = ProfileStore();
   const { currentState } = RunningStateStore();
   const [roomElements, setRoomElements] = useState([]);
@@ -17,11 +17,33 @@ export default function HouseLayout() {
     const renderRooms = () => {
       const elements = [];
       const { houseCoor: components } = currentHouse;
-      for (const roomName in components) {
-        const subComp = components[roomName];
+      const orderedMap = new Map(Object.entries(components));
+      const tempArrDoors = orderedMap.get("doors");
+      const tempArrWindows = orderedMap.get("windows");
+      orderedMap.delete("doors");
+      orderedMap.delete("windows");
+      orderedMap.set("windows", tempArrWindows);
+      orderedMap.set("doors", tempArrDoors);
+
+      const shapeColorState = (componentType, componentName) => {
+        if (doors !== undefined && componentType === "doors") {
+          if (doors.get(componentName).locked) {
+            return "#36CD6C";
+          }
+          return doors.get(componentName).open ? null : "brown";
+        } else if (windows !== undefined && componentType === "windows") {
+          return windows.get(componentName).isOpen ? null : "#00D2FF";
+        } else if (lights !== undefined) {
+          return lights.get(componentName + "-l1").isOn ? "#F3F686" : null;
+        }
+        return null;
+      };
+
+      for (const [key, value] of orderedMap.entries()) {
+        const subComp = value;
+        const roomName = key;
         let width = 50;
         let height = 50;
-        let shapeColor = null;
         let textY = 30;
         let textX = 30;
         let fontSize = 7;
@@ -56,7 +78,6 @@ export default function HouseLayout() {
           case "doors":
             width = 5;
             height = 10;
-            shapeColor = "brown";
             break;
           case "windows":
             width = 20;
@@ -64,7 +85,6 @@ export default function HouseLayout() {
             textY = 6;
             textX = -5;
             fontSize = 6;
-            shapeColor = "#00D2FF";
             break;
           case "garage":
             width = 80;
@@ -85,77 +105,91 @@ export default function HouseLayout() {
             textY = 5;
             break;
         }
-        for (let i = 0; i < subComp.length; i++) {
-          elements.push(
-            <Rect
-              key={subComp[i].name ? subComp[i].name : roomName + i}
-              x={subComp[i].x}
-              y={subComp[i].y}
-              width={width}
-              height={height}
-              fill={shapeColor}
-              stroke="black"
-            />
-          );
 
-          if (subComp[i].name !== null) {
-            elements.push(
-              <Text
-                key={
-                  "name-" +
-                  (subComp[i].name ? subComp[i].name : roomName + i.toString())
-                }
-                x={subComp[i].x + textX}
-                y={subComp[i].y + textY}
-                text={subComp[i].name}
-                fontSize={fontSize}
-              />
-            );
-          }
+        if (roomName !== "lights") {
+          for (let i = 0; i < subComp.length; i++) {
+            if (roomName !== "lights") {
+              elements.push(
+                <Rect
+                  key={subComp[i].name ? subComp[i].name : roomName + i}
+                  x={subComp[i].x}
+                  y={subComp[i].y}
+                  width={
+                    subComp[i].name.toLowerCase().includes("garage")
+                      ? 50
+                      : width
+                  }
+                  height={height}
+                  fillPriority={"radial-gradient"}
+                  fill={shapeColorState(roomName, subComp[i].name)}
+                  stroke="black"
+                />
+              );
+            }
 
-          if (roomName === "windows") {
-            elements.push(
-              <Circle
-                key={"block-" + subComp[i].name}
-                x={subComp[i].x + width * 0.5}
-                y={subComp[i].y}
-                visible={
-                  windows !== undefined
-                    ? windows.get(
-                        subComp[i].name.substr(0, subComp[i].name.indexOf("-w"))
-                      )
-                    : false
-                }
-                radius={4}
-                fill={"red"}
-              />
-            );
-          }
-
-          if (!profiles.length) {
-            continue;
-          }
-
-          let personAlreadyInRoom = 0;
-          for (const profile of profiles) {
-            const { location, name } = profile;
-            if (subComp[i].name === location.toString().toLowerCase()) {
-              personAlreadyInRoom++;
+            if (
+              subComp[i].name !== null &&
+              roomName !== "doors" &&
+              roomName !== "lights"
+            ) {
               elements.push(
                 <Text
                   key={
-                    "profile-" +
+                    "name-" +
                     (subComp[i].name
-                      ? subComp[i].name + name
-                      : name + i.toString())
+                      ? subComp[i].name
+                      : roomName + i.toString())
                   }
                   x={subComp[i].x + textX}
-                  y={subComp[i].y + textY + personAlreadyInRoom * 5}
-                  text={name}
-                  fontSize={4}
-                  fill="red"
+                  y={subComp[i].y + textY}
+                  text={subComp[i].name}
+                  fontSize={fontSize}
                 />
               );
+            }
+
+            if (roomName === "windows") {
+              elements.push(
+                <Circle
+                  key={"block-" + subComp[i].name}
+                  x={subComp[i].x + width * 0.5}
+                  y={subComp[i].y}
+                  visible={
+                    windows !== undefined
+                      ? windows.get(subComp[i].name).blocked
+                      : false
+                  }
+                  radius={4}
+                  fill={"red"}
+                />
+              );
+            }
+
+            if (!profiles.length) {
+              continue;
+            }
+
+            let personAlreadyInRoom = 0;
+            for (const profile of profiles) {
+              const { location, name } = profile;
+              if (subComp[i].name === location.toString().toLowerCase()) {
+                personAlreadyInRoom++;
+                elements.push(
+                  <Text
+                    key={
+                      "profile-" +
+                      (subComp[i].name
+                        ? subComp[i].name + name
+                        : name + i.toString())
+                    }
+                    x={subComp[i].x + textX}
+                    y={subComp[i].y + textY + personAlreadyInRoom * 5}
+                    text={name}
+                    fontSize={4}
+                    fill="red"
+                  />
+                );
+              }
             }
           }
         }
@@ -186,7 +220,7 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse, profiles, triggerRender, windows]);
+  }, [currentHouse, profiles, triggerRender, windows, doors, lights]);
 
   return (
     <Stage

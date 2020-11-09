@@ -3,9 +3,7 @@ package team23.smartHomeSimulator;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -78,11 +76,12 @@ public class HouseControllerTest {
 
   @Test
   public void shouldBeLockableOrNot() throws Exception {
-    Room lockableRoom = new Room("room1", "deck", 1, 1, 1);
+    // Kitchen door is the deck door
+    Room lockableRoom = new Room("room1", "kitchen", 1, 1, 1);
     Room nonLockableRoom = new Room("room2", "bathroom", 1, 1, 1);
 
-    assertTrue(lockableRoom.getDoors().get("door-1").isLockable());
-    assertFalse(nonLockableRoom.getDoors().get("door-1").isLockable());
+    assertTrue(lockableRoom.getDoors().get("kitchen-d1").isLockable());
+    assertFalse(nonLockableRoom.getDoors().get("bathroom-d1").isLockable());
   }
 
   @Test
@@ -145,9 +144,9 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+            .content("{\"windowName\":\"room1-w1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"window-1\":{\"isOpen\":true,\"blocked\":false}}";
+    String resultsBlock = "{\"room1-w1\":{\"isOpen\":true,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -160,9 +159,9 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"windowName\":\"window-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+            .content("{\"windowName\":\"room1-w1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"window-1\":{\"isOpen\":false,\"blocked\":false}}";
+    String resultsUnblock = "{\"room1-w1\":{\"isOpen\":false,\"blocked\":false}}";
 
     this.mockMvc
         .perform(builderUnblock)
@@ -178,30 +177,32 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+            .content("{\"doorName\":\"room1-d1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
-    String resultsLock = "{\"door-1\":{\"lockable\":false,\"locked\":false,\"open\":true}}";
+    String resultsLock = "{\"room1-d1\":{\"lockable\":false,\"locked\":false,\"open\":true}}";
 
     this.mockMvc
         .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString(resultsLock)));
+        .andExpect(jsonPath("$.room1-d1.open").value(true))
+        .andExpect(jsonPath("$.room1-d1.locked").value(false))
+        .andExpect(jsonPath("$.room1-d1.lockable").value(false));
 
     MockHttpServletRequestBuilder builderUnlock =
         put("/api/rooms/doors/open-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+            .content("{\"doorName\":\"room1-d1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
     this.mockMvc
         .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString("\"lockable\":false")))
-        .andExpect(content().string(containsString("\"locked\":false")))
-        .andExpect(content().string(containsString("\"open\":false")));
+        .andExpect(jsonPath("$.room1-d1.open").value(false))
+        .andExpect(jsonPath("$.room1-d1.locked").value(false))
+        .andExpect(jsonPath("$.room1-d1.lockable").value(false));
   }
 
   @Test
@@ -211,9 +212,9 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"true\"}");
+            .content("{\"lightName\":\"room1-l1\",\"roomName\":\"room1\",\"state\":\"true\"}");
 
-    String resultsBlock = "{\"light-1\":{\"isOn\":true}";
+    String resultsBlock = "{\"room1-l1\":{\"isOn\":true}";
 
     this.mockMvc
         .perform(builderBlock)
@@ -226,9 +227,9 @@ public class HouseControllerTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"false\"}");
+            .content("{\"lightName\":\"room1-l1\",\"roomName\":\"room1\",\"state\":\"false\"}");
 
-    String resultsUnblock = "{\"light-1\":{\"isOn\":false}";
+    String resultsUnblock = "{\"room1-l1\":{\"isOn\":false}";
 
     this.mockMvc
         .perform(builderUnblock)
@@ -238,6 +239,7 @@ public class HouseControllerTest {
   }
 
   @Test
+<<<<<<< HEAD
   public void shouldSetAwayModeLightsOn() throws Exception {
     LocalDate date = LocalDate.now();
     MockHttpServletRequestBuilder builderBlock =
@@ -254,5 +256,19 @@ public class HouseControllerTest {
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().string(containsString(resultsBlock)));
+=======
+  public void shouldReturnAwayState() throws Exception {
+    MockHttpServletRequestBuilder builderBlock =
+        get("/api/house/away-mode")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding("UTF-8");
+
+    this.mockMvc
+        .perform(builderBlock)
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("false")));
+>>>>>>> 24f3f052cd320d4d70733990e4f99048303a6472
   }
 }

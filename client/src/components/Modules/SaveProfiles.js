@@ -5,12 +5,14 @@ import Alert from "@material-ui/lab/Alert";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import RunningStateStore from "@/src/stores/RunningStateStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function SaveProfiles() {
   const [onSuccess, setOnSuccess] = useState(false);
   const [onFailure, setOnFailure] = useState(false);
   const [onConflict, setOnConflict] = useState(false);
   const { currentState } = RunningStateStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleClick = async () => {
     if (currentState) {
@@ -20,6 +22,11 @@ export default function SaveProfiles() {
     const response = await axios.get("/api/profiles/save");
     if (response.status === 200) {
       setOnSuccess(true);
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Saved profiles to filesystem`,
+        module: "SHS",
+      });
     } else if (response.status === 500) {
       setOnFailure(true);
     }
