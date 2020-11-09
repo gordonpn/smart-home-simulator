@@ -27,6 +27,8 @@ const HouseStore = create((set, get) => ({
     const lightsSchedule = get().lightsSchedule;
     lightsSchedule.delete(lightName);
   },
+  awayMode: false,
+  setAwayMode: (awayMode) => set({ awayMode: awayMode }),
 }));
 
 export default HouseStore;
