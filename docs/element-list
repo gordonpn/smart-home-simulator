@@ -1,4 +1,8 @@
 team23.smartHomeSimulator
 team23.smartHomeSimulator.controller
 team23.smartHomeSimulator.model
+team23.smartHomeSimulator.model.modules
+team23.smartHomeSimulator.model.repository
 team23.smartHomeSimulator.model.request_body
+team23.smartHomeSimulator.service
+team23.smartHomeSimulator.utility
