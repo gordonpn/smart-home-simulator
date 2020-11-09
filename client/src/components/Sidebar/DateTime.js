@@ -10,6 +10,7 @@ import axios from "axios";
 import formStyles from "@/src/styles/formStyles";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 import HouseStore from "@/src/stores/HouseStore";
+import moment from "moment";
 
 export default function DateTime() {
   const [userDateInput, setUserDateInput] = useState("");
@@ -23,6 +24,7 @@ export default function DateTime() {
     lights,
     setTriggerRender,
     triggerRender,
+    removeLightsSchedule,
   } = HouseStore();
 
   const handleOpen = () => {
@@ -111,29 +113,40 @@ export default function DateTime() {
     return `${hours}:${minutes}`;
   };
 
+  const isTimeBetween = (startTime, endTime, serverTime) => {
+    let start = moment(startTime, "H:mm");
+    let end = moment(endTime, "H:mm");
+    let server = moment(serverTime, "H:mm");
+    if (end < start) {
+      return (
+        (server >= start && server <= moment("23:59:59", "h:mm:ss")) ||
+        (server >= moment("0:00:00", "h:mm:ss") && server < end)
+      );
+    }
+    return server >= start && server < end;
+  };
+
   useEffect(() => {
     if (currentState) {
       if (lightsSchedule.size) {
         lightsSchedule.forEach((value, key) => {
           let currentHour = currentTime.getHours().toString();
           let currentMinute = currentTime.getMinutes().toString();
+          const hhmmStart = moment(value.startTime)._i;
+          const hhmmEnd = moment(value.endTime)._i;
           const isHourAmPm = currentHour.length;
           const isMinLengthOne = currentMinute.length;
           currentHour = isHourAmPm === 1 ? "0" + currentHour : currentHour;
           currentMinute =
             isMinLengthOne === 1 ? "0" + currentMinute : currentMinute;
-          const hhmmStart = value.startTime.split(":");
-          const hhmmEnd = value.endTime.split(":");
-          const [startHour, startMin] = hhmmStart;
-          const [endHour, endMin] = hhmmEnd;
-
-          if (startHour === currentHour && startMin === currentMinute) {
+          const both = currentHour + currentMinute;
+          const actualTime = moment(both, "hmm").format("HH:mm");
+          if (isTimeBetween(actualTime, hhmmStart, hhmmEnd)) {
             lights.set(key, { isOn: true });
             setTriggerRender(!triggerRender);
-          }
-
-          if (endHour === currentHour && endMin === currentMinute) {
+          } else {
             lights.set(key, { isOn: false });
+            removeLightsSchedule(key);
             setTriggerRender(!triggerRender);
           }
         });

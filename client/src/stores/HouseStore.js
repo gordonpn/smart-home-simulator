@@ -23,6 +23,10 @@ const HouseStore = create((set, get) => ({
     const lightsSchedule = get().lightsSchedule;
     lightsSchedule.set(lightName, schedule);
   },
+  removeLightsSchedule: (lightName) => {
+    const lightsSchedule = get().lightsSchedule;
+    lightsSchedule.delete(lightName);
+  },
 }));
 
 export default HouseStore;
