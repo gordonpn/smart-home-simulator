@@ -26,7 +26,7 @@ public class LockDoorsTest {
   public void shouldReturnHouseLayout() throws Exception {
 
     String content =
-        "{\"rooms\":{\"deck\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":1,\"numLights\":1}}}";
+        "{\"rooms\":{\"kitchen\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":1,\"numLights\":1}}}";
 
     MockHttpServletRequestBuilder builder =
         MockMvcRequestBuilders.post("/api/upload-house")
@@ -59,29 +59,29 @@ public class LockDoorsTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"true\"}");
+            .content("{\"doorName\":\"kitchen-d1\",\"roomName\":\"kitchen\",\"state\":\"true\"}");
 
     this.mockMvc
         .perform(builderLock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.door-1.lockable").value(true))
-        .andExpect(jsonPath("$.door-1.locked").value(true))
-        .andExpect(jsonPath("$.door-1.open").value(false));
+        .andExpect(jsonPath("$.kitchen-d1.lockable").value(true))
+        .andExpect(jsonPath("$.kitchen-d1.locked").value(true))
+        .andExpect(jsonPath("$.kitchen-d1.open").value(false));
 
     MockHttpServletRequestBuilder builderUnlock =
         MockMvcRequestBuilders.put("/api/rooms/doors/lock-door")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content("{\"doorName\":\"door-1\",\"roomName\":\"deck\",\"state\":\"false\"}");
+            .content("{\"doorName\":\"kitchen-d1\",\"roomName\":\"kitchen\",\"state\":\"false\"}");
 
     this.mockMvc
         .perform(builderUnlock)
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.door-1.lockable").value(true))
-        .andExpect(jsonPath("$.door-1.locked").value(false))
-        .andExpect(jsonPath("$.door-1.open").value(false));
+        .andExpect(jsonPath("$.kitchen-d1.lockable").value(true))
+        .andExpect(jsonPath("$.kitchen-d1.locked").value(false))
+        .andExpect(jsonPath("$.kitchen-d1.open").value(false));
   }
 }

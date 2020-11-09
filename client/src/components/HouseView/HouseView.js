@@ -8,7 +8,7 @@ import Input from "@material-ui/core/Input";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function HouseView() {
-  const { setHouse, setWindows } = HouseStore();
+  const { setHouse, setWindows, setDoors, setLights } = HouseStore();
   const { appendToLogs } = ConsoleStore();
 
   const processFile = (event) => {
@@ -26,15 +26,31 @@ export default function HouseView() {
           .then((res) => {
             if (res.status === 200) {
               setHouse(res.data);
-              const windowsArr = res.data.houseCoor.windows;
+              const rooms = res.data.rooms;
+              const doorsMap = new Map();
+              const lightsMap = new Map();
               const windowsMap = new Map();
-              windowsArr.forEach((window) => {
-                windowsMap.set(
-                  window.name.substr(0, window.name.indexOf("-w")),
-                  false
-                );
-              });
+              for (const [, roomValue] of Object.entries(rooms)) {
+                for (const [doorKey, doorValue] of Object.entries(
+                  roomValue.doors
+                )) {
+                  doorsMap.set(doorKey, doorValue);
+                }
+                for (const [lightKey, lightValue] of Object.entries(
+                  roomValue.lights
+                )) {
+                  lightsMap.set(lightKey, lightValue);
+                }
+                for (const [winKey, winValue] of Object.entries(
+                  roomValue.windows
+                )) {
+                  windowsMap.set(winKey, winValue);
+                }
+              }
+
               setWindows(windowsMap);
+              setDoors(doorsMap);
+              setLights(lightsMap);
             }
             appendToLogs({
               timestamp: new Date(),

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -19,7 +19,7 @@ export default function MoveUser() {
   const classes = formStyles();
   const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
-  const { currentHouse } = HouseStore();
+  const { currentHouse, isAutoModeOn, lights } = HouseStore();
   const {
     profiles,
     currentProfile,
@@ -27,8 +27,18 @@ export default function MoveUser() {
     setProfiles,
   } = ProfileStore();
   const [location, setLocation] = useState("");
+  const [previousLocation, setPreviousLocation] = useState("");
   const { appendToLogs } = ConsoleStore();
 
+  useEffect(() => {
+    var userLocation;
+    for (const profile of profiles) {
+      if (profile.name === selectedProfile) {
+        userLocation = profile.location;
+      }
+    }
+    setPreviousLocation(userLocation);
+  }, [selectedProfile, profiles]);
   const loadProfiles = async () => {
     const res = await axios.get("/api/profiles");
     if (res.status === 200) {
@@ -61,6 +71,10 @@ export default function MoveUser() {
     };
     const res = await axios.put("/api/profiles/location", putBody);
     if (res.status === 200) {
+      if (isAutoModeOn && lights) {
+        lights.set(previousLocation + "-l1", { isOn: false });
+        lights.set(location + "-l1", { isOn: true });
+      }
       if (selectedProfile === currentProfile?.name) {
         changeLocation(location);
       }
