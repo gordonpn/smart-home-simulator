@@ -56,13 +56,19 @@ public class Room {
   }
 
   /**
-   * Initialize the doors in the room
+   * Initialize the doors in the room and makes sure if a room is an outside room to allow the door
+   * to be locked
    *
    * @param numDoors the number of doors in a room
    */
   private void createDoors(int numDoors) {
+    boolean isExternalDoor =
+        this.roomName != null
+            && (this.roomName.contains("kitchen") // kitchen door is the deck door
+                || this.roomName.contains("garage")
+                || this.roomName.contains("living")); // living room door is the entrance door
     for (int i = 0; i < numDoors; i++) {
-      this.doors.put("door-" + (i + 1), new Door());
+      this.doors.put(this.getRoomName() + "-d" + (i + 1), new Door(isExternalDoor));
     }
   }
 
@@ -73,7 +79,7 @@ public class Room {
    */
   private void createWindows(int numWindows) {
     for (int i = 0; i < numWindows; i++) {
-      this.windows.put("window-" + (i + 1), new Window());
+      this.windows.put(this.getRoomName() + "-w" + (i + 1), new Window());
     }
   }
 
@@ -84,7 +90,7 @@ public class Room {
    */
   private void createLights(int numLights) {
     for (int i = 0; i < numLights; i++) {
-      this.lights.put("light-" + (i + 1), new Light());
+      this.lights.put(this.getRoomName() + "-l" + (i + 1), new Light());
     }
   }
 
@@ -186,5 +192,25 @@ public class Room {
    */
   public Window getOneWindow(String windowName) {
     return this.windows.get(windowName);
+  }
+
+  /**
+   * Getter for one door
+   *
+   * @param doorName name of the door we want to get information
+   * @return door object
+   */
+  public Door getOneDoor(String doorName) {
+    return this.doors.get(doorName);
+  }
+
+  /**
+   * Getter for one light
+   *
+   * @param lightName name of the light we want to get information
+   * @return door object
+   */
+  public Light getOneLight(String lightName) {
+    return this.lights.get(lightName);
   }
 }

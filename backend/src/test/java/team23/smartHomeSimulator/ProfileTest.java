@@ -2,12 +2,14 @@ package team23.smartHomeSimulator;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class ProfileTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"name\":\"Gordon\",\"location\":\"Outside\",\"role\":\"Owner\",\"permission\":\"Parents\"}");
+                "{\"name\":\"Gordon\",\"location\":\"Outside\",\"role\":\"Owner\",\"permission\":\"Parent\"}");
 
     MockHttpServletRequestBuilder builderDavid =
         MockMvcRequestBuilders.post("/api/profiles")
@@ -40,7 +42,7 @@ public class ProfileTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"name\":\"David\",\"location\":\"Kitchen\",\"role\":\"Owner\",\"permission\":\"Parents\"}");
+                "{\"name\":\"David\",\"location\":\"Kitchen\",\"role\":\"Owner\",\"permission\":\"Parent\"}");
 
     this.mockMvc.perform(builderGordon).andExpect(status().isOk());
     this.mockMvc.perform(builderDavid).andExpect(status().isOk());
@@ -89,7 +91,7 @@ public class ProfileTest {
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(
-                "{\"oldName\":\"gordon\",\"name\":\"newName\",\"location\":\"location\",\"role\":\"role\",\"permission\":\"permission\"}");
+                "{\"oldName\":\"gordon\",\"name\":\"newName\",\"location\":\"location\",\"role\":\"role\",\"permission\":\"Parent\"}");
 
     this.mockMvc.perform(builderUpdate);
 
@@ -154,5 +156,33 @@ public class ProfileTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("\"location\":\"garage\"")));
+  }
+
+  @Test
+  public void shouldReturnAllPermissions() throws Exception {
+    this.mockMvc
+        .perform(get("/api/profiles/permissions"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content().string(containsString("[\"PARENT\",\"CHILDREN\",\"GUEST\",\"STRANGER\"]")));
+  }
+
+  @Test
+  public void shouldSaveProfiles() throws Exception {
+    this.mockMvc.perform(get("/api/profiles/save")).andDo(print()).andExpect(status().isOk());
+    File file = new File("profiles.json");
+    assertTrue(file.exists());
+  }
+
+  @Test
+  public void shouldLoadProfiles() throws Exception {
+    this.mockMvc.perform(get("/api/profiles/save")).andDo(print()).andExpect(status().isOk());
+    this.mockMvc.perform(get("/api/profiles/load")).andDo(print()).andExpect(status().isOk());
+    this.mockMvc
+        .perform(get("/api/profiles"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(not(containsString("[]"))));
   }
 }

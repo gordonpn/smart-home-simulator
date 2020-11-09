@@ -3,6 +3,7 @@ package team23.smartHomeSimulator.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import team23.smartHomeSimulator.model.modules.modulesObserver;
 
 /** The House class that includes the outside temperature and the list of rooms */
 public class House {
@@ -15,6 +16,12 @@ public class House {
 
   /** The list of all components' coordinates in 2D plane */
   private HashMap<String, List<Coordinates>> houseCoor = new HashMap<String, List<Coordinates>>();
+
+  /** The list of the observers for house */
+  private HashMap<String, modulesObserver> modulesObserver = new HashMap<String, modulesObserver>();
+
+  /** The list of users' location in the house */
+  private HashMap<String, String> usersLocation = new HashMap<String, String>();
 
   /** Default constructor to deserialize JSON object */
   public House() {}
@@ -51,7 +58,7 @@ public class House {
     this.houseCoor.put("living", new ArrayList<Coordinates>());
     this.houseCoor.put("kitchen", new ArrayList<Coordinates>());
     this.houseCoor.put("bathrooms", new ArrayList<Coordinates>());
-    this.houseCoor.put("dining", new ArrayList<Coordinates>());
+    this.houseCoor.put("lights", new ArrayList<Coordinates>());
     this.houseCoor.put("deck", new ArrayList<Coordinates>());
     this.houseCoor.put("entrance", new ArrayList<Coordinates>());
     this.houseCoor.put("garage", new ArrayList<Coordinates>());
@@ -112,14 +119,18 @@ public class House {
             this.houseCoor
                 .get("deck")
                 .add(new Coordinates(key, livingRoomWidth + diningRoomWidth, sublvl2));
+            addDoorWindowCoord(room, key, 0, 0, 0, 0);
 
           } else if (key.toLowerCase().contains("garage")) {
             this.houseCoor
                 .get("garage")
                 .add(new Coordinates(key, livingRoomWidth + 30 - 80, sublvl2));
 
+            addDoorWindowCoord(room, key, 55, sublvl3 - 25, 50, sublvl3);
+
           } else if (key.toLowerCase().contains("entrance")) {
             this.houseCoor.get("entrance").add(new Coordinates(key, 0, sublvl2));
+            addDoorWindowCoord(room, key, 0, 0, 0, 0);
           }
 
           this.rooms.put(
@@ -143,12 +154,21 @@ public class House {
    * @param doorY the y coordinate for door
    */
   private void addDoorWindowCoord(Room room, String key, int winX, int winY, int doorX, int doorY) {
-    if (room.getNumDoors() != 0) {
-      this.houseCoor.get("doors").add(new Coordinates(doorX, doorY));
+    if (room.getNumDoors() != 0
+        && !key.equalsIgnoreCase("deck")
+        && !key.equalsIgnoreCase("entrance")) {
+      this.houseCoor.get("doors").add(new Coordinates((key + "-d1"), doorX, doorY));
     }
 
-    if (room.getNumWindows() != 0) {
+    if (room.getNumWindows() != 0
+        && !key.equalsIgnoreCase("garage")
+        && !key.equalsIgnoreCase("deck")
+        && !key.equalsIgnoreCase("entrance")) {
       this.houseCoor.get("windows").add(new Coordinates((key + "-w1"), winX, winY));
+    }
+
+    if (room.getNumLights() != 0) {
+      this.houseCoor.get("lights").add(new Coordinates((key + "-l1"), 0, 0));
     }
   }
 
@@ -196,5 +216,70 @@ public class House {
    */
   public Room getOneRoom(String roomName) {
     return rooms.get(roomName);
+  }
+
+  /**
+   * Getter for usersLocation
+   *
+   * @return hash map of type string and string
+   */
+  public HashMap<String, String> getUsersLocation() {
+    return this.usersLocation;
+  }
+
+  /**
+   * Setter for usersLocation
+   *
+   * @param name name of the user
+   * @param location location of the user
+   */
+  public void setUsersLocation(String name, String location) {
+    this.usersLocation.put(name, location);
+    notifyModules();
+  }
+
+  /**
+   * Remove user from house
+   *
+   * @param name name of the user to be removed
+   */
+  public void deleteUsersLocation(String name) {
+    this.usersLocation.remove(name);
+  }
+
+  /**
+   * Add observer to house
+   *
+   * @param moduleName the name of the module
+   * @param module the moduleObserver object
+   */
+  public void addModuleObserver(String moduleName, modulesObserver module) {
+    this.modulesObserver.put(moduleName, module);
+  }
+
+  /**
+   * Remove observer from house
+   *
+   * @param moduleName name of the module to be removed
+   */
+  public void removeModuleObserver(String moduleName) {
+    this.modulesObserver.remove(moduleName);
+  }
+
+  /** Notify all observers that there is a change */
+  private void notifyModules() {
+    modulesObserver.forEach(
+        (key, value) -> {
+          value.update(this);
+        });
+  }
+
+  /**
+   * Getter for modulesObserver
+   *
+   * @return Hash map of String, modulesObserver
+   */
+  public HashMap<String, modulesObserver> getModulesObserver() {
+    return modulesObserver;
   }
 }
