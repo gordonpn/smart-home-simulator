@@ -15,25 +15,29 @@ export default function AwayMode() {
       if (currentState) {
         for (const profile of profiles) {
           if (profile.location.toLowerCase() !== "outside") {
-            appendToLogs({
-              timestamp: new Date(),
-              message: "Away mode has been turned off automatically",
-              module: "SHP",
-            });
+            if (awayMode) {
+              appendToLogs({
+                timestamp: new Date(),
+                message: "Away mode has been turned off automatically",
+                module: "SHP",
+              });
+            }
             setAwayMode(false);
             return;
           }
         }
-        appendToLogs({
-          timestamp: new Date(),
-          message: "Away mode has been turned on automatically",
-          module: "SHP",
-        });
+        if (!awayMode) {
+          appendToLogs({
+            timestamp: new Date(),
+            message: "Away mode has been turned on automatically",
+            module: "SHP",
+          });
+        }
         setAwayMode(true);
       }
     };
     fetchAwayMode();
-  }, [appendToLogs, currentState, profiles]);
+  }, [appendToLogs, awayMode, currentState, profiles]);
 
   return (
     <>

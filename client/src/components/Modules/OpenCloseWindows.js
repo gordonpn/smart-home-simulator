@@ -15,6 +15,7 @@ import HouseStore from "@/src/stores/HouseStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
 import ProfileStore from "@/src/stores/ProfileStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function OpenCloseWindows() {
   const classes = formStyles();
@@ -32,6 +33,8 @@ export default function OpenCloseWindows() {
   const [permission, setPermission] = useState("");
   const [userLocation, setUserLocation] = useState();
   const [windowChanges, setWindowChanges] = useState(new Map());
+  const { appendToLogs } = ConsoleStore();
+
   useEffect(() => {
     if (currentHouse !== undefined) {
       setWindowListTemp(windows);
@@ -66,6 +69,14 @@ export default function OpenCloseWindows() {
         "/api/rooms/windows/open-window",
         requestBody
       );
+
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Window in room "${key}" is ${
+          value.isOpen ? "opened" : "closed"
+        }`,
+        module: "SHC",
+      });
 
       if (res.status === 200) {
         console.warn("block/unblock window successfully");
