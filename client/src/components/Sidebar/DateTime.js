@@ -129,7 +129,6 @@ export default function DateTime() {
             currentHour + ":" + currentMinute,
             moment.HTML5_FMT.TIME
           );
-          // const isBetween = myTime.isBetween(start,end,undefined,"[]")
 
           if (myTime.isBetween(start, end, undefined, "[]")) {
             lights.set(key, { isOn: true });
