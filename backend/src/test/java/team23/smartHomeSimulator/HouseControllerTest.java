@@ -239,7 +239,6 @@ public class HouseControllerTest {
   }
 
   @Test
-<<<<<<< HEAD
   public void shouldSetAwayModeLightsOn() throws Exception {
     LocalDate date = LocalDate.now();
     MockHttpServletRequestBuilder builderBlock =
@@ -247,7 +246,7 @@ public class HouseControllerTest {
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8")
-                    .content("{{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"true\"}, {\"startTime\":\""+date+" 12:12:12\" , \"endTime\":\""+date+" 22:12:12\"}}");
+                    .content("{{\"lightName\":\"light-1\",\"roomName\":\"room1\",\"state\":\"true\"}, {\"startTime\":\"" + date + " 12:12:12\" , \"endTime\":\"" + date + " 22:12:12\"}}");
 
     String resultsBlock = "{\"light-1\":{\"isOn\":true}";
 
@@ -256,19 +255,19 @@ public class HouseControllerTest {
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().string(containsString(resultsBlock)));
-=======
-  public void shouldReturnAwayState() throws Exception {
-    MockHttpServletRequestBuilder builderBlock =
-        get("/api/house/away-mode")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8");
-
-    this.mockMvc
-        .perform(builderBlock)
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("false")));
->>>>>>> 24f3f052cd320d4d70733990e4f99048303a6472
   }
+  public void shouldReturnAwayState() throws Exception {
+      MockHttpServletRequestBuilder builderBlock =
+              get("/api/house/away-mode")
+                      .contentType(MediaType.APPLICATION_JSON_VALUE)
+                      .accept(MediaType.APPLICATION_JSON)
+                      .characterEncoding("UTF-8");
+
+      this.mockMvc
+              .perform(builderBlock)
+              .andDo(print())
+              .andExpect(status().isOk())
+              .andExpect(content().string(containsString("false")));
+  }
+
 }
