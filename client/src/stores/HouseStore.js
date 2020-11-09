@@ -16,6 +16,8 @@ const HouseStore = create((set, get) => ({
     set({ currentTemperature: newTemperature }),
   setDoors: (doors) => set({ doors: doors }),
   setLights: (lights) => set({ lights: lights }),
+  delay: 0,
+  setDelay: (delay) => set({ delay: delay }),
   lightsSchedule: new Map(),
   addLightsSchedule: (lightName, schedule) => {
     const lightsSchedule = get().lightsSchedule;
