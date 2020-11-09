@@ -22,7 +22,7 @@ export default function LoadProfiles() {
         setOnSuccess(true);
         appendToLogs({
           timestamp: new Date(),
-          message: `Loaded profiles from filesystem "${name}"`,
+          message: `Loaded profiles from filesystem`,
           module: "SHS",
         });
       }

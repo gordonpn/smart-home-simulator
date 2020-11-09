@@ -15,6 +15,7 @@ import HouseStore from "@/src/stores/HouseStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
 import ProfileStore from "@/src/stores/ProfileStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function SwitchLights() {
   const classes = formStyles();
@@ -32,6 +33,7 @@ export default function SwitchLights() {
   const [permission, setPermission] = useState("");
   const [userLocation, setUserLocation] = useState();
   const [lightChanges, setLightChanges] = useState(new Map());
+  const { appendToLogs } = ConsoleStore();
 
   useEffect(() => {
     if (currentHouse !== undefined) {
@@ -73,7 +75,15 @@ export default function SwitchLights() {
         .catch((error) => {
           console.error(error.response.data.message);
         });
+      appendToLogs({
+        timestamp: new Date(),
+        message: `Light in room "${key}" is ${
+          value.isOn ? "turned on" : "turned off"
+        }`,
+        module: "SHC",
+      });
     });
+
     setLights(lightListTemp);
     setLightChanges(new Map());
     setTriggerRender(!triggerRender);
