@@ -18,6 +18,8 @@ const HouseStore = create((set) => ({
   setLights: (lights) => set({ lights: lights }),
   delay: 0,
   setDelay: (delay) => set({ delay: delay }),
+  awayMode: false,
+  setAwayMode: (awayMode) => set({ awayMode: awayMode }),
 }));
 
 export default HouseStore;
