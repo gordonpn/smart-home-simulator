@@ -1,6 +1,6 @@
 import create from "zustand";
 
-const HouseStore = create((set) => ({
+const HouseStore = create((set, get) => ({
   currentHouse: undefined,
   setHouse: (houseLayout) => set({ currentHouse: houseLayout }),
   windows: undefined,
@@ -16,6 +16,11 @@ const HouseStore = create((set) => ({
     set({ currentTemperature: newTemperature }),
   setDoors: (doors) => set({ doors: doors }),
   setLights: (lights) => set({ lights: lights }),
+  lightsSchedule: new Map(),
+  addLightsSchedule: (lightName, schedule) => {
+    const lightsSchedule = get().lightsSchedule;
+    lightsSchedule.set(lightName, schedule);
+  },
 }));
 
 export default HouseStore;

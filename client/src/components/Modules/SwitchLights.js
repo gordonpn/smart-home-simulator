@@ -47,6 +47,7 @@ export default function SwitchLights() {
       setUserLocation(currentProfile.location);
     }
   }, [currentProfile]);
+
   const handleOpen = () => {
     setOpen(true);
   };

@@ -147,11 +147,15 @@ export default function MoveUser() {
                         handleLocationChange(e);
                       }}
                     >
-                      {Object.keys(currentHouse.rooms).map((room) => (
-                        <MenuItem key={room} value={room}>
-                          {room}
-                        </MenuItem>
-                      ))}
+                      {currentHouse && currentHouse.houseCoor.windows.length ? (
+                        currentHouse.houseCoor.windows.map((window) => (
+                          <MenuItem key={window} value={window}>
+                            {window}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <></>
+                      )}
                       <MenuItem key="outside" value="outside">
                         outside
                       </MenuItem>
