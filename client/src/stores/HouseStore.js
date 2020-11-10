@@ -1,6 +1,6 @@
 import create from "zustand";
 
-const HouseStore = create((set) => ({
+const HouseStore = create((set, get) => ({
   currentHouse: undefined,
   setHouse: (houseLayout) => set({ currentHouse: houseLayout }),
   windows: undefined,
@@ -18,6 +18,11 @@ const HouseStore = create((set) => ({
   setLights: (lights) => set({ lights: lights }),
   delay: 0,
   setDelay: (delay) => set({ delay: delay }),
+  lightsSchedule: new Map(),
+  addLightsSchedule: (lightName, schedule) => {
+    const lightsSchedule = get().lightsSchedule;
+    lightsSchedule.set(lightName, schedule);
+  },
   awayMode: false,
   setAwayMode: (awayMode) => set({ awayMode: awayMode }),
 }));

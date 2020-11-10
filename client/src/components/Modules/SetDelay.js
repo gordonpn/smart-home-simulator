@@ -36,7 +36,12 @@ export default function SetDelay() {
 
   return (
     <>
-      <Button color="primary" size="large" onClick={handleOpen}>
+      <Button
+        color="primary"
+        size="large"
+        variant="outlined"
+        onClick={handleOpen}
+      >
         Delay before contacting authorities: {delay} minutes
       </Button>
       <Modal
