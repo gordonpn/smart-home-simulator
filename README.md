@@ -1,9 +1,15 @@
 # Smart Home Simulator
 
-Team 23
-
 ![Format and Lint](https://github.com/gordonpn/soen343/workflows/Format%20and%20Lint/badge.svg?branch=develop)
 ![Build and Test Java](https://github.com/gordonpn/soen343/workflows/Build%20and%20Test%20Java/badge.svg)
+
+## Video Demonstration Deliverable 1 (2020-10-20)
+
+<https://youtu.be/vRoCYK2vc2o>
+
+## Video Demonstration Deliverable 2 (2020-11-08)
+
+<https://www.youtube.com/watch?v=MO8AL7TA75Y>
 
 ## Requirements
 
@@ -89,10 +95,6 @@ All unit tests can be found in `./backend/src/test/java/team23/smartHomeSimulato
 There is a unit test for **each** of the controller methods, testing their functionality correctly.
 
 To run the tests, `./backend/gradlew test`
-
-### Video Demonstration Deliverable 1 (2020-10-20)
-
-<https://youtu.be/vRoCYK2vc2o>
 
 ### Coding Standards
 
