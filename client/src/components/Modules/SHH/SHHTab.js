@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import ChangeRoomTemp from "@/src/components/Modules/ChangeRoomTemp";
+import ChangeRoomTemp from "@/src/components/Modules/SHH/ChangeRoomTemp";
 
 export default function SHHTab() {
   return (
