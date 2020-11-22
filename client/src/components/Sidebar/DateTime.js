@@ -147,7 +147,16 @@ export default function DateTime() {
 
       return () => clearInterval(interval);
     }
-  }, [currentState, currentTime, setCurrentTime, lightsSchedule, awayMode]);
+  }, [
+    currentState,
+    currentTime,
+    setCurrentTime,
+    lightsSchedule,
+    awayMode,
+    lights,
+    setTriggerRender,
+    triggerRender,
+  ]);
 
   return (
     <>
