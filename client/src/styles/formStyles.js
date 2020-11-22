@@ -20,6 +20,9 @@ const formStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: 200,
   },
+  table: {
+    minWidth: 650,
+  },
 }));
 
 export default formStyles;
