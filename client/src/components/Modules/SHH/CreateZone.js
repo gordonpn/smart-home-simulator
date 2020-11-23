@@ -67,6 +67,9 @@ export default function CreateZone() {
   };
 
   const handleSubmit = () => {
+    if (selectedRooms.length < 1) {
+      return;
+    }
     createZone(selectedRooms);
     setSelectedRooms([]);
     appendToLogs({
