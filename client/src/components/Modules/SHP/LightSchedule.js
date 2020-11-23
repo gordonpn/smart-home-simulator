@@ -12,14 +12,16 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import formStyles from "@/src/styles/formStyles";
 import TextField from "@material-ui/core/TextField";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function LightSchedule() {
-  const classes = formStyles();
+  const [endTime, setEndTime] = useState("");
   const [open, setOpen] = useState(false);
-  const { addLightsSchedule, currentHouse } = HouseStore();
   const [selectedLight, setSelectedLight] = useState("");
   const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const classes = formStyles();
+  const { addLightsSchedule, currentHouse } = HouseStore();
+  const { appendToLogs } = ConsoleStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -33,6 +35,11 @@ export default function LightSchedule() {
     event.preventDefault();
     const schedule = { startTime: startTime, endTime: endTime };
     addLightsSchedule(selectedLight, schedule);
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Light schedule created for ${selectedLight}`,
+      module: "SHP",
+    });
     setOpen(false);
   };
 
