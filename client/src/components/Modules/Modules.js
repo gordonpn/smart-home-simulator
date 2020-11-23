@@ -4,10 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-import SHSTab from "./SHSTab";
-import SHCTab from "./SHCTab";
+import SHSTab from "./SHS/SHSTab";
+import SHCTab from "./SHC/SHCTab";
 import RunningStateStore from "@/src/stores/RunningStateStore";
-import SHPTab from "@/src/components/Modules/SHPTab";
+import SHPTab from "@/src/components/Modules/SHP/SHPTab";
+import SHHTab from "@/src/components/Modules/SHH/SHHTab";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,6 +60,7 @@ export default function Modules() {
         <Tab label="SHS" />
         <Tab label="SHC" disabled={!currentState} />
         <Tab label="SHP" disabled={!currentState} />
+        <Tab label="SHH" disabled={!currentState} />
         <Tab label="+" />
       </Tabs>
       <TabPanel value={activeTab} index={0}>
@@ -70,7 +72,10 @@ export default function Modules() {
       <TabPanel value={activeTab} index={2}>
         <SHPTab />
       </TabPanel>
-      <TabPanel value={activeTab} index={3} />
+      <TabPanel value={activeTab} index={3}>
+        <SHHTab />
+      </TabPanel>
+      <TabPanel value={activeTab} index={4} />
     </div>
   );
 }

@@ -6,10 +6,12 @@ import HouseStore from "@/src/stores/HouseStore";
 import HouseLayout from "./HouseLayout";
 import Input from "@material-ui/core/Input";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import TemperatureStore from "@/src/stores/TemperatureStore";
 
 export default function HouseView() {
   const { setHouse, setWindows, setDoors, setLights } = HouseStore();
   const { appendToLogs } = ConsoleStore();
+  const { addRoomsTemps } = TemperatureStore();
 
   const processFile = (event) => {
     const file = event.target.files[0];
@@ -26,11 +28,12 @@ export default function HouseView() {
           .then((res) => {
             if (res.status === 200) {
               setHouse(res.data);
-              const rooms = res.data.rooms;
+              const { rooms } = res.data;
               const doorsMap = new Map();
               const lightsMap = new Map();
               const windowsMap = new Map();
-              for (const [, roomValue] of Object.entries(rooms)) {
+              for (const [roomName, roomValue] of Object.entries(rooms)) {
+                addRoomsTemps(roomName, null);
                 for (const [doorKey, doorValue] of Object.entries(
                   roomValue.doors
                 )) {
