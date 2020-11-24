@@ -114,9 +114,17 @@ export default function ChangeRoomTemp() {
                         {roomsTemps.get(roomName) !== null
                           ? `Overridden with ${roomsTemps.get(roomName)}\u00b0C`
                           : invertedIndexZones.get(roomName) !== undefined
-                          ? `Zone setting: ${invertedIndexZones.get(
-                              roomName
-                            )}\u00b0C`
+                          ? Array.from(
+                              invertedIndexZones.get(roomName).keys()
+                            ).map((thisPeriod) => (
+                              <Typography key={thisPeriod}>
+                                {thisPeriod}:{" "}
+                                {invertedIndexZones
+                                  .get(roomName)
+                                  .get(thisPeriod)}
+                                {"\u00b0C"}
+                              </Typography>
+                            ))
                           : "Not set"}
                       </TableCell>
                       <TableCell align="right">

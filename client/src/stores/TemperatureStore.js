@@ -22,9 +22,14 @@ const TemperatureStore = create((set, get) => ({
     set({ zones: zones });
   },
   zonesTemps: new Map(),
-  addZonesTemps: (zoneName, temp) => {
+  addZonesTemps: (zoneName, period, temp) => {
     const zones = get().zonesTemps;
-    zones.set(zoneName, temp);
+    let thisZoneTemps = zones.get(zoneName);
+    if (thisZoneTemps === undefined) {
+      thisZoneTemps = new Map();
+    }
+    thisZoneTemps.set(period, temp);
+    zones.set(zoneName, thisZoneTemps);
     set({ zonesTemps: zones });
   },
 }));

@@ -16,10 +16,14 @@ import TableBody from "@material-ui/core/TableBody";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 export default function SetZoneTemp() {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [period, setPeriod] = useState("");
   const [selectedZone, setSelectedZone] = useState("");
   const [zoneTemp, setZoneTemp] = useState("");
   const classes = formStyles();
@@ -44,16 +48,22 @@ export default function SetZoneTemp() {
     setOpenEdit(false);
   };
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    setPeriod(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addZonesTemps(selectedZone, zoneTemp);
+    addZonesTemps(selectedZone, period, zoneTemp);
     appendToLogs({
       timestamp: new Date(),
-      message: `Temperature set for room ${selectedZone} to ${zoneTemp}\u00b0C`,
+      message: `Temperature set for room ${selectedZone} to ${zoneTemp}\u00b0C for ${period}`,
       module: "SHH",
     });
     setSelectedZone("");
     setZoneTemp("");
+    setPeriod("");
     setOpenEdit(false);
   };
 
@@ -94,7 +104,15 @@ export default function SetZoneTemp() {
                       </TableCell>
                       <TableCell align="right">
                         {zonesTemps.has(zoneName)
-                          ? `${zonesTemps.get(zoneName)}\u00b0C`
+                          ? Array.from(zonesTemps.get(zoneName).keys()).map(
+                              (thisPeriod) => (
+                                <Typography key={thisPeriod}>
+                                  {thisPeriod}:{" "}
+                                  {zonesTemps.get(zoneName).get(thisPeriod)}
+                                  {"\u00b0C"}
+                                </Typography>
+                              )
+                            )
                           : "Not Set"}
                       </TableCell>
                       <TableCell align="right">
@@ -150,7 +168,20 @@ export default function SetZoneTemp() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ marginBottom: "1vh" }}
                 />
+                <Box p={1}>
+                  <InputLabel>Period</InputLabel>
+                  <Select
+                    value={period}
+                    onChange={handleChange}
+                    style={{ minWidth: 200 }}
+                  >
+                    <MenuItem value="morning">Morning</MenuItem>
+                    <MenuItem value="daytime">Daytime</MenuItem>
+                    <MenuItem value="night">Night</MenuItem>
+                  </Select>
+                </Box>
                 <Box p={1}>
                   <Button variant="outlined" color="primary" type="submit">
                     Set
