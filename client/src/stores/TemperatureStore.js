@@ -21,6 +21,16 @@ const TemperatureStore = create((set, get) => ({
     zones.delete(zoneName);
     set({ zones: zones });
   },
+  seasons: new Map([
+    ["winter", { start: 0, end: 0 }],
+    ["summer", { start: 0, end: 0 }],
+  ]),
+  setSeasons: (season, period, value) => {
+    const seasons = get().seasons;
+    const previousData = seasons.get(season);
+    seasons.set(season, { ...previousData, [period]: value });
+    set({ seasons: seasons });
+  },
 }));
 
 export default TemperatureStore;
