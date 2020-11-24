@@ -31,6 +31,17 @@ const TemperatureStore = create((set, get) => ({
     seasons.set(season, { ...previousData, [period]: value });
     set({ seasons: seasons });
   },
+  zonesTemps: new Map(),
+  addZonesTemps: (zoneName, period, temp) => {
+    const zones = get().zonesTemps;
+    let thisZoneTemps = zones.get(zoneName);
+    if (thisZoneTemps === undefined) {
+      thisZoneTemps = new Map();
+    }
+    thisZoneTemps.set(period, temp);
+    zones.set(zoneName, thisZoneTemps);
+    set({ zonesTemps: zones });
+  },
 }));
 
 export default TemperatureStore;
