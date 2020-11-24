@@ -13,12 +13,23 @@ const formStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   formControl: {
-    minWidth: 200,
+    margin: theme.spacing(1),
+    minWidth: 650,
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200,
+  },
+  table: {
+    minWidth: 650,
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  chip: {
+    margin: 2,
   },
 }));
 

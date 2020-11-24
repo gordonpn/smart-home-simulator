@@ -4,8 +4,8 @@ import AddUser from "./AddUser";
 import Box from "@material-ui/core/Box";
 import RemoveUser from "./RemoveUser";
 import EditUser from "./EditUser";
-import LoadProfiles from "@/src/components/Modules/LoadProfiles";
-import SaveProfiles from "@/src/components/Modules/SaveProfiles";
+import LoadProfiles from "@/src/components/Modules/SHS/LoadProfiles";
+import SaveProfiles from "@/src/components/Modules/SHS/SaveProfiles";
 
 export default function SHSTab() {
   return (

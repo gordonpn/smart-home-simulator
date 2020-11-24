@@ -1,8 +1,8 @@
-import AwayMode from "@/src/components/Modules/AwayMode";
+import AwayMode from "@/src/components/Modules/SHP/AwayMode";
 import React from "react";
 import Box from "@material-ui/core/Box";
-import SetDelay from "@/src/components/Modules/SetDelay";
-import LightSchedule from "@/src/components/Modules/LightSchedule";
+import SetDelay from "@/src/components/Modules/SHP/SetDelay";
+import LightSchedule from "@/src/components/Modules/SHP/LightSchedule";
 
 export default function SHPTab() {
   return (
