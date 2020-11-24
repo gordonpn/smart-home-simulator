@@ -15,14 +15,16 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
+import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function ChangeRoomTemp() {
-  const classes = formStyles();
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const { roomsTemps, addRoomsTemps } = TemperatureStore();
-  const [selectedRoom, setSelectedRoom] = useState("");
   const [roomTemp, setRoomTemp] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const classes = formStyles();
+  const { appendToLogs } = ConsoleStore();
+  const { roomsTemps, addRoomsTemps } = TemperatureStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,6 +44,11 @@ export default function ChangeRoomTemp() {
   const handleSubmit = (e) => {
     e.preventDefault();
     addRoomsTemps(selectedRoom, roomTemp);
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Temperature set for room ${selectedRoom} to ${roomTemp}\u00b0C`,
+      module: "SHH",
+    });
     setSelectedRoom("");
     setRoomTemp("");
     setOpenEdit(false);
