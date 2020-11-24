@@ -21,6 +21,12 @@ const TemperatureStore = create((set, get) => ({
     zones.delete(zoneName);
     set({ zones: zones });
   },
+  zonesTemps: new Map(),
+  addZonesTemps: (zoneName, temp) => {
+    const zones = get().zonesTemps;
+    zones.set(zoneName, temp);
+    set({ zonesTemps: zones });
+  },
 }));
 
 export default TemperatureStore;
