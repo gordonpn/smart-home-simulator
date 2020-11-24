@@ -22,13 +22,13 @@ import Box from "@material-ui/core/Box";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function CreateZone() {
-  const [open, setOpen] = useState(false);
   const [availableZones, setAvailableRooms] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedRooms, setSelectedRooms] = useState([]);
   const [zoneChanged, setZoneChanged] = useState(false);
   const classes = formStyles();
-  const { zones, deleteZone, roomsTemps, createZone } = TemperatureStore();
-  const [selectedRooms, setSelectedRooms] = useState([]);
   const { appendToLogs } = ConsoleStore();
+  const { zones, deleteZone, roomsTemps, createZone } = TemperatureStore();
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;

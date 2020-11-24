@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -18,16 +18,19 @@ import TextField from "@material-ui/core/TextField";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function ChangeRoomTemp() {
+  const [invertedIndexZones, setInvertedIndexZones] = useState(new Map());
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [roomTemp, setRoomTemp] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
+  const [tempChange, setTempChange] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { roomsTemps, addRoomsTemps } = TemperatureStore();
+  const { roomsTemps, addRoomsTemps, zones, zonesTemps } = TemperatureStore();
 
   const handleOpen = () => {
     setOpen(true);
+    setTempChange(!tempChange);
   };
 
   const handleOpenEdit = (e) => {
@@ -38,6 +41,9 @@ export default function ChangeRoomTemp() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseEdit = () => {
     setOpenEdit(false);
   };
 
@@ -52,7 +58,22 @@ export default function ChangeRoomTemp() {
     setSelectedRoom("");
     setRoomTemp("");
     setOpenEdit(false);
+    setTempChange(!tempChange);
   };
+
+  useEffect(() => {
+    const loadTemps = () => {
+      Array.from(zones.keys()).forEach((zoneName) => {
+        const temp = zonesTemps.get(zoneName);
+        zones.get(zoneName).forEach((room) => {
+          const thisInvertedIndex = invertedIndexZones;
+          thisInvertedIndex.set(room, temp);
+          setInvertedIndexZones(thisInvertedIndex);
+        });
+      });
+    };
+    loadTemps();
+  }, [invertedIndexZones, zones, zonesTemps, tempChange]);
 
   return (
     <>
@@ -79,7 +100,7 @@ export default function ChangeRoomTemp() {
                 <TableHead>
                   <TableRow>
                     <TableCell>Room</TableCell>
-                    <TableCell align="right">Temperature</TableCell>
+                    <TableCell>Temperature</TableCell>
                     <TableCell />
                   </TableRow>
                 </TableHead>
@@ -89,9 +110,13 @@ export default function ChangeRoomTemp() {
                       <TableCell component="th" scope="row">
                         {roomName}
                       </TableCell>
-                      <TableCell align="right">
-                        {roomsTemps.get(roomName)
+                      <TableCell>
+                        {roomsTemps.get(roomName) !== null
                           ? `Overridden with ${roomsTemps.get(roomName)}\u00b0C`
+                          : invertedIndexZones.get(roomName) !== undefined
+                          ? `Zone setting: ${invertedIndexZones.get(
+                              roomName
+                            )}\u00b0C`
                           : "Not set"}
                       </TableCell>
                       <TableCell align="right">
@@ -101,7 +126,7 @@ export default function ChangeRoomTemp() {
                           onClick={handleOpenEdit}
                           value={roomName}
                         >
-                          Change
+                          Edit
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -115,7 +140,7 @@ export default function ChangeRoomTemp() {
       <Modal
         className={classes.modal}
         open={openEdit}
-        onClose={handleClose}
+        onClose={handleCloseEdit}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -126,6 +151,9 @@ export default function ChangeRoomTemp() {
           <div className={classes.paper}>
             <Typography variant="h6" gutterBottom align="center">
               Change Temperature
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom align="center">
+              {selectedRoom}
             </Typography>
             <Box p={1}>
               <form
