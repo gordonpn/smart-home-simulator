@@ -10,6 +10,7 @@ import axios from "axios";
 import formStyles from "@/src/styles/formStyles";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 import HouseStore from "@/src/stores/HouseStore";
+import SHPStore from "@/src/stores/SHPStore";
 import moment from "moment";
 
 export default function DateTime() {
@@ -24,9 +25,8 @@ export default function DateTime() {
     lights,
     setTriggerRender,
     triggerRender,
-    awayMode,
   } = HouseStore();
-
+  const { awayMode } = SHPStore();
   const handleOpen = () => {
     setOpen(true);
   };

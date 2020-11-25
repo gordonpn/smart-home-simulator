@@ -11,16 +11,16 @@ import Select from "@material-ui/core/Select";
 import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
 import RunningStateStore from "@/src/stores/RunningStateStore";
-import ProfileStore from "@/src/stores/ProfileStore";
 import formStyles from "@/src/styles/formStyles";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import HouseStore from "@/src/stores/HouseStore";
 
 export default function RemoveUser() {
   const classes = formStyles();
   const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
   const { currentState } = RunningStateStore();
-  const { profiles, removeByName, setProfiles } = ProfileStore();
+  const { profiles, removeByName, setProfiles } = HouseStore();
   const { appendToLogs } = ConsoleStore();
 
   const handleOpen = async () => {

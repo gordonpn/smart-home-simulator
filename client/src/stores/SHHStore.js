@@ -1,6 +1,6 @@
 import create from "zustand";
 
-const TemperatureStore = create((set, get) => ({
+const SHHStore = create((set, get) => ({
   roomsTemps: new Map(),
   addRoomsTemps: (room, temp) => {
     const roomsTemps = get().roomsTemps;
@@ -44,4 +44,4 @@ const TemperatureStore = create((set, get) => ({
   },
 }));
 
-export default TemperatureStore;
+export default SHHStore;

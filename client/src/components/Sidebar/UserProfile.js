@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
-import ProfileStore from "@/src/stores/ProfileStore";
+import HouseStore from "@/src/stores/HouseStore";
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
@@ -27,7 +27,7 @@ export default function UserProfile() {
     setCurrentProfile,
     profiles,
     setProfiles,
-  } = ProfileStore();
+  } = HouseStore();
   const { currentState } = RunningStateStore();
 
   const handleOpen = async () => {

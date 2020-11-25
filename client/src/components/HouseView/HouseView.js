@@ -6,12 +6,12 @@ import HouseStore from "@/src/stores/HouseStore";
 import HouseLayout from "./HouseLayout";
 import Input from "@material-ui/core/Input";
 import ConsoleStore from "@/src/stores/ConsoleStore";
-import TemperatureStore from "@/src/stores/TemperatureStore";
+import SHHStore from "@/src/stores/SHHStore";
 
 export default function HouseView() {
   const { setHouse, setWindows, setDoors, setLights } = HouseStore();
   const { appendToLogs } = ConsoleStore();
-  const { addRoomsTemps } = TemperatureStore();
+  const { addRoomsTemps } = SHHStore();
 
   const processFile = (event) => {
     const file = event.target.files[0];

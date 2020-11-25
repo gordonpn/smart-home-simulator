@@ -4,13 +4,13 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-import ProfileStore from "@/src/stores/ProfileStore";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import HouseStore from "@/src/stores/HouseStore";
 
 export default function LoadProfiles() {
   const [onSuccess, setOnSuccess] = useState(false);
   const [onFailure, setOnFailure] = useState(false);
-  const { setProfiles } = ProfileStore();
+  const { setProfiles } = HouseStore();
   const { appendToLogs } = ConsoleStore();
 
   const handleClick = async () => {

@@ -1,6 +1,6 @@
 import Button from "@material-ui/core/Button";
 import React, { useState } from "react";
-import TemperatureStore from "@/src/stores/TemperatureStore";
+import SHHStore from "@/src/stores/SHHStore";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
@@ -28,7 +28,7 @@ export default function SetZoneTemp() {
   const [zoneTemp, setZoneTemp] = useState("");
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { zones, zonesTemps, addZonesTemps } = TemperatureStore();
+  const { zones, zonesTemps, addZonesTemps } = SHHStore();
 
   const handleOpen = () => {
     setOpen(true);

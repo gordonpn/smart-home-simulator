@@ -1,9 +1,9 @@
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import React, { useEffect, useState } from "react";
-import ProfileStore from "@/src/stores/ProfileStore";
+import HouseStore from "@/src/stores/HouseStore";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 import Button from "@material-ui/core/Button";
-import HouseStore from "@/src/stores/HouseStore";
+import SHPStore from "@/src/stores/SHPStore";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
@@ -16,9 +16,9 @@ export default function AwayMode() {
   const [openPermissionError, setOpenPermissionError] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { awayMode, setAwayMode } = HouseStore();
+  const { awayMode, setAwayMode } = SHPStore();
   const { currentState } = RunningStateStore();
-  const { profiles, currentProfile } = ProfileStore();
+  const { profiles, currentProfile } = HouseStore();
 
   useEffect(() => {
     const isEveryoneOutside = () => {

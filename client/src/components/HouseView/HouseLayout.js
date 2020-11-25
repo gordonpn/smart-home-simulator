@@ -3,11 +3,16 @@ import { Circle, Layer, Rect, Stage, Text } from "react-konva";
 import HouseStore from "@/src/stores/HouseStore";
 import Legend from "./Legend";
 import RunningStateStore from "@/src/stores/RunningStateStore";
-import ProfileStore from "@/src/stores/ProfileStore";
 
 export default function HouseLayout() {
-  const { currentHouse, windows, triggerRender, doors, lights } = HouseStore();
-  const { profiles } = ProfileStore();
+  const {
+    currentHouse,
+    windows,
+    triggerRender,
+    doors,
+    lights,
+    profiles,
+  } = HouseStore();
   const { currentState } = RunningStateStore();
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);

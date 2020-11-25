@@ -5,7 +5,6 @@ import Box from "@material-ui/core/Box";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import ProfileStore from "@/src/stores/ProfileStore";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -18,9 +17,13 @@ import ConsoleStore from "@/src/stores/ConsoleStore";
 export default function Location() {
   const classes = formStyles();
   const [open, setOpen] = React.useState(false);
-  const { currentProfile, changeLocation, setProfiles } = ProfileStore();
+  const {
+    currentHouse,
+    currentProfile,
+    changeLocation,
+    setProfiles,
+  } = HouseStore();
   const [location, setLocation] = useState("");
-  const { currentHouse } = HouseStore();
   const { appendToLogs } = ConsoleStore();
 
   const handleOpen = () => {
