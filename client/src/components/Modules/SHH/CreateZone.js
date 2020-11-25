@@ -5,7 +5,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
 import formStyles from "@/src/styles/formStyles";
-import TemperatureStore from "@/src/stores/TemperatureStore";
+import SHHStore from "@/src/stores/SHHStore";
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -28,7 +28,7 @@ export default function CreateZone() {
   const [zoneChanged, setZoneChanged] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { zones, deleteZone, roomsTemps, createZone } = TemperatureStore();
+  const { zones, deleteZone, roomsTemps, createZone } = SHHStore();
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;

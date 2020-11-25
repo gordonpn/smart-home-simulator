@@ -6,7 +6,6 @@ import Fade from "@material-ui/core/Fade";
 import formStyles from "@/src/styles/formStyles";
 import Typography from "@material-ui/core/Typography";
 import HouseStore from "@/src/stores/HouseStore";
-import ProfileStore from "@/src/stores/ProfileStore";
 import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -19,13 +18,15 @@ export default function MoveUser() {
   const classes = formStyles();
   const [open, setOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("");
-  const { currentHouse, isAutoModeOn, lights } = HouseStore();
   const {
+    currentHouse,
+    isAutoModeOn,
+    lights,
     profiles,
     currentProfile,
     changeLocation,
     setProfiles,
-  } = ProfileStore();
+  } = HouseStore();
   const [location, setLocation] = useState("");
   const [previousLocation, setPreviousLocation] = useState("");
   const { appendToLogs } = ConsoleStore();

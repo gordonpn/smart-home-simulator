@@ -11,7 +11,6 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import ProfileStore from "@/src/stores/ProfileStore";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import formStyles from "@/src/styles/formStyles";
@@ -22,14 +21,14 @@ export default function EditUser() {
   const [open, setOpen] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const { currentState } = RunningStateStore();
-  const { currentHouse } = HouseStore();
-  const [selectedProfile, setSelectedProfile] = useState("");
   const {
+    currentHouse,
     profiles,
     changeLocation,
     currentProfile,
     setProfiles,
-  } = ProfileStore();
+  } = HouseStore();
+  const [selectedProfile, setSelectedProfile] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");

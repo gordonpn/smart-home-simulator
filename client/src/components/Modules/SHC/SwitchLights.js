@@ -14,7 +14,6 @@ import {
 import HouseStore from "@/src/stores/HouseStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
-import ProfileStore from "@/src/stores/ProfileStore";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function SwitchLights() {
@@ -26,8 +25,8 @@ export default function SwitchLights() {
     currentHouse,
     setTriggerRender,
     triggerRender,
+    currentProfile,
   } = HouseStore();
-  const { currentProfile } = ProfileStore();
   const [lightListTemp, setLightListTemp] = useState(new Map());
   const [renderList, setRenderList] = useState(false);
   const [permission, setPermission] = useState("");

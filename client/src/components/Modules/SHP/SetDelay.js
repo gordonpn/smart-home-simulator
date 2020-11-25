@@ -6,13 +6,13 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
-import HouseStore from "@/src/stores/HouseStore";
+import SHPStore from "@/src/stores/SHPStore";
 import formStyles from "@/src/styles/formStyles";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function SetDelay() {
   const classes = formStyles();
-  const { delay, setDelay } = HouseStore();
+  const { delay, setDelay } = SHPStore();
   const [open, setOpen] = useState(false);
   const { appendToLogs } = ConsoleStore();
 

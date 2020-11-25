@@ -7,14 +7,14 @@ import {
   Grid,
 } from "@material-ui/core";
 
-import TemperatureStore from "@/src/stores/TemperatureStore";
+import SHHStore from "@/src/stores/SHHStore";
 export default function SeasonRange() {
   const [winterStart, setWinterStart] = useState("");
   const [winterEnd, setWinterEnd] = useState("");
   const [summerStart, setSummerStart] = useState("");
   const [summerEnd, setSummerEnd] = useState("");
   const season = ["winter", "summer"];
-  const { setSeasons } = TemperatureStore();
+  const { setSeasons } = SHHStore();
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   const handleStart = (event) => {

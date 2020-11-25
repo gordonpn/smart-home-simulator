@@ -14,7 +14,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
 import formStyles from "@/src/styles/formStyles";
-import ProfileStore from "@/src/stores/ProfileStore";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function AddUser() {
@@ -26,8 +25,7 @@ export default function AddUser() {
   const [permission, setPermission] = useState("");
   const [permissionsAvail, setPermissionsAvail] = useState([]);
   const { currentState } = RunningStateStore();
-  const { currentHouse } = HouseStore();
-  const { setProfiles } = ProfileStore();
+  const { currentHouse, setProfiles } = HouseStore();
   const { appendToLogs } = ConsoleStore();
 
   const handleOpen = async () => {

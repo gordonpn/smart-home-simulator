@@ -5,14 +5,14 @@ import Box from "@material-ui/core/Box";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RunningStateStore from "@/src/stores/RunningStateStore";
-import ProfileStore from "@/src/stores/ProfileStore";
+import HouseStore from "@/src/stores/HouseStore";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import ConsoleStore from "@/src/stores/ConsoleStore";
 
 export default function Toggle() {
   const { currentState, setRunningState } = RunningStateStore();
-  const { currentProfile, setCurrentProfile } = ProfileStore();
+  const { currentProfile, setCurrentProfile } = HouseStore();
   const [openAlert, setOpenAlert] = useState(false);
   const [onSuccess, setOnSuccess] = useState(false);
   const [logOutAlert, setLogOutAlert] = useState(false);
