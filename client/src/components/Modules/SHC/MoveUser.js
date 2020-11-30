@@ -6,6 +6,7 @@ import Fade from "@material-ui/core/Fade";
 import formStyles from "@/src/styles/formStyles";
 import Typography from "@material-ui/core/Typography";
 import HouseStore from "@/src/stores/HouseStore";
+import SHPStore from "@/src/stores/SHPStore";
 import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -27,6 +28,7 @@ export default function MoveUser() {
     changeLocation,
     setProfiles,
   } = HouseStore();
+  const { awayMode, setAwayMode } = SHPStore();
   const [location, setLocation] = useState("");
   const [previousLocation, setPreviousLocation] = useState("");
   const { appendToLogs } = ConsoleStore();
@@ -82,6 +84,15 @@ export default function MoveUser() {
       setSelectedProfile("");
       setLocation("");
       loadProfiles().then(() => {
+        if (awayMode) {
+          for (const profile of profiles) {
+            if (profile.location.toLowerCase() !== "outside") {
+              setAwayMode(false);
+              break;
+            }
+          }
+        }
+
         setOpen(false);
       });
     }
