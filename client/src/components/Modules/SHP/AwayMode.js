@@ -75,7 +75,7 @@ export default function AwayMode() {
           size="large"
           onClick={handleClick}
         >
-          Away Mode: {awayMode ? "ON" : "OFF"}
+          Away Mode: {awayMode && everyoneOutside ? "ON" : "OFF"}
         </Button>
       )}
       <Modal
