@@ -1,17 +1,20 @@
 import React from "react";
 import {
-  Select,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
-  Grid,
+  Select,
   TextField,
 } from "@material-ui/core";
 
 import SHHStore from "@/src/stores/SHHStore";
+import ConsoleStore from "@/src/stores/ConsoleStore";
+
 export default function SeasonRange() {
   const season = ["winter", "summer"];
   const { seasons, setSeasons } = SHHStore();
+  const { appendToLogs } = ConsoleStore();
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   const handleStart = (event) => {
@@ -21,7 +24,13 @@ export default function SeasonRange() {
     } else {
       setSeasons("summer", "start", event.target.value);
     }
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Start month modified for ${isWinter ? "winter" : "summer"}`,
+      module: "SHH",
+    });
   };
+
   const handleEnd = (event) => {
     const isWinter = event.target.name.includes("winter");
     if (isWinter) {
@@ -29,15 +38,28 @@ export default function SeasonRange() {
     } else {
       setSeasons("summer", "end", event.target.value);
     }
+    appendToLogs({
+      timestamp: new Date(),
+      message: `End month modified for ${isWinter ? "winter" : "summer"}`,
+      module: "SHH",
+    });
   };
 
   const handleTemp = (event) => {
     const isWinter = event.target.name.includes("winter");
+    const newTemp = event.target.value;
     if (isWinter) {
-      setSeasons("winter", "temperature", event.target.value);
+      setSeasons("winter", "temperature", newTemp);
     } else {
-      setSeasons("summer", "temperature", event.target.value);
+      setSeasons("summer", "temperature", newTemp);
     }
+    appendToLogs({
+      timestamp: new Date(),
+      message: `Default temperature modified for ${
+        isWinter ? "winter" : "summer"
+      } to ${newTemp}\u00b0C`,
+      module: "SHH",
+    });
   };
 
   return (
