@@ -59,18 +59,20 @@ export default function Location() {
 
   return (
     <>
-      <Button color="primary" onClick={handleOpen}>
-        <Box
-          display="flex"
-          p={2}
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography>Location:</Typography>
-          {currentProfile === undefined ? <></> : currentProfile.location}
-        </Box>
-      </Button>
+      {currentHouse !== undefined && (
+        <Button color="primary" onClick={handleOpen}>
+          <Box
+            display="flex"
+            p={2}
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Typography>Location:</Typography>
+            {currentProfile === undefined ? <></> : currentProfile.location}
+          </Box>
+        </Button>
+      )}
       <Modal
         className={classes.modal}
         open={open}
