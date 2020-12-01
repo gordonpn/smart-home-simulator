@@ -17,7 +17,7 @@ export default function HouseView() {
     setWindows,
   } = HouseStore();
   const { appendToLogs } = ConsoleStore();
-  const { addRoomsTemps, addActualTemps } = SHHStore();
+  const { addRoomsTemps, setActualTemps } = SHHStore();
 
   const processFile = (event) => {
     const file = event.target.files[0];
@@ -40,7 +40,7 @@ export default function HouseView() {
               const windowsMap = new Map();
               for (const [roomName, roomValue] of Object.entries(rooms)) {
                 addRoomsTemps(roomName, null);
-                addActualTemps(roomName, currentTemperature);
+                setActualTemps(roomName, currentTemperature);
                 for (const [doorKey, doorValue] of Object.entries(
                   roomValue.doors
                 )) {

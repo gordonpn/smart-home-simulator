@@ -8,7 +8,7 @@ const SHHStore = create((set, get) => ({
     set({ roomsTemps: roomsTemps });
   },
   actualTemps: new Map(),
-  addActualTemps: (room, temp) => {
+  setActualTemps: (room, temp) => {
     const actualTemps = get().actualTemps;
     actualTemps.set(room, temp);
     set({ actualTemps: actualTemps });

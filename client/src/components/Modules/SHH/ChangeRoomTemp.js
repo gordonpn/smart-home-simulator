@@ -87,18 +87,26 @@ export default function ChangeRoomTemp() {
   useEffect(() => {
     if (awayMode) {
       const setSeasonDefaultTemp = (seasonTemp) => {
-        zones.forEach((zone, zoneName) => {
-          const rooms = zone;
-          rooms.forEach((room) => {
+        zones.forEach((zone) => {
+          zone.forEach((room) => {
             addRoomsTemps(room, seasonTemp);
           });
         });
       };
-      const addOneYear = (summer, winter, isWinter, currentYear) => {
-        if (isWinter) {
-          return winter.start > winter.end ? currentYear + 1 : currentYear;
+      const addOneYear = (
+        thisSummer,
+        thisWinter,
+        thisIsWinter,
+        thisCurrentYear
+      ) => {
+        if (thisIsWinter) {
+          return thisWinter.start > thisWinter.end
+            ? thisCurrentYear + 1
+            : thisCurrentYear;
         }
-        return summer.start > summer.end ? currentYear + 1 : currentYear;
+        return thisSummer.start > thisSummer.end
+          ? thisCurrentYear + 1
+          : thisCurrentYear;
       };
       const currentYear = currentTime.getFullYear();
       const currentYearMonth =
