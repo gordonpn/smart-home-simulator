@@ -22,13 +22,13 @@ const SHHStore = create((set, get) => ({
     set({ zones: zones });
   },
   seasons: new Map([
-    ["winter", { start: 0, end: 0 }],
-    ["summer", { start: 0, end: 0 }],
+    ["winter", { start: 12, end: 4, temperature: 20 }],
+    ["summer", { start: 6, end: 9, temperature: 10 }],
   ]),
-  setSeasons: (season, period, value) => {
+  setSeasons: (season, prop, value) => {
     const seasons = get().seasons;
     const previousData = seasons.get(season);
-    seasons.set(season, { ...previousData, [period]: value });
+    seasons.set(season, { ...previousData, [prop]: value });
     set({ seasons: seasons });
   },
   zonesTemps: new Map(),

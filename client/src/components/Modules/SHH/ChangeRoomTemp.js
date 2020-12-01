@@ -16,7 +16,10 @@ import TableBody from "@material-ui/core/TableBody";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
 import HouseStore from "@/src/stores/HouseStore";
+import SHPStore from "@/src/stores/SHPStore";
+import moment from "moment";
 
 export default function ChangeRoomTemp() {
   const [invertedIndexZones, setInvertedIndexZones] = useState(new Map());
@@ -28,8 +31,10 @@ export default function ChangeRoomTemp() {
   const [tempChange, setTempChange] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
+  const { roomsTemps, addRoomsTemps, zones, zonesTemps, seasons } = SHHStore();
+  const { awayMode } = SHPStore();
   const { currentProfile } = HouseStore();
-  const { roomsTemps, addRoomsTemps, zones, zonesTemps } = SHHStore();
+  const { currentTime } = RunningStateStore();
   const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
   const isParent = currentProfile?.permission.toLowerCase().includes("parent");
 
@@ -69,6 +74,58 @@ export default function ChangeRoomTemp() {
     setOpenEdit(false);
     setTempChange(!tempChange);
   };
+
+  useEffect(() => {
+    if (awayMode) {
+      const setSeasonDefaultTemp = (seasonTemp) => {
+        zones.forEach((zone, zoneName) => {
+          const rooms = zone;
+          rooms.forEach((room) => {
+            addRoomsTemps(room, seasonTemp);
+          });
+        });
+      };
+      const addOneYear = (summer, winter, isWinter, currentYear) => {
+        if (isWinter) {
+          return winter.start > winter.end ? currentYear + 1 : currentYear;
+        }
+        return summer.start > summer.end ? currentYear + 1 : currentYear;
+      };
+      const currentYear = currentTime.getFullYear();
+      const currentYearMonth =
+        currentYear + "-" + (parseInt(currentTime.getMonth()) + 1);
+      const winter = seasons.get("winter");
+      const summer = seasons.get("summer");
+
+      const isSummer = moment(currentYearMonth).isBetween(
+        moment(currentYear + "-" + summer.start, moment.HTML5_FMT.MONTH),
+        moment(
+          addOneYear(summer, winter, false, currentYear) + "-" + summer.end,
+          moment.HTML5_FMT.MONTH
+        ),
+        undefined,
+        "[]"
+      );
+      const isWinter = moment(currentYearMonth).isBetween(
+        moment(currentYear + "-" + winter.start, moment.HTML5_FMT.MONTH),
+        moment(
+          addOneYear(summer, winter, true, currentYear) + "-" + winter.end,
+          moment.HTML5_FMT.MONTH
+        ),
+        undefined,
+        "[]"
+      );
+      if (isWinter) {
+        const winterTemp = winter.temperature;
+        setSeasonDefaultTemp(winterTemp);
+      }
+
+      if (isSummer) {
+        const summerTemp = summer.temperature;
+        setSeasonDefaultTemp(summerTemp);
+      }
+    }
+  }, [awayMode, seasons, currentTime, zones, addRoomsTemps]);
 
   useEffect(() => {
     const loadTemps = () => {
