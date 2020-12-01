@@ -7,6 +7,12 @@ const SHHStore = create((set, get) => ({
     roomsTemps.set(room, temp);
     set({ roomsTemps: roomsTemps });
   },
+  actualTemps: new Map(),
+  addActualTemps: (room, temp) => {
+    const actualTemps = get().actualTemps;
+    actualTemps.set(room, temp);
+    set({ actualTemps: actualTemps });
+  },
   zoneIndex: 0,
   zones: new Map(),
   createZone: (rooms) => {
