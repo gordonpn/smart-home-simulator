@@ -7,6 +7,8 @@ const RunningStateStore = create((set) => ({
   setActiveTab: (newActiveTab) => set({ activeTab: newActiveTab }),
   currentTime: new Date(),
   setCurrentTime: (newCurrentTime) => set({ currentTime: newCurrentTime }),
+  timeSpeed: 1,
+  setTimeSpeed: (newTimeSpeed) => set({ timeSpeed: newTimeSpeed }),
 }));
 
 export default RunningStateStore;
