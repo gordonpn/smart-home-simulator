@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import {
-  Select,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
-  Grid,
+  Select,
 } from "@material-ui/core";
 
 import SHHStore from "@/src/stores/SHHStore";
+import HouseStore from "@/src/stores/HouseStore";
+
 export default function SeasonRange() {
   const [winterStart, setWinterStart] = useState("");
   const [winterEnd, setWinterEnd] = useState("");
   const [summerStart, setSummerStart] = useState("");
   const [summerEnd, setSummerEnd] = useState("");
+  const { currentProfile } = HouseStore();
   const season = ["winter", "summer"];
   const { setSeasons } = SHHStore();
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -40,49 +43,51 @@ export default function SeasonRange() {
 
   return (
     <>
-      <Grid container spacing={1}>
-        {season.map((value) => (
-          <Grid key={value} container item spacing={3}>
-            <Grid item xs={1}>
-              <h3>{value}</h3>
+      {currentProfile?.permission.toLowerCase().includes("parent") && (
+        <Grid container spacing={1}>
+          {season.map((value) => (
+            <Grid key={value} container item spacing={3}>
+              <Grid item xs={1}>
+                <h3>{value}</h3>
+              </Grid>
+              <Grid item xs={1}>
+                <FormControl style={{ width: 110 }}>
+                  <InputLabel id={value + "Start"}>Start Month</InputLabel>
+                  <Select
+                    labelId={value + "Start"}
+                    value={value === season[0] ? winterStart : summerStart}
+                    name={value === season[0] ? "winterStart" : "summerStart"}
+                    onChange={handleStart}
+                  >
+                    {months.map((month) => (
+                      <MenuItem key={value + "Start-" + month} value={month}>
+                        {month}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={1}>
+                <FormControl style={{ width: 110 }}>
+                  <InputLabel id={value + "End"}>End Month</InputLabel>
+                  <Select
+                    labelId={value + "End"}
+                    value={value === season[0] ? winterEnd : summerEnd}
+                    name={value === season[0] ? "winterEnd" : "summerEnd"}
+                    onChange={handleEnd}
+                  >
+                    {months.map((month) => (
+                      <MenuItem key={value + "End-" + month} value={month}>
+                        {month}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs={1}>
-              <FormControl style={{ width: 110 }}>
-                <InputLabel id={value + "Start"}>Start Month</InputLabel>
-                <Select
-                  labelId={value + "Start"}
-                  value={value === season[0] ? winterStart : summerStart}
-                  name={value === season[0] ? "winterStart" : "summerStart"}
-                  onChange={handleStart}
-                >
-                  {months.map((month) => (
-                    <MenuItem key={value + "Start-" + month} value={month}>
-                      {month}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={1}>
-              <FormControl style={{ width: 110 }}>
-                <InputLabel id={value + "End"}>End Month</InputLabel>
-                <Select
-                  labelId={value + "End"}
-                  value={value === season[0] ? winterEnd : summerEnd}
-                  name={value === season[0] ? "winterEnd" : "summerEnd"}
-                  onChange={handleEnd}
-                >
-                  {months.map((month) => (
-                    <MenuItem key={value + "End-" + month} value={month}>
-                      {month}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-        ))}
-      </Grid>
+          ))}
+        </Grid>
+      )}
     </>
   );
 }

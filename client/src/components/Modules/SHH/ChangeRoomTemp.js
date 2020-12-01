@@ -16,19 +16,27 @@ import TableBody from "@material-ui/core/TableBody";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import HouseStore from "@/src/stores/HouseStore";
 
 export default function ChangeRoomTemp() {
   const [invertedIndexZones, setInvertedIndexZones] = useState(new Map());
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [roomTemp, setRoomTemp] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
   const [tempChange, setTempChange] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
+  const { currentProfile } = HouseStore();
   const { roomsTemps, addRoomsTemps, zones, zonesTemps } = SHHStore();
+  const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
+  const isParent = currentProfile?.permission.toLowerCase().includes("parent");
 
   const handleOpen = () => {
+    if (!isParent && !isGuest) {
+      setOpenError(true);
+    }
     setOpen(true);
     setTempChange(!tempChange);
   };
@@ -41,6 +49,7 @@ export default function ChangeRoomTemp() {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenError(false);
   };
 
   const handleCloseEdit = () => {
@@ -139,6 +148,15 @@ export default function ChangeRoomTemp() {
                           color="primary"
                           onClick={handleOpenEdit}
                           value={roomName}
+                          disabled={
+                            !isParent &&
+                            !(
+                              isGuest &&
+                              roomName.includes(
+                                currentProfile.location.toLowerCase()
+                              )
+                            )
+                          }
                         >
                           Edit
                         </Button>
@@ -194,6 +212,25 @@ export default function ChangeRoomTemp() {
                 </Box>
               </form>
             </Box>
+          </div>
+        </Fade>
+      </Modal>
+      <Modal
+        className={classes.modal}
+        open={openError}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openError}>
+          <div className={classes.paper}>
+            <Typography variant="h6" gutterBottom align="center">
+              You must be a parent or a guest in this room to modify these
+              settings
+            </Typography>
           </div>
         </Fade>
       </Modal>
