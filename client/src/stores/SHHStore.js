@@ -22,6 +22,17 @@ const SHHStore = create((set, get) => ({
     set({ zones: zones });
     set((state) => ({ zoneIndex: state.zoneIndex + 1 }));
   },
+  invertedIndexZones: new Map(),
+  setInvertedIndexZones: (room, temp) => {
+    const invertedIndexZones = get().invertedIndexZones;
+    invertedIndexZones.set(room, temp);
+    set({ invertedIndexZones: invertedIndexZones });
+  },
+  deleteInvertedIndexZones: (room) => {
+    const invertedIndexZones = get().invertedIndexZones;
+    invertedIndexZones.delete(room);
+    set({ invertedIndexZones: invertedIndexZones });
+  },
   deleteZone: (zoneName) => {
     const zones = get().zones;
     zones.delete(zoneName);
@@ -48,6 +59,8 @@ const SHHStore = create((set, get) => ({
     zones.set(zoneName, thisZoneTemps);
     set({ zonesTemps: zones });
   },
+  zoneChanged: false,
+  setZoneChanged: (newState) => set({ zoneChanged: newState }),
 }));
 
 export default SHHStore;

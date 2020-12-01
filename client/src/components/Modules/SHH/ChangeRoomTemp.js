@@ -22,7 +22,6 @@ import SHPStore from "@/src/stores/SHPStore";
 import moment from "moment";
 
 export default function ChangeRoomTemp() {
-  const [invertedIndexZones, setInvertedIndexZones] = useState(new Map());
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openError, setOpenError] = useState(false);
@@ -34,7 +33,16 @@ export default function ChangeRoomTemp() {
   const { awayMode } = SHPStore();
   const { currentProfile } = HouseStore();
   const { currentTime } = RunningStateStore();
-  const { roomsTemps, addRoomsTemps, zones, zonesTemps, seasons } = SHHStore();
+  const {
+    addRoomsTemps,
+    invertedIndexZones,
+    roomsTemps,
+    seasons,
+    setInvertedIndexZones,
+    zoneChanged,
+    zones,
+    zonesTemps,
+  } = SHHStore();
 
   const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
   const isParent = currentProfile?.permission.toLowerCase().includes("parent");
@@ -133,14 +141,19 @@ export default function ChangeRoomTemp() {
       Array.from(zones.keys()).forEach((zoneName) => {
         const temp = zonesTemps.get(zoneName);
         zones.get(zoneName).forEach((room) => {
-          const thisInvertedIndex = invertedIndexZones;
-          thisInvertedIndex.set(room, temp);
-          setInvertedIndexZones(thisInvertedIndex);
+          setInvertedIndexZones(room, temp);
         });
       });
     };
     loadTemps();
-  }, [invertedIndexZones, zones, zonesTemps, tempChange]);
+  }, [
+    invertedIndexZones,
+    setInvertedIndexZones,
+    tempChange,
+    zoneChanged,
+    zones,
+    zonesTemps,
+  ]);
 
   return (
     <>
