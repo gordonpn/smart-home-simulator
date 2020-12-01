@@ -73,54 +73,77 @@ export default function UserProfile() {
       case "parent":
         return (
           <>
-            <Typography variant="body1">
-              SHC: All permissions granted to open/close windows, unlock doors,
-              open/close garage and turn on/off lights.
-            </Typography>
-            <Typography variant="body1">
-              SHP: All permissions granted to set away mode on/off when they are
-              away.
-            </Typography>
+            <Box width={650}>
+              <Typography variant="body1">
+                SHC: All permissions granted to open/close windows, unlock
+                doors, open/close garage and turn on/off lights.
+              </Typography>
+              <Typography variant="body1">
+                SHP: All permissions granted to set away mode on/off when they
+                are away.
+              </Typography>
+              <Typography variant="body1">
+                SHH: All permissions granted to define zones, to override
+                temperature in specific rooms, and to set the default
+                temperature for winter and summer when away mode is activated
+              </Typography>
+            </Box>
           </>
         );
       case "children":
         return (
           <>
-            <Typography variant="body1">
-              SHC: Limited permissions to turn on/off lights and open/close
-              windows on the room that they are located. If they are not at
-              home, all permissions are revoked.
-            </Typography>
-            <Typography variant="body1">
-              SHP: All permissions granted to set away mode on/off when they are
-              away.
-            </Typography>
+            <Box width={650}>
+              <Typography variant="body1">
+                SHC: Limited permissions to turn on/off lights and open/close
+                windows on the room that they are located. If they are not at
+                home, all permissions are revoked.
+              </Typography>
+              <Typography variant="body1">
+                SHP: All permissions granted to set away mode on/off when they
+                are away.
+              </Typography>
+              <Typography variant="body1">
+                SHH: No permissions granted
+              </Typography>
+            </Box>
           </>
         );
       case "guest":
         return (
           <>
-            <Typography variant="body1">
-              SHC: Limited permissions to turn on/off lights and open/close
-              windows on the room that they are located. If they are not at
-              home, all permissions are revoked.
-            </Typography>
-            <Typography variant="body1">
-              SHP: Guest do not have permissions to set away mode on/off.
-            </Typography>
+            <Box width={650}>
+              <Typography variant="body1">
+                SHC: Limited permissions to turn on/off lights and open/close
+                windows on the room that they are located. If they are not at
+                home, all permissions are revoked.
+              </Typography>
+              <Typography variant="body1">
+                SHP: Guest do not have permissions to set away mode on/off.
+              </Typography>
+              <Typography variant="body1">
+                SHH: Guest can override the temperature of the room that they
+                are located
+              </Typography>
+            </Box>
           </>
         );
       case "stranger":
         return (
           <>
-            <Typography variant="body1">
-              SHC: Non identified users have no permissions no matter where they
-              are located.
-            </Typography>
-            <Typography variant="body1">
-              SHP: Non identified users have no permissions to set away mode
-              on/off.
-            </Typography>
+            <Box width={650}>
+              <Typography variant="body1">
+                SHC: Non identified users have no permissions no matter where
+                they are located.
+              </Typography>
+              <Typography variant="body1">
+                SHP: Non identified users have no permissions to set away mode
+                on/off.
+              </Typography>
+              <Typography variant="body1">
+                SHH: Non identified users have no permissions at all
+              </Typography>
+            </Box>
           </>
         );
       default:
