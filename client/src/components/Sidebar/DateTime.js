@@ -160,7 +160,11 @@ export default function DateTime() {
 
   return (
     <>
-      <Button size="large" onClick={handleOpen}>
+      <Button
+        size="large"
+        onClick={handleOpen}
+        style={currentState ? null : { color: "red" }}
+      >
         {currentTime.toLocaleString()}
       </Button>
       <Modal
