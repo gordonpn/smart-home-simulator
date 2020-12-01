@@ -7,6 +7,10 @@ const SHHStore = create((set, get) => ({
     roomsTemps.set(room, temp);
     set({ roomsTemps: roomsTemps });
   },
+  isSummer: undefined,
+  setIsSummer: (isSummer)=>set({isSummer:isSummer}),
+  isWinter: undefined,
+  setIsWinter: (isWinter)=>set({isWinter:isWinter}),
   zoneIndex: 0,
   zones: new Map(),
   createZone: (rooms) => {

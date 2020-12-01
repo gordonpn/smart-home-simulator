@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Select,
   FormControl,
@@ -9,10 +9,17 @@ import {
 } from "@material-ui/core";
 
 import SHHStore from "@/src/stores/SHHStore";
+import RunningStateStore from "@/src/stores/RunningStateStore";
+import HouseStore from "@/src/stores/HouseStore"
+import moment from "moment";
+import SHPStore from "@/src/stores/SHPStore";
 export default function SeasonRange() {
   const season = ["winter", "summer"];
-  const { seasons, setSeasons } = SHHStore();
+  const { isWinter, isSummer,setIsSummer, setIsWinter, seasons, setSeasons, roomsTemps} = SHHStore();
+  const {currentTemperature, windows, setWindows,setTriggerRender,triggerRender} =HouseStore();
+  const {awayMode} = SHPStore();
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const {currentTime} = RunningStateStore();
 
   const handleStart = (event) => {
     const isWinter = event.target.name.includes("winter");
@@ -39,6 +46,68 @@ export default function SeasonRange() {
       setSeasons("summer", "temperature", event.target.value);
     }
   };
+  useEffect(()=>{
+    if(isSummer && !awayMode){
+      const tempWindows = windows
+      let aWindowBlocked =false
+      roomsTemps.forEach((value,key)=>{
+        const windowName = key+"-w1"
+        const currentWindowState = windows.get(windowName)
+        if(value>currentTemperature && currentWindowState&&!currentWindowState.isOpen){
+          if(currentWindowState && !currentWindowState.blocked){
+            tempWindows.set(windowName,{...currentWindowState, isOpen: true})
+          }
+          else
+          {
+            aWindowBlocked = true
+          }
+        }
+      })
+      !aWindowBlocked? setWindows(tempWindows): null
+      setTriggerRender(!triggerRender)
+    }
+  },[currentTemperature, isSummer, roomsTemps, windows])
+
+
+  useEffect(()=>{
+    const currentYear = currentTime.getFullYear();
+    const currentYearMonth =
+      currentYear + "-" + (parseInt(currentTime.getMonth()) + 1);
+    const winter = seasons.get("winter");
+    const summer = seasons.get("summer");
+    const addOneYear = (summer, winter, isWinter, currentYear) => {
+      if (isWinter) {
+        return winter.start > winter.end ? currentYear + 1 : currentYear;
+      }
+      return summer.start > summer.end ? currentYear + 1 : currentYear;
+    };
+    const isSummer = moment(currentYearMonth).isBetween(
+      moment(currentYear + "-" + summer.start, moment.HTML5_FMT.MONTH),
+      moment(
+        addOneYear(summer, winter, false, currentYear) + "-" + summer.end,
+        moment.HTML5_FMT.MONTH
+      ),
+      undefined,
+      "[]"
+    );
+    const isWinter = moment(currentYearMonth).isBetween(
+      moment(currentYear + "-" + winter.start, moment.HTML5_FMT.MONTH),
+      moment(
+        addOneYear(summer, winter, true, currentYear) + "-" + winter.end,
+        moment.HTML5_FMT.MONTH
+      ),
+      undefined,
+      "[]"
+    );
+    setIsWinter(isWinter)
+    setIsSummer(isSummer)
+
+  },[currentTime, seasons])
+
+  useEffect(()=>{
+    console.log(isWinter)
+    console.log(isSummer)
+  },[isWinter, isSummer])
 
   return (
     <>
