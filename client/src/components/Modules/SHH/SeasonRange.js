@@ -12,10 +12,11 @@ import SHHStore from "@/src/stores/SHHStore";
 import HouseStore from "@/src/stores/HouseStore";
 
 export default function SeasonRange() {
-  const season = ["winter", "summer"];
   const { currentProfile } = HouseStore();
   const { seasons, setSeasons } = SHHStore();
+
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const season = ["winter", "summer"];
 
   const handleStart = (event) => {
     const isWinter = event.target.name.includes("winter");

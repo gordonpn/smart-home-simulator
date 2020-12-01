@@ -31,10 +31,11 @@ export default function ChangeRoomTemp() {
   const [tempChange, setTempChange] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { roomsTemps, addRoomsTemps, zones, zonesTemps, seasons } = SHHStore();
   const { awayMode } = SHPStore();
   const { currentProfile } = HouseStore();
   const { currentTime } = RunningStateStore();
+  const { roomsTemps, addRoomsTemps, zones, zonesTemps, seasons } = SHHStore();
+
   const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
   const isParent = currentProfile?.permission.toLowerCase().includes("parent");
 
@@ -206,12 +207,12 @@ export default function ChangeRoomTemp() {
                           onClick={handleOpenEdit}
                           value={roomName}
                           disabled={
-                            !isParent &&
                             !(
-                              isGuest &&
-                              roomName.includes(
-                                currentProfile.location.toLowerCase()
-                              )
+                              isParent ||
+                              (isGuest &&
+                                roomName.includes(
+                                  currentProfile.location.toLowerCase()
+                                ))
                             )
                           }
                         >
