@@ -192,7 +192,8 @@ export default function ChangeRoomTemp() {
                       </TableCell>
                       <TableCell>
                         {roomsTemps.get(roomName) !== null
-                          ? invertedIndexZones.has(roomName)
+                          ? invertedIndexZones.has(roomName) &&
+                            invertedIndexZones.get(roomName) !== undefined
                             ? `Overridden with ${roomsTemps.get(
                                 roomName
                               )}\u00b0C`
