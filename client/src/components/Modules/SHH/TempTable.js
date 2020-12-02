@@ -19,7 +19,7 @@ export default function TempTable() {
     seasons,
     setActualTemps,
   } = SHHStore();
-  const { currentState, currentTime } = RunningStateStore();
+  const { currentState, currentTime, timeSpeed } = RunningStateStore();
   const { currentTemperature } = HouseStore();
   const [open, setOpen] = useState(false);
 
@@ -88,7 +88,7 @@ export default function TempTable() {
           round(actualTemps.get(roomName) + tempChange, 2)
         );
       }
-    }, 1000);
+    }, 1000 / timeSpeed);
 
     return () => clearInterval(interval);
   }, [
@@ -102,6 +102,7 @@ export default function TempTable() {
     roomsTemps,
     seasons,
     setActualTemps,
+    timeSpeed,
   ]);
 
   return (
