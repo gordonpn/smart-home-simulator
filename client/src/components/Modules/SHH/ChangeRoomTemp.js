@@ -16,21 +16,44 @@ import TableBody from "@material-ui/core/TableBody";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import ConsoleStore from "@/src/stores/ConsoleStore";
-import SHPStore from "@/src/stores/SHPStore";
 import RunningStateStore from "@/src/stores/RunningStateStore";
+import HouseStore from "@/src/stores/HouseStore";
+import SHPStore from "@/src/stores/SHPStore";
+import moment from "moment";
+
 export default function ChangeRoomTemp() {
-  const [invertedIndexZones, setInvertedIndexZones] = useState(new Map());
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [roomTemp, setRoomTemp] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
   const [tempChange, setTempChange] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { isWinter, isSummer, roomsTemps, addRoomsTemps, zones, zonesTemps, seasons } = SHHStore();
+
   const { awayMode } = SHPStore();
+  const { currentProfile } = HouseStore();
   const { currentTime } = RunningStateStore();
+  const {
+    invertedIndexZones,
+    roomsTemps,
+    setInvertedIndexZones,
+    zoneChanged,
+    isWinter, 
+    isSummer, 
+    addRoomsTemps, 
+    zones, 
+    zonesTemps, 
+    seasons
+  } = SHHStore();
+
+  const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
+  const isParent = currentProfile?.permission.toLowerCase().includes("parent");
+
   const handleOpen = () => {
+    if (!isParent && !isGuest) {
+      setOpenError(true);
+    }
     setOpen(true);
     setTempChange(!tempChange);
   };
@@ -43,6 +66,7 @@ export default function ChangeRoomTemp() {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenError(false);
   };
 
   const handleCloseEdit = () => {
@@ -66,9 +90,8 @@ export default function ChangeRoomTemp() {
   useEffect(() => {
     if (awayMode) {
       const setSeasonDefaultTemp = (seasonTemp) => {
-        zones.forEach((zone, zoneName) => {
-          const rooms = zone;
-          rooms.forEach((room) => {
+        zones.forEach((zone) => {
+          zone.forEach((room) => {
             addRoomsTemps(room, seasonTemp);
           });
         });
@@ -94,14 +117,19 @@ export default function ChangeRoomTemp() {
       Array.from(zones.keys()).forEach((zoneName) => {
         const temp = zonesTemps.get(zoneName);
         zones.get(zoneName).forEach((room) => {
-          const thisInvertedIndex = invertedIndexZones;
-          thisInvertedIndex.set(room, temp);
-          setInvertedIndexZones(thisInvertedIndex);
+          setInvertedIndexZones(room, temp);
         });
       });
     };
     loadTemps();
-  }, [invertedIndexZones, zones, zonesTemps, tempChange]);
+  }, [
+    invertedIndexZones,
+    setInvertedIndexZones,
+    tempChange,
+    zoneChanged,
+    zones,
+    zonesTemps,
+  ]);
 
   return (
     <>
@@ -140,7 +168,8 @@ export default function ChangeRoomTemp() {
                       </TableCell>
                       <TableCell>
                         {roomsTemps.get(roomName) !== null
-                          ? invertedIndexZones.has(roomName)
+                          ? invertedIndexZones.has(roomName) &&
+                            invertedIndexZones.get(roomName) !== undefined
                             ? `Overridden with ${roomsTemps.get(
                                 roomName
                               )}\u00b0C`
@@ -167,6 +196,15 @@ export default function ChangeRoomTemp() {
                           color="primary"
                           onClick={handleOpenEdit}
                           value={roomName}
+                          disabled={
+                            !(
+                              isParent ||
+                              (isGuest &&
+                                roomName.includes(
+                                  currentProfile.location.toLowerCase()
+                                ))
+                            )
+                          }
                         >
                           Edit
                         </Button>
@@ -222,6 +260,25 @@ export default function ChangeRoomTemp() {
                 </Box>
               </form>
             </Box>
+          </div>
+        </Fade>
+      </Modal>
+      <Modal
+        className={classes.modal}
+        open={openError}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openError}>
+          <div className={classes.paper}>
+            <Typography variant="h6" gutterBottom align="center">
+              You must be a parent or a guest in this room to modify these
+              settings
+            </Typography>
           </div>
         </Fade>
       </Modal>

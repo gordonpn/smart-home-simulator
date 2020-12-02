@@ -20,15 +20,25 @@ import Chip from "@material-ui/core/Chip";
 import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 import ConsoleStore from "@/src/stores/ConsoleStore";
+import HouseStore from "@/src/stores/HouseStore";
 
 export default function CreateZone() {
   const [availableZones, setAvailableRooms] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const [zoneChanged, setZoneChanged] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
-  const { zones, deleteZone, roomsTemps, createZone } = SHHStore();
+  const { currentProfile } = HouseStore();
+  const {
+    createZone,
+    deleteInvertedIndexZones,
+    deleteZone,
+    roomsTemps,
+    setZoneChanged,
+    zoneChanged,
+    zones,
+  } = SHHStore();
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -42,16 +52,23 @@ export default function CreateZone() {
   };
 
   const handleOpen = () => {
+    if (!currentProfile.permission.toLowerCase().includes("parent")) {
+      setOpenError(true);
+    }
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setOpenError(false);
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
     const { value } = e.currentTarget;
+    zones.get(value).forEach((room) => {
+      deleteInvertedIndexZones(room);
+    });
     deleteZone(value);
     appendToLogs({
       timestamp: new Date(),
@@ -191,6 +208,24 @@ export default function CreateZone() {
                 Create Zone
               </Button>
             </Box>
+          </div>
+        </Fade>
+      </Modal>
+      <Modal
+        className={classes.modal}
+        open={openError}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openError}>
+          <div className={classes.paper}>
+            <Typography variant="h6" gutterBottom align="center">
+              You must be a parent to modify these settings
+            </Typography>
           </div>
         </Fade>
       </Modal>

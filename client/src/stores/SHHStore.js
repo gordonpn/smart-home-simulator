@@ -11,6 +11,12 @@ const SHHStore = create((set, get) => ({
   setIsSummer: (isSummer)=>set({isSummer:isSummer}),
   isWinter: undefined,
   setIsWinter: (isWinter)=>set({isWinter:isWinter}),
+  actualTemps: new Map(),
+  setActualTemps: (room, temp) => {
+    const actualTemps = get().actualTemps;
+    actualTemps.set(room, temp);
+    set({ actualTemps: actualTemps });
+  },
   zoneIndex: 0,
   zones: new Map(),
   createZone: (rooms) => {
@@ -19,6 +25,17 @@ const SHHStore = create((set, get) => ({
     zones.set(zoneName, rooms);
     set({ zones: zones });
     set((state) => ({ zoneIndex: state.zoneIndex + 1 }));
+  },
+  invertedIndexZones: new Map(),
+  setInvertedIndexZones: (room, temp) => {
+    const invertedIndexZones = get().invertedIndexZones;
+    invertedIndexZones.set(room, temp);
+    set({ invertedIndexZones: invertedIndexZones });
+  },
+  deleteInvertedIndexZones: (room) => {
+    const invertedIndexZones = get().invertedIndexZones;
+    invertedIndexZones.delete(room);
+    set({ invertedIndexZones: invertedIndexZones });
   },
   deleteZone: (zoneName) => {
     const zones = get().zones;
@@ -46,6 +63,8 @@ const SHHStore = create((set, get) => ({
     zones.set(zoneName, thisZoneTemps);
     set({ zonesTemps: zones });
   },
+  zoneChanged: false,
+  setZoneChanged: (newState) => set({ zoneChanged: newState }),
 }));
 
 export default SHHStore;
