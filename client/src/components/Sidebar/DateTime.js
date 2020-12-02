@@ -139,6 +139,7 @@ export default function DateTime() {
           }
         });
       }
+
       const interval = setInterval(() => {
         const incrementSeconds = currentTime.getSeconds() + 1;
         const newTime = currentTime.setSeconds(incrementSeconds);
