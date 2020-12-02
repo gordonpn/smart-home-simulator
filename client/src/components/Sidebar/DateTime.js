@@ -145,6 +145,7 @@ export default function DateTime() {
           }
         });
       }
+
       const interval = setInterval(() => {
         const incrementSeconds = currentTime.getSeconds() + 1;
         const newTime = currentTime.setSeconds(incrementSeconds);
@@ -154,13 +155,14 @@ export default function DateTime() {
       return () => clearInterval(interval);
     }
   }, [
+    awayMode,
     currentState,
     currentTime,
-    setCurrentTime,
-    lightsSchedule,
-    awayMode,
     lights,
+    lightsSchedule,
+    setCurrentTime,
     setTriggerRender,
+    timeSpeed,
     triggerRender,
   ]);
 
