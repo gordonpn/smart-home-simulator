@@ -5,6 +5,7 @@ import Location from "./Location";
 import OutsideTemp from "./OutsideTemp";
 import DateTime from "./DateTime";
 import React from "react";
+import TimeSpeedToggle from "@/src/components/Sidebar/TimeSpeedToggle";
 
 export default function Sidebar() {
   return (
@@ -19,6 +20,7 @@ export default function Sidebar() {
       <Location />
       <OutsideTemp />
       <DateTime />
+      <TimeSpeedToggle />
     </Box>
   );
 }
