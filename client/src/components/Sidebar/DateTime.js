@@ -14,19 +14,25 @@ import SHPStore from "@/src/stores/SHPStore";
 import moment from "moment";
 
 export default function DateTime() {
+  const [open, setOpen] = React.useState(false);
   const [userDateInput, setUserDateInput] = useState("");
   const [userTimeInput, setUserTimeInput] = useState("");
   const classes = formStyles();
-  const [open, setOpen] = React.useState(false);
-  const { currentState, currentTime, setCurrentTime } = RunningStateStore();
   const { appendToLogs } = ConsoleStore();
+  const { awayMode } = SHPStore();
   const {
-    lightsSchedule,
+    currentState,
+    currentTime,
+    setCurrentTime,
+    timeSpeed,
+  } = RunningStateStore();
+  const {
     lights,
+    lightsSchedule,
     setTriggerRender,
     triggerRender,
   } = HouseStore();
-  const { awayMode } = SHPStore();
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -139,22 +145,24 @@ export default function DateTime() {
           }
         });
       }
+
       const interval = setInterval(() => {
         const incrementSeconds = currentTime.getSeconds() + 1;
         const newTime = currentTime.setSeconds(incrementSeconds);
         setCurrentTime(new Date(newTime));
-      }, 1000);
+      }, 1000 / timeSpeed);
 
       return () => clearInterval(interval);
     }
   }, [
+    awayMode,
     currentState,
     currentTime,
-    setCurrentTime,
-    lightsSchedule,
-    awayMode,
     lights,
+    lightsSchedule,
+    setCurrentTime,
     setTriggerRender,
+    timeSpeed,
     triggerRender,
   ]);
 
