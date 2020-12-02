@@ -28,7 +28,7 @@ const HouseStore = create((set, get) => ({
   setAutoMode: (autoMode) => set({ isAutoModeOn: autoMode }),
   setTriggerRender: (newState) => set({ triggerRender: newState }),
   setWindows: (windows) => set({ windows: windows }),
-  currentTemperature: undefined,
+  currentTemperature: 15,
   setTemperature: (newTemperature) =>
     set({ currentTemperature: newTemperature }),
   setDoors: (doors) => set({ doors: doors }),

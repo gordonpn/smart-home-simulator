@@ -2,7 +2,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import HouseStore from "@/src/stores/HouseStore";
@@ -64,15 +64,6 @@ export default function Toggle() {
     setOnSuccess(false);
     setLogOutAlert(false);
   };
-
-  useEffect(() => {
-    const getRunningState = async () => {
-      const res = await axios.get("/api/running");
-      const { runningStatus } = res.data;
-      setRunningState(runningStatus);
-    };
-    getRunningState();
-  }, [setRunningState]);
 
   return (
     <>

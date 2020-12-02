@@ -45,9 +45,11 @@ export default function OutsideTemp() {
 
   return (
     <>
-      <Button color="primary" size="large" onClick={handleOpen}>
-        Outside Temp. {currentTemperature}&deg;C
-      </Button>
+      {currentHouse !== undefined && (
+        <Button color="primary" size="large" onClick={handleOpen}>
+          Outside Temp. {currentTemperature}&deg;C
+        </Button>
+      )}
       <Modal
         className={classes.modal}
         open={open}

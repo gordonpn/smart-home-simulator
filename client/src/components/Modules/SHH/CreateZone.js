@@ -27,11 +27,18 @@ export default function CreateZone() {
   const [open, setOpen] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const [zoneChanged, setZoneChanged] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
   const { currentProfile } = HouseStore();
-  const { zones, deleteZone, roomsTemps, createZone } = SHHStore();
+  const {
+    createZone,
+    deleteInvertedIndexZones,
+    deleteZone,
+    roomsTemps,
+    setZoneChanged,
+    zoneChanged,
+    zones,
+  } = SHHStore();
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -59,6 +66,9 @@ export default function CreateZone() {
   const handleDelete = (e) => {
     e.preventDefault();
     const { value } = e.currentTarget;
+    zones.get(value).forEach((room) => {
+      deleteInvertedIndexZones(room);
+    });
     deleteZone(value);
     appendToLogs({
       timestamp: new Date(),
