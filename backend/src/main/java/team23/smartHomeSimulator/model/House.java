@@ -194,8 +194,8 @@ public class House {
         && numEntrance == 1
         && numKitchen == 1
         && numLivingRoom == 1
-        && numGarage<=1
-        && numDeck<=1
+        && numGarage <= 1
+        && numDeck <= 1
     );
   }
 
