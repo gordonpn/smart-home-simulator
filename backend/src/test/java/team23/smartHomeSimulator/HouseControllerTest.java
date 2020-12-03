@@ -188,19 +188,4 @@ public class HouseControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString(resultsUnblock)));
   }
-
-  @Test
-  public void shouldReturnAwayState() throws Exception {
-    MockHttpServletRequestBuilder builderBlock =
-        get("/api/house/away-mode")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8");
-
-    this.mockMvc
-        .perform(builderBlock)
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("false")));
-  }
 }
