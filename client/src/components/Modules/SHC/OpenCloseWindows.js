@@ -33,7 +33,6 @@ export default function OpenCloseWindows() {
   const [userLocation, setUserLocation] = useState();
   const [windowChanges, setWindowChanges] = useState(new Map());
   const { appendToLogs } = ConsoleStore();
-
   useEffect(() => {
     if (currentHouse !== undefined) {
       setWindowListTemp(windows);
@@ -105,7 +104,7 @@ export default function OpenCloseWindows() {
       (permission.toLowerCase() !== "parent" &&
         (userLocation === "outside" ||
           userLocation !== modifyString(windowName))) ||
-      windowListTemp.get(windowName).blocked
+      (windowListTemp.get(windowName) && windowListTemp.get(windowName).blocked)
     );
   };
 

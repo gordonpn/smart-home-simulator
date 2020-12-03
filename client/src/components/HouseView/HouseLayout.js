@@ -37,7 +37,9 @@ export default function HouseLayout() {
           }
           return doors.get(componentName).open ? null : "brown";
         } else if (windows !== undefined && componentType === "windows") {
-          return windows.get(componentName).isOpen ? null : "#00D2FF";
+          return windows.get(componentName) && windows.get(componentName).isOpen
+            ? null
+            : "#00D2FF";
         } else if (lights !== undefined) {
           return lights.get(componentName + "-l1").isOn ? "#F3F686" : null;
         }
@@ -160,7 +162,7 @@ export default function HouseLayout() {
                   x={subComp[i].x + width * 0.5}
                   y={subComp[i].y}
                   visible={
-                    windows !== undefined
+                    windows !== undefined && windows.get(subComp[i].name)
                       ? windows.get(subComp[i].name).blocked
                       : false
                   }

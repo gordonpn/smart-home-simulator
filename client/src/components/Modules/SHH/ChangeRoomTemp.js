@@ -19,7 +19,6 @@ import ConsoleStore from "@/src/stores/ConsoleStore";
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import HouseStore from "@/src/stores/HouseStore";
 import SHPStore from "@/src/stores/SHPStore";
-import moment from "moment";
 
 export default function ChangeRoomTemp() {
   const [open, setOpen] = useState(false);
@@ -30,18 +29,21 @@ export default function ChangeRoomTemp() {
   const [tempChange, setTempChange] = useState(false);
   const classes = formStyles();
   const { appendToLogs } = ConsoleStore();
+
   const { awayMode } = SHPStore();
   const { currentProfile } = HouseStore();
   const { currentTime } = RunningStateStore();
   const {
-    addRoomsTemps,
     invertedIndexZones,
     roomsTemps,
-    seasons,
     setInvertedIndexZones,
     zoneChanged,
+    isWinter,
+    isSummer,
+    addRoomsTemps,
     zones,
     zonesTemps,
+    seasons,
   } = SHHStore();
 
   const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
@@ -93,45 +95,10 @@ export default function ChangeRoomTemp() {
           });
         });
       };
-      const addOneYear = (
-        thisSummer,
-        thisWinter,
-        thisIsWinter,
-        thisCurrentYear
-      ) => {
-        if (thisIsWinter) {
-          return thisWinter.start > thisWinter.end
-            ? thisCurrentYear + 1
-            : thisCurrentYear;
-        }
-        return thisSummer.start > thisSummer.end
-          ? thisCurrentYear + 1
-          : thisCurrentYear;
-      };
-      const currentYear = currentTime.getFullYear();
-      const currentYearMonth =
-        currentYear + "-" + (parseInt(currentTime.getMonth()) + 1);
+
       const winter = seasons.get("winter");
       const summer = seasons.get("summer");
 
-      const isSummer = moment(currentYearMonth).isBetween(
-        moment(currentYear + "-" + summer.start, moment.HTML5_FMT.MONTH),
-        moment(
-          addOneYear(summer, winter, false, currentYear) + "-" + summer.end,
-          moment.HTML5_FMT.MONTH
-        ),
-        undefined,
-        "[]"
-      );
-      const isWinter = moment(currentYearMonth).isBetween(
-        moment(currentYear + "-" + winter.start, moment.HTML5_FMT.MONTH),
-        moment(
-          addOneYear(summer, winter, true, currentYear) + "-" + winter.end,
-          moment.HTML5_FMT.MONTH
-        ),
-        undefined,
-        "[]"
-      );
       if (isWinter) {
         const winterTemp = winter.temperature;
         setSeasonDefaultTemp(winterTemp);
@@ -142,7 +109,15 @@ export default function ChangeRoomTemp() {
         setSeasonDefaultTemp(summerTemp);
       }
     }
-  }, [awayMode, seasons, currentTime, zones, addRoomsTemps]);
+  }, [
+    awayMode,
+    seasons,
+    isSummer,
+    isWinter,
+    currentTime,
+    zones,
+    addRoomsTemps,
+  ]);
 
   useEffect(() => {
     const loadTemps = () => {
