@@ -56,7 +56,17 @@ public class House {
         (key, room) -> {
 
           // initialize rooms
-          createRoom(roomWidth, livingRoomWidth, diningRoomWidth, kitchenWidth, sublvl0, sublvl1, sublvl2, sublvl3, key, room);
+          createRoom(
+              roomWidth,
+              livingRoomWidth,
+              diningRoomWidth,
+              kitchenWidth,
+              sublvl0,
+              sublvl1,
+              sublvl2,
+              sublvl3,
+              key,
+              room);
 
           this.rooms.put(
               key,
@@ -69,7 +79,17 @@ public class House {
         });
   }
 
-  private void createRoom(int roomWidth, int livingRoomWidth, int diningRoomWidth, int kitchenWidth, int sublvl0, int sublvl1, int sublvl2, int sublvl3, String key, Room room) {
+  private void createRoom(
+      int roomWidth,
+      int livingRoomWidth,
+      int diningRoomWidth,
+      int kitchenWidth,
+      int sublvl0,
+      int sublvl1,
+      int sublvl2,
+      int sublvl3,
+      String key,
+      Room room) {
     if (key.toLowerCase().contains("bedroom")) {
       createBedroom(roomWidth, sublvl0, sublvl1, key, room);
     } else if (key.toLowerCase().contains("dining")) {
@@ -103,37 +123,41 @@ public class House {
   }
 
   private void createGarage(int livingRoomWidth, int sublvl2, int sublvl3, String key, Room room) {
-    this.houseCoor
-        .get("garage")
-        .add(new Coordinates(key, livingRoomWidth + 30 - 80, sublvl2));
+    this.houseCoor.get("garage").add(new Coordinates(key, livingRoomWidth + 30 - 80, sublvl2));
 
     addDoorWindowCoord(room, key, 55, sublvl3 - 25, 50, sublvl3);
   }
 
-  private void createDeck(int livingRoomWidth, int diningRoomWidth, int sublvl2, String key, Room room) {
+  private void createDeck(
+      int livingRoomWidth, int diningRoomWidth, int sublvl2, String key, Room room) {
     this.houseCoor
         .get("deck")
         .add(new Coordinates(key, livingRoomWidth + diningRoomWidth, sublvl2));
     addDoorWindowCoord(room, key, 0, 0, 0, 0);
   }
 
-  private void createBathroom(int livingRoomWidth, int sublvl2, int sublvl3, String key, Room room) {
-    this.houseCoor
-        .get("bathrooms")
-        .add(new Coordinates(key, livingRoomWidth + 30, sublvl2));
+  private void createBathroom(
+      int livingRoomWidth, int sublvl2, int sublvl3, String key, Room room) {
+    this.houseCoor.get("bathrooms").add(new Coordinates(key, livingRoomWidth + 30, sublvl2));
 
-    addDoorWindowCoord(
-            room, key, livingRoomWidth + 30, sublvl3 - 5, livingRoomWidth + 35, sublvl2);
+    addDoorWindowCoord(room, key, livingRoomWidth + 30, sublvl3 - 5, livingRoomWidth + 35, sublvl2);
   }
 
-  private void createKitchen(int livingRoomWidth, int diningRoomWidth, int kitchenWidth, int sublvl1, int sublvl2, String key, Room room) {
+  private void createKitchen(
+      int livingRoomWidth,
+      int diningRoomWidth,
+      int kitchenWidth,
+      int sublvl1,
+      int sublvl2,
+      String key,
+      Room room) {
     this.houseCoor
         .get("kitchen")
         .add(new Coordinates(key, livingRoomWidth + diningRoomWidth, sublvl1));
 
     addDoorWindowCoord(
-            room,
-            key,
+        room,
+        key,
         livingRoomWidth + diningRoomWidth + 10,
         sublvl2 - 5,
         livingRoomWidth + diningRoomWidth + kitchenWidth - 10,
@@ -146,12 +170,13 @@ public class House {
     addDoorWindowCoord(room, key, 10, sublvl2 - 5, 40, sublvl2 - 10);
   }
 
-  private void createDiningRoom(int livingRoomWidth, int diningRoomWidth, int sublvl1, int sublvl2, String key, Room room) {
+  private void createDiningRoom(
+      int livingRoomWidth, int diningRoomWidth, int sublvl1, int sublvl2, String key, Room room) {
     this.houseCoor.get("dining").add(new Coordinates(key, livingRoomWidth, sublvl1));
 
     addDoorWindowCoord(
-            room,
-            key,
+        room,
+        key,
         livingRoomWidth + diningRoomWidth - 50,
         sublvl2 - 5,
         livingRoomWidth + 10,
