@@ -158,6 +158,8 @@ public class House {
     int numKitchen = 0;
     int numEntrance = 0;
     int numLivingRoom = 0;
+    int numDeck=0;
+    int numGarage=0;
     for (int i = 0; i < roomsName.length; i++) {
       String roomName = roomsName[i].toLowerCase();
 
@@ -172,6 +174,12 @@ public class House {
       } else if (roomName.contains("living room")) {
         numLivingRoom++;
       }
+      else if (roomName.contains("deck")) {
+        numDeck++;
+      }
+      else if (roomName.contains("deck")) {
+        numGarage++;
+      }
     }
     String roomString = Arrays.toString(roomsName).toLowerCase();
 
@@ -185,7 +193,10 @@ public class House {
         && numBedroom >= 1
         && numEntrance == 1
         && numKitchen == 1
-        && numLivingRoom == 1);
+        && numLivingRoom == 1
+        &&numGarage<=1
+        &&numDeck<=1
+    );
   }
 
   /**

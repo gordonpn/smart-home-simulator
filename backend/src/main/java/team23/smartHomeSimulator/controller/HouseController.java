@@ -52,7 +52,6 @@ public class HouseController {
     } catch (HouseLayoutException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-    //    this.house = new House(houseData.getRooms());
     this.house.addModuleObserver("SHP", new SHP());
 
     ObjectMapper mapper = new ObjectMapper();
