@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import team23.smartHomeSimulator.model.Room;
 
 @SpringBootTest
@@ -88,60 +87,6 @@ public class HouseControllerTest {
 
     assertTrue(lockableRoom.getDoors().get("kitchen-d1").isLockable());
     assertFalse(nonLockableRoom.getDoors().get("bathroom-d1").isLockable());
-  }
-
-  @Test
-  public void shouldAddUser() throws Exception {
-    MockHttpServletRequestBuilder builder =
-        MockMvcRequestBuilders.put("/api/house-users")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8")
-            .content("{\"name\": \"user1\",\"location\":\"kitchen\"}");
-    this.mockMvc
-        .perform(builder)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.location").value("kitchen"));
-  }
-
-  @Test
-  public void shouldChangeUserLocation() throws Exception {
-    MockHttpServletRequestBuilder builder =
-        MockMvcRequestBuilders.put("/api/house-users")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8")
-            .content("{\"name\": \"user1\",\"location\":\"kitchen\"}");
-    this.mockMvc.perform(builder);
-    MockHttpServletRequestBuilder builderUpdate =
-        MockMvcRequestBuilders.put("/api/house-users")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8")
-            .content("{\"name\": \"user1\",\"location\":\"garage\"}");
-    this.mockMvc
-        .perform(builderUpdate)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.location").value("garage"));
-  }
-
-  @Test
-  public void shouldRemoveUser() throws Exception {
-    MockHttpServletRequestBuilder builder =
-        MockMvcRequestBuilders.put("/api/house-users")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8")
-            .content("{\"name\": \"user1\",\"location\":\"kitchen\"}");
-    this.mockMvc
-        .perform(builder)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.location").value("kitchen"));
-
-    this.mockMvc
-        .perform(delete("/api/house-users").param("name", "user1"))
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("Removed user1 successfully")));
   }
 
   public void shouldOpenAndCloseWindow() throws Exception {
@@ -242,20 +187,5 @@ public class HouseControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString(resultsUnblock)));
-  }
-
-  @Test
-  public void shouldReturnAwayState() throws Exception {
-    MockHttpServletRequestBuilder builderBlock =
-        get("/api/house/away-mode")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON)
-            .characterEncoding("UTF-8");
-
-    this.mockMvc
-        .perform(builderBlock)
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("false")));
   }
 }
