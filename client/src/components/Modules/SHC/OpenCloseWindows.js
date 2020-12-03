@@ -15,8 +15,6 @@ import HouseStore from "@/src/stores/HouseStore";
 import formStyles from "@/src/styles/formStyles";
 import axios from "axios";
 import ConsoleStore from "@/src/stores/ConsoleStore";
-import SHHStore from "@/src/stores/SHHStore";
-import SHPStore from "@/src/stores/SHPStore";
 
 export default function OpenCloseWindows() {
   const classes = formStyles();
@@ -28,7 +26,6 @@ export default function OpenCloseWindows() {
     setTriggerRender,
     triggerRender,
     currentProfile,
-    currentTemperature
   } = HouseStore();
   const [windowListTemp, setWindowListTemp] = useState(new Map());
   const [renderList, setRenderList] = useState(false);
@@ -36,9 +33,6 @@ export default function OpenCloseWindows() {
   const [userLocation, setUserLocation] = useState();
   const [windowChanges, setWindowChanges] = useState(new Map());
   const { appendToLogs } = ConsoleStore();
-  const { isWinter, isSummer,setIsSummer, setIsWinter, seasons, roomsTemps } = SHHStore();
-  const {awayMode} = SHPStore();
-
   useEffect(() => {
     if (currentHouse !== undefined) {
       setWindowListTemp(windows);
@@ -51,36 +45,6 @@ export default function OpenCloseWindows() {
       setUserLocation(currentProfile.location);
     }
   }, [currentProfile]);
-
-  // useEffect(()=>{
-  //   console.log("hey")
-  //   if(isSummer && !awayMode){
-  //     console.log("inside")
-  //     const tempWindows = windows
-  //     let aWindowBlocked =false
-  //     roomsTemps.forEach((value,key)=>{
-  //       if(value>currentTemperature){
-  //         const windowName = key+"-w1"
-  //         console.log(windowName)
-  //         const currentWindowState = windows.get(windowName)
-  //         console.log(windows)
-  //         console.log(currentWindowState)
-  //         if(currentWindowState && !currentWindowState.blocked){
-  //           tempWindows.set(windowName,{...currentWindowState, isOpen: true})
-  //         }
-  //         else
-  //         {
-  //           aWindowBlocked = true
-  //         }
-  //       }
-  //     })
-  //     console.log(tempWindows)
-  //     !aWindowBlocked? setWindows(tempWindows): null
-  //     setTriggerRender(!triggerRender)
-  //   }
-    
-
-  // },[currentTemperature, isSummer, roomsTemps, windows])
 
   const handleOpen = () => {
     setOpen(true);
@@ -140,7 +104,7 @@ export default function OpenCloseWindows() {
       (permission.toLowerCase() !== "parent" &&
         (userLocation === "outside" ||
           userLocation !== modifyString(windowName))) ||
-      windowListTemp.get(windowName).blocked
+      (windowListTemp.get(windowName) && windowListTemp.get(windowName).blocked)
     );
   };
 

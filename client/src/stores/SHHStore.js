@@ -8,9 +8,31 @@ const SHHStore = create((set, get) => ({
     set({ roomsTemps: roomsTemps });
   },
   isSummer: undefined,
-  setIsSummer: (isSummer)=>set({isSummer:isSummer}),
+  setIsSummer: (isSummer) => set({ isSummer: isSummer }),
   isWinter: undefined,
-  setIsWinter: (isWinter)=>set({isWinter:isWinter}),
+  setIsWinter: (isWinter) => set({ isWinter: isWinter }),
+  roomsBelowZero: new Set(),
+  addRoomsBelowZero: (room) => {
+    const rooms = get().roomsBelowZero;
+    rooms.add(room);
+    set({ roomsBelowZero: rooms });
+  },
+  deleteRoomsBelowZero: (room) => {
+    const rooms = get().roomsBelowZero;
+    rooms.delete(room);
+    set({ roomsBelowZero: rooms });
+  },
+  roomsWindowNotify: new Set(),
+  addRoomsWindowNotify: (room) => {
+    const rooms = get().roomsWindowNotify;
+    rooms.add(room);
+    set({ roomsWindowNotify: rooms });
+  },
+  deleteRoomsWindowNotify: (room) => {
+    const rooms = get().roomsWindowNotify;
+    rooms.delete(room);
+    set({ roomsWindowNotify: rooms });
+  },
   actualTemps: new Map(),
   setActualTemps: (room, temp) => {
     const actualTemps = get().actualTemps;

@@ -19,7 +19,6 @@ import ConsoleStore from "@/src/stores/ConsoleStore";
 import RunningStateStore from "@/src/stores/RunningStateStore";
 import HouseStore from "@/src/stores/HouseStore";
 import SHPStore from "@/src/stores/SHPStore";
-import moment from "moment";
 
 export default function ChangeRoomTemp() {
   const [open, setOpen] = useState(false);
@@ -39,12 +38,12 @@ export default function ChangeRoomTemp() {
     roomsTemps,
     setInvertedIndexZones,
     zoneChanged,
-    isWinter, 
-    isSummer, 
-    addRoomsTemps, 
-    zones, 
-    zonesTemps, 
-    seasons
+    isWinter,
+    isSummer,
+    addRoomsTemps,
+    zones,
+    zonesTemps,
+    seasons,
   } = SHHStore();
 
   const isGuest = currentProfile?.permission.toLowerCase().includes("guest");
@@ -96,7 +95,7 @@ export default function ChangeRoomTemp() {
           });
         });
       };
-   
+
       const winter = seasons.get("winter");
       const summer = seasons.get("summer");
 
@@ -110,7 +109,15 @@ export default function ChangeRoomTemp() {
         setSeasonDefaultTemp(summerTemp);
       }
     }
-  }, [awayMode, seasons,isSummer, isWinter,currentTime,  zones, addRoomsTemps]);
+  }, [
+    awayMode,
+    seasons,
+    isSummer,
+    isWinter,
+    currentTime,
+    zones,
+    addRoomsTemps,
+  ]);
 
   useEffect(() => {
     const loadTemps = () => {

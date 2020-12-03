@@ -8,19 +8,16 @@ import {
   TextField,
 } from "@material-ui/core";
 import ConsoleStore from "@/src/stores/ConsoleStore";
-import HouseStore from "@/src/stores/HouseStore";
 import SHHStore from "@/src/stores/SHHStore";
 import RunningStateStore from "@/src/stores/RunningStateStore";
-import HouseStore from "@/src/stores/HouseStore"
+import HouseStore from "@/src/stores/HouseStore";
 import moment from "moment";
-import SHPStore from "@/src/stores/SHPStore";
 
 export default function SeasonRange() {
   const { appendToLogs } = ConsoleStore();
-  const { isWinter, isSummer,setIsSummer, setIsWinter, seasons, setSeasons, roomsTemps} = SHHStore();
-  const {currentTemperature, windows, setWindows,setTriggerRender,triggerRender, currentProfile} =HouseStore();
-  const {awayMode} = SHPStore();
-  const {currentTime} = RunningStateStore();
+  const { setIsSummer, setIsWinter, seasons, setSeasons } = SHHStore();
+  const { currentProfile } = HouseStore();
+  const { currentTime } = RunningStateStore();
 
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const season = ["winter", "summer"];
@@ -69,30 +66,8 @@ export default function SeasonRange() {
       module: "SHH",
     });
   };
-  useEffect(()=>{
-    if(isSummer && !awayMode){
-      const tempWindows = windows
-      let aWindowBlocked =false
-      roomsTemps.forEach((value,key)=>{
-        const windowName = key+"-w1"
-        const currentWindowState = windows.get(windowName)
-        if(value>currentTemperature && currentWindowState&&!currentWindowState.isOpen){
-          if(currentWindowState && !currentWindowState.blocked){
-            tempWindows.set(windowName,{...currentWindowState, isOpen: true})
-          }
-          else
-          {
-            aWindowBlocked = true
-          }
-        }
-      })
-      !aWindowBlocked? setWindows(tempWindows): null
-      setTriggerRender(!triggerRender)
-    }
-  },[currentTemperature, isSummer, roomsTemps, windows])
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const currentYear = currentTime.getFullYear();
     const currentYearMonth =
       currentYear + "-" + (parseInt(currentTime.getMonth()) + 1);
@@ -122,15 +97,9 @@ export default function SeasonRange() {
       undefined,
       "[]"
     );
-    setIsWinter(isWinter)
-    setIsSummer(isSummer)
-
-  },[currentTime, seasons])
-
-  useEffect(()=>{
-    console.log(isWinter)
-    console.log(isSummer)
-  },[isWinter, isSummer])
+    setIsWinter(isWinter);
+    setIsSummer(isSummer);
+  }, [currentTime, seasons, setIsSummer, setIsWinter]);
 
   return (
     <>
