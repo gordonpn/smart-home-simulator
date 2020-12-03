@@ -26,8 +26,12 @@ public class BlockWindowsTest {
   public void shouldReturnHouseLayout() throws Exception {
 
     String content =
-        "{\"rooms\":{\"bedroom3\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1}}}";
-
+        "{\"rooms\":{\"bedroom3\":{\"roomNumber\":\"2\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"bathroom\":{\"roomNumber\":\"1\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"living room\":{\"roomNumber\":\"3\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"entrance\":{\"roomNumber\":\"4\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"kitchen\":{\"roomNumber\":\"5\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"deck\":{\"roomNumber\":\"6\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1}}}";
     MockHttpServletRequestBuilder builder =
         MockMvcRequestBuilders.post("/api/upload-house")
             .contentType(MediaType.APPLICATION_JSON_VALUE)

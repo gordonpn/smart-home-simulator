@@ -54,4 +54,4 @@ jobs:
       - name: Run Formatter
         uses: axel-op/googlejavaformat-action@v3
         with:
-          args: "--dry-run --set-exit-if-changed"
+          args: "--dry-run"

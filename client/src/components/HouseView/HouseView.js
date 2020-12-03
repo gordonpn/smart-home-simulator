@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Title from "../Title";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
@@ -18,6 +18,7 @@ export default function HouseView() {
   } = HouseStore();
   const { appendToLogs } = ConsoleStore();
   const { addRoomsTemps, setActualTemps } = SHHStore();
+  const [fileValid, setFileValid] = useState(true);
 
   const processFile = (event) => {
     const file = event.target.files[0];
@@ -34,6 +35,8 @@ export default function HouseView() {
           .then((res) => {
             if (res.status === 200) {
               setHouse(res.data);
+              setFileValid(true);
+
               const { rooms } = res.data;
               const doorsMap = new Map();
               const lightsMap = new Map();
@@ -69,6 +72,7 @@ export default function HouseView() {
             });
           })
           .catch((err) => {
+            setFileValid(false);
             console.warn(err);
           });
       };
@@ -78,7 +82,12 @@ export default function HouseView() {
   return (
     <Fragment>
       <Title>House View</Title>
-      <HouseLayout />
+      {!fileValid ? (
+        <h2 style={{ color: "red" }}>Invalid House File Format</h2>
+      ) : (
+        <HouseLayout />
+      )}
+
       <Input
         id="file-button"
         type="file"

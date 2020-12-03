@@ -26,13 +26,21 @@ public class HouseControllerTest {
 
   @BeforeEach
   public void shouldReturnHouseLayout() throws Exception {
+    String content =
+        "{\"rooms\":{\"bedroom3\":{\"roomNumber\":\"12\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"bathroom\":{\"roomNumber\":\"1\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"living room\":{\"roomNumber\":\"3\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"entrance\":{\"roomNumber\":\"4\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"kitchen\":{\"roomNumber\":\"5\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"deck\":{\"roomNumber\":\"6\",\"numDoors\":1,\"numWindows\":2,\"numLights\":1},"
+            + "\"room1\":{\"roomNumber\":\"41\",\"numDoors\":1,\"numWindows\":1,\"numLights\":1},"
+            + "\"room2\":{\"roomNumber\":\"2\",\"numDoors\":4,\"numWindows\":1,\"numLights\":10}}}";
     MockHttpServletRequestBuilder builder =
         post("/api/upload-house")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
-            .content(
-                "{\"rooms\":{\"room1\":{\"roomNumber\":\"41\",\"numDoors\":1,\"numWindows\":1,\"numLights\":1},\"room2\":{\"roomNumber\":\"2\",\"numDoors\":4,\"numWindows\":1,\"numLights\":10}}}");
+            .content(content);
 
     this.mockMvc
         .perform(builder)

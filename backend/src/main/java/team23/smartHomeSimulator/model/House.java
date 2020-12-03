@@ -1,8 +1,10 @@
 package team23.smartHomeSimulator.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import team23.smartHomeSimulator.exception.HouseLayoutException;
 import team23.smartHomeSimulator.model.modules.modulesObserver;
 
 /** The House class that includes the outside temperature and the list of rooms */
@@ -31,7 +33,7 @@ public class House {
    *
    * @param rooms hash map of rooms
    */
-  public House(HashMap<String, Room> rooms) {
+  public House(HashMap<String, Room> rooms) throws HouseLayoutException {
     this.outTemp = 25;
     initializeHouseLayout(rooms);
   }
@@ -41,7 +43,7 @@ public class House {
    *
    * @param rooms hash map of rooms
    */
-  private void initializeHouseLayout(HashMap<String, Room> rooms) {
+  private void initializeHouseLayout(HashMap<String, Room> rooms) throws HouseLayoutException {
     int roomWidth = 50;
     int livingRoomWidth = 100;
     int diningRoomWidth = 120;
@@ -62,6 +64,10 @@ public class House {
     this.houseCoor.put("deck", new ArrayList<Coordinates>());
     this.houseCoor.put("entrance", new ArrayList<Coordinates>());
     this.houseCoor.put("garage", new ArrayList<Coordinates>());
+
+    if (!isHouseLayoutFormatValid(rooms)) {
+      throw new HouseLayoutException("Missing some mandatory rooms");
+    }
 
     rooms.forEach(
         (key, room) -> {
@@ -142,6 +148,52 @@ public class House {
                   room.getNumLights(),
                   room.getNumDoors()));
         });
+  }
+
+  private boolean isHouseLayoutFormatValid(HashMap<String, Room> rooms) {
+    String[] roomsName = rooms.keySet().toArray(new String[0]);
+
+    int numBedroom = 0;
+    int numBathroom = 0;
+    int numKitchen = 0;
+    int numEntrance = 0;
+    int numLivingRoom = 0;
+    int numDeck = 0;
+    int numGarage = 0;
+    for (int i = 0; i < roomsName.length; i++) {
+      String roomName = roomsName[i].toLowerCase();
+
+      if (roomName.contains("bedroom")) {
+        numBedroom++;
+      } else if (roomName.contains("bathroom")) {
+        numBathroom++;
+      } else if (roomName.contains("kitchen")) {
+        numKitchen++;
+      } else if (roomName.contains("entrance")) {
+        numEntrance++;
+      } else if (roomName.contains("living room")) {
+        numLivingRoom++;
+      } else if (roomName.contains("deck")) {
+        numDeck++;
+      } else if (roomName.contains("deck")) {
+        numGarage++;
+      }
+    }
+    String roomString = Arrays.toString(roomsName).toLowerCase();
+
+    return (roomString.contains("bedroom")
+        && roomString.contains("bathroom")
+        && roomString.contains("kitchen")
+        && roomString.contains("entrance")
+        && roomString.contains("living room")
+        && roomString.contains("deck")
+        && numBathroom == 1
+        && numBedroom >= 1
+        && numEntrance == 1
+        && numKitchen == 1
+        && numLivingRoom == 1
+        && numGarage <= 1
+        && numDeck <= 1);
   }
 
   /**

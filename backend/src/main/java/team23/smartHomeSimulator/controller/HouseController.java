@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team23.smartHomeSimulator.exception.HouseLayoutException;
 import team23.smartHomeSimulator.model.*;
 import team23.smartHomeSimulator.model.modules.SHP;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
@@ -43,8 +44,14 @@ public class HouseController {
    */
   @PostMapping("/upload-house")
   public ResponseEntity<String> createHouseLayout(@RequestBody House houseData)
-      throws JsonProcessingException {
-    this.house = new House(houseData.getRooms());
+      throws JsonProcessingException, HouseLayoutException {
+
+    try {
+      this.house = new House(houseData.getRooms());
+
+    } catch (HouseLayoutException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
     this.house.addModuleObserver("SHP", new SHP());
 
     ObjectMapper mapper = new ObjectMapper();
