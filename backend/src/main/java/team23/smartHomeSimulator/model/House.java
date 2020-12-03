@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import team23.smartHomeSimulator.exception.HouseLayoutException;
-import team23.smartHomeSimulator.model.modules.modulesObserver;
 
 /** The House class that includes the outside temperature and the list of rooms */
 public class House {
@@ -18,12 +17,6 @@ public class House {
 
   /** The list of all components' coordinates in 2D plane */
   private HashMap<String, List<Coordinates>> houseCoor = new HashMap<String, List<Coordinates>>();
-
-  /** The list of the observers for house */
-  private HashMap<String, modulesObserver> modulesObserver = new HashMap<String, modulesObserver>();
-
-  /** The list of users' location in the house */
-  private HashMap<String, String> usersLocation = new HashMap<String, String>();
 
   /** Default constructor to deserialize JSON object */
   public House() {}
@@ -308,70 +301,5 @@ public class House {
    */
   public Room getOneRoom(String roomName) {
     return rooms.get(roomName);
-  }
-
-  /**
-   * Getter for usersLocation
-   *
-   * @return hash map of type string and string
-   */
-  public HashMap<String, String> getUsersLocation() {
-    return this.usersLocation;
-  }
-
-  /**
-   * Setter for usersLocation
-   *
-   * @param name name of the user
-   * @param location location of the user
-   */
-  public void setUsersLocation(String name, String location) {
-    this.usersLocation.put(name, location);
-    notifyModules();
-  }
-
-  /**
-   * Remove user from house
-   *
-   * @param name name of the user to be removed
-   */
-  public void deleteUsersLocation(String name) {
-    this.usersLocation.remove(name);
-  }
-
-  /**
-   * Add observer to house
-   *
-   * @param moduleName the name of the module
-   * @param module the moduleObserver object
-   */
-  public void addModuleObserver(String moduleName, modulesObserver module) {
-    this.modulesObserver.put(moduleName, module);
-  }
-
-  /**
-   * Remove observer from house
-   *
-   * @param moduleName name of the module to be removed
-   */
-  public void removeModuleObserver(String moduleName) {
-    this.modulesObserver.remove(moduleName);
-  }
-
-  /** Notify all observers that there is a change */
-  private void notifyModules() {
-    modulesObserver.forEach(
-        (key, value) -> {
-          value.update(this);
-        });
-  }
-
-  /**
-   * Getter for modulesObserver
-   *
-   * @return Hash map of String, modulesObserver
-   */
-  public HashMap<String, modulesObserver> getModulesObserver() {
-    return modulesObserver;
   }
 }

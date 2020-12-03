@@ -10,10 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team23.smartHomeSimulator.exception.HouseLayoutException;
 import team23.smartHomeSimulator.model.*;
-import team23.smartHomeSimulator.model.modules.SHP;
 import team23.smartHomeSimulator.model.request_body.DoorRequestBody;
 import team23.smartHomeSimulator.model.request_body.LightRequestBody;
-import team23.smartHomeSimulator.model.request_body.LocationChangeRequestBody;
 import team23.smartHomeSimulator.model.request_body.WindowRequestBody;
 import team23.smartHomeSimulator.service.PermissionService;
 import team23.smartHomeSimulator.utility.ErrorResponse;
@@ -52,7 +50,6 @@ public class HouseController {
     } catch (HouseLayoutException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-    this.house.addModuleObserver("SHP", new SHP());
 
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(house);
@@ -221,42 +218,4 @@ public class HouseController {
     }
   }
 
-  /**
-   * Add or modify user's location in the house
-   *
-   * @param user Object of type LocationChangeRequestBody
-   * @return object containing the new location of the user
-   */
-  @PutMapping("/house-users")
-  public ResponseEntity<Object> setUserLocation(@RequestBody LocationChangeRequestBody user) {
-    house.setUsersLocation(user.getName(), user.getLocation());
-    LocationChangeRequestBody userLocation =
-        new LocationChangeRequestBody(user.getName(), house.getUsersLocation().get(user.getName()));
-    return new ResponseEntity<>(userLocation, HttpStatus.OK);
-  }
-
-  /**
-   * Delete user from house
-   *
-   * @param name the name of the user to be removed
-   * @return Message indicating if user was removed successfully
-   */
-  @DeleteMapping("/house-users")
-  public ResponseEntity<Object> removeUserLocation(@RequestParam(name = "name") String name) {
-    house.deleteUsersLocation(name);
-    String success = house.getUsersLocation().get(name) == null ? "successfully" : "unsuccessfully";
-    return new ResponseEntity<>("Removed " + name + " " + success, HttpStatus.OK);
-  }
-
-  /**
-   * Getting the state of away mode of the house
-   *
-   * @return boolean
-   */
-  @GetMapping("/house/away-mode")
-  public ResponseEntity<Object> getAwayMode() {
-    SHP shp = (SHP) house.getModulesObserver().get("SHP");
-    boolean awayMode = shp.getIsAwayModeOn();
-    return new ResponseEntity<>(awayMode, HttpStatus.OK);
-  }
 }

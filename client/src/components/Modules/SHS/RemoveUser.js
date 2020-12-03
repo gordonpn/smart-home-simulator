@@ -50,8 +50,7 @@ export default function RemoveUser() {
     };
 
     const res = await axios.delete("/api/profiles", params);
-    const res2 = await axios.delete("/api/house-users", params);
-    if (res.status === 200 && res2.status === 200) {
+    if (res.status === 200) {
       removeByName(selectedProfile);
       setSelectedProfile("");
       setOpen(false);
