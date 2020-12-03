@@ -22,17 +22,6 @@ const SHHStore = create((set, get) => ({
     rooms.delete(room);
     set({ roomsBelowZero: rooms });
   },
-  roomsWindowNotify: new Set(),
-  addRoomsWindowNotify: (room) => {
-    const rooms = get().roomsWindowNotify;
-    rooms.add(room);
-    set({ roomsWindowNotify: rooms });
-  },
-  deleteRoomsWindowNotify: (room) => {
-    const rooms = get().roomsWindowNotify;
-    rooms.delete(room);
-    set({ roomsWindowNotify: rooms });
-  },
   actualTemps: new Map(),
   setActualTemps: (room, temp) => {
     const actualTemps = get().actualTemps;
