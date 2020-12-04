@@ -11,6 +11,33 @@
 
 <https://www.youtube.com/watch?v=MO8AL7TA75Y>
 
+## Explanation of Refactoting and Exception Handling
+
+#### Refactoring
+Pull Request IDs: #132 and #122
+
+Classes Involved: house.java, houseController.java, SHP.java, modulesObserver.java, HouseControllerTest.java
+
+JavaScript Files Involved: EditUser.js, RemoveUser.js, HouseStore.js, ProfileStore.js, SHHStore.js, SHPStore.js
+
+In this delivery, we performed 2 refactorings. 
+
+The first refactoring consists of applying the extract method for the initializeHouseLayout method in house.java because this method was too big. We refactored this method by creating other methods such as initializeHouseComponents and createRoom.
+
+The second refactoring consists of removing the observer pattern applied to SHP because there is a simpler way to use the observer pattern in the frontend by using a state management library which automatically notify the components that a change had occured. In this process, we created a store for all 3 modules SHC (HouseStore), SHH (SHHStore), and SHP (SHPStore) and reorganized the methods in the stores so that it reflects the functionalities of each module. In order to use the states of a module, we simply import the store of the module in the file to be used in. 
+
+Tests: 
+
+As a result, we removed some tests associated to the controller because we no longer apply the observer pattern in the backend. To know if our tests passed after doing the refactoring, we can run gradlew test to see if any tests failed or you can look at the section 'Checks' in the PRs.
+
+#### Exception Handling
+
+Pull Request ID: #131
+
+Exception Handling Class: HouseLayoutException.java
+
+We added exception handling for handling errors when the users upload the house layout format because the application follows a strict json format in order to successfully generate the 2D house layout. This exception class with look at the mandatory components of a house and their quantities (refer to 'Mandatory room components' section in README.rd).
+
 ## Requirements
 
 - At least JDK 11 is required (because of Google Java Format plugin)
@@ -142,11 +169,8 @@ In addition, some room components are a **MUST** in the text file.
 - Must have **exactly** 1 kitchen.
 - Must have **exactly** 1 entrance.
 - Must have **exactly** 1 living room.
-- Must have **exactly** 1 door per room.
-- Must have **exactly** 1 window per room.
 - Must have **at most** 1 deck.
 - Must have **at most** 1 garage.
-- Garage, deck, patio, and entrance **don't** have doors and windows
 
 There is a specific format that must be followed to generate the 2D house layout.
 There is a JSON format template in the repo located in the doc folder
