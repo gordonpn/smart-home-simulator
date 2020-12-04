@@ -11,10 +11,10 @@
 
 <https://www.youtube.com/watch?v=MO8AL7TA75Y>
 
-## Explanation of Refactoting and Exception Handling
+## Explanation of Refactoring and Exception Handling
 
 #### Refactoring
-Pull Request IDs: #132 and #122
+Pull Request IDs: [#122](https://github.com/gordonpn/soen343-team23/pull/122) and [#132](https://github.com/gordonpn/soen343-team23/pull/132)
 
 Classes Involved: house.java, houseController.java, SHP.java, modulesObserver.java, HouseControllerTest.java
 
@@ -32,7 +32,7 @@ As a result, we removed some tests associated to the controller because we no lo
 
 #### Exception Handling
 
-Pull Request ID: #131
+Pull Request ID: [#131](https://github.com/gordonpn/soen343-team23/pull/131)
 
 Exception Handling Class: HouseLayoutException.java
 
