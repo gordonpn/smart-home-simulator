@@ -172,12 +172,7 @@ export default function HouseLayout() {
                   visible={roomAC.has(subComp[i].name)}
                 />
               );
-            }
-            if (
-              roomName !== "doors" &&
-              roomName !== "lights" &&
-              roomName !== "windows"
-            ) {
+
               elements.push(
                 <Circle
                   key={subComp[i].name + "-Heater"}
