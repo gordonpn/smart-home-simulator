@@ -3,6 +3,7 @@ import { Circle, Layer, Rect, Stage, Text } from "react-konva";
 import HouseStore from "@/src/stores/HouseStore";
 import Legend from "./Legend";
 import RunningStateStore from "@/src/stores/RunningStateStore";
+import SHHStore from "@/src/stores/SHHStore";
 
 export default function HouseLayout() {
   const {
@@ -17,6 +18,14 @@ export default function HouseLayout() {
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
+  const { roomAC, roomHeater } = SHHStore();
+
+  const acRoom = (subComp) => {
+    return roomAC.has(subComp.name);
+  };
+  const heaterRoom = (subComp) => {
+    return roomHeater.has(subComp.name);
+  };
 
   useEffect(() => {
     const renderRooms = () => {
@@ -112,7 +121,7 @@ export default function HouseLayout() {
             textY = 5;
             break;
         }
-
+        elements.push();
         if (roomName !== "lights") {
           for (let i = 0; i < subComp.length; i++) {
             if (roomName !== "lights") {
@@ -151,6 +160,39 @@ export default function HouseLayout() {
                   y={subComp[i].y + textY}
                   text={subComp[i].name}
                   fontSize={fontSize}
+                />
+              );
+            }
+
+            if (
+              roomName !== "doors" &&
+              roomName !== "lights" &&
+              roomName !== "windows"
+            ) {
+              elements.push(
+                <Text
+                  key={subComp[i].name + "AC-"}
+                  x={subComp[i].x + textX - 8}
+                  y={subComp[i].y + textY}
+                  text={"AC"}
+                  fontSize={4}
+                  visible={acRoom(subComp[i])}
+                />
+              );
+            }
+            if (
+              roomName !== "doors" &&
+              roomName !== "lights" &&
+              roomName !== "windows"
+            ) {
+              elements.push(
+                <Circle
+                  key={subComp[i].name + "Heater-"}
+                  x={subComp[i].x + textX - 5}
+                  y={subComp[i].y + textY + 5}
+                  visible={heaterRoom(subComp[i])}
+                  radius={3}
+                  fill={"orange"}
                 />
               );
             }
@@ -227,7 +269,16 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse, profiles, triggerRender, windows, doors, lights]);
+  }, [
+    currentHouse,
+    profiles,
+    triggerRender,
+    windows,
+    doors,
+    lights,
+    roomAC,
+    roomHeater,
+  ]);
 
   return (
     <Stage
