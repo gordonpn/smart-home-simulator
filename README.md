@@ -11,6 +11,10 @@
 
 <https://www.youtube.com/watch?v=MO8AL7TA75Y>
 
+## Video Demonstration Deliverable 3 (2020-12-06)
+
+<https://www.youtube.com/watch?v=W7kpOQxwFcI>
+
 ## Explanation of Refactoring and Exception Handling
 
 #### Refactoring
