@@ -23,18 +23,11 @@ export default function TempTable() {
     addRoomsBelowZero,
     deleteRoomsBelowZero,
     roomsBelowZero,
-    addRoomAC,
-    addRoomHeater,
-    deleteRoomAC,
-    deleteRoomHeater,
+    setRoomHeater,
+    setRoomAC,
   } = SHHStore();
   const { currentState, currentTime, timeSpeed } = RunningStateStore();
-  const {
-    currentTemperature,
-    windows,
-    setWindows,
-    setTriggerRender,
-  } = HouseStore();
+  const { currentTemperature, windows, setWindows } = HouseStore();
   const { appendToLogs } = ConsoleStore();
   const { awayMode } = SHPStore();
   const [open, setOpen] = useState(false);
@@ -54,13 +47,15 @@ export default function TempTable() {
   const handleToggle = () => {
     setOpen(!open);
   };
-  let updateHouseLayout = false;
+
   useEffect(() => {
     if (!currentState) {
       return;
     }
     const interval = setInterval(() => {
       let updateWindows = false;
+      const tempAcRooms = new Set();
+      const tempHeaterRooms = new Set();
       const tempWindows = new Map();
 
       for (const roomName of Array.from(actualTemps.keys())) {
@@ -84,37 +79,7 @@ export default function TempTable() {
           }
         }
 
-        let tempChange = 0;
-        if (isSummer && desiredTemp < actualTemps.get(roomName)) {
-          tempChange = -0.1;
-          addRoomAC(roomName);
-          updateHouseLayout = true;
-        }
-        if (isSummer && desiredTemp > actualTemps.get(roomName)) {
-          tempChange = 0.05;
-          deleteRoomAC(roomName);
-          updateHouseLayout = true;
-        }
-        if (isSummer && desiredTemp === actualTemps.get(roomName)) {
-          deleteRoomAC(roomName);
-          updateHouseLayout = true;
-        }
-        if (!isSummer && desiredTemp > actualTemps.get(roomName)) {
-          tempChange = 0.1;
-          addRoomHeater(roomName);
-          updateHouseLayout = true;
-        }
-        if (!isSummer && desiredTemp < actualTemps.get(roomName)) {
-          tempChange = -0.05;
-          deleteRoomHeater(roomName);
-          updateHouseLayout = true;
-        }
-        if (!isSummer && desiredTemp === actualTemps.get(roomName)) {
-          deleteRoomHeater(roomName);
-          updateHouseLayout = true;
-        }
-
-        /* const hvacShouldTurnOn =
+        const hvacShouldTurnOn =
           Math.abs(actualTemps.get(roomName) - desiredTemp) > 0.25;
 
         let tempChange = 0;
@@ -132,22 +97,15 @@ export default function TempTable() {
         ) {
           tempChange = tempChange * -1;
         }
-        if (desiredTemp < actualTemps.get(roomName)) {
-          addRoomAC(roomName);
-          updateHouseLayout = true;
-        }
-        if (
-          desiredTemp === actualTemps.get(roomName) + 1 ||
-          desiredTemp === actualTemps.get(roomName) - 1
+
+        if (hvacShouldTurnOn && desiredTemp < actualTemps.get(roomName)) {
+          tempAcRooms.add(roomName);
+        } else if (
+          hvacShouldTurnOn &&
+          desiredTemp > actualTemps.get(roomName)
         ) {
-          deleteRoomAC(roomName);
-          deleteRoomHeater(roomName);
-          updateHouseLayout = true;
+          tempHeaterRooms.add(roomName);
         }
-        if (desiredTemp > actualTemps.get(roomName)) {
-          addRoomHeater(roomName);
-          updateHouseLayout = true;
-        } */
 
         const roomsTemp = round(actualTemps.get(roomName) + tempChange, 2);
 
@@ -196,9 +154,9 @@ export default function TempTable() {
 
         setActualTemps(roomName, roomsTemp);
       }
-      if (updateHouseLayout) {
-        setTriggerRender();
-      }
+
+      setRoomAC(tempAcRooms);
+      setRoomHeater(tempHeaterRooms);
       if (updateWindows) {
         setWindows(tempWindows);
       }
@@ -225,6 +183,8 @@ export default function TempTable() {
     setWindows,
     windows,
     blockedWindows,
+    setRoomAC,
+    setRoomHeater,
   ]);
 
   return (

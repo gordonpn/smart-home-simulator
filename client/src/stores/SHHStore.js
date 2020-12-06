@@ -2,27 +2,9 @@ import create from "zustand";
 
 const SHHStore = create((set, get) => ({
   roomAC: new Set(),
-  addRoomAC: (room) => {
-    const roomsAC = get().roomAC;
-    roomsAC.add(room);
-    set({ roomAC: roomsAC });
-  },
-  deleteRoomAC: (room) => {
-    const roomsAC = get().roomAC;
-    roomsAC.delete(room);
-    set({ roomAC: roomsAC });
-  },
+  setRoomAC: (rooms) => set({ roomAC: rooms }),
   roomHeater: new Set(),
-  addRoomHeater: (room) => {
-    const roomsHeater = get().roomHeater;
-    roomsHeater.add(room);
-    set({ roomHeater: roomsHeater });
-  },
-  deleteRoomHeater: (room) => {
-    const roomsHeater = get().roomHeater;
-    roomsHeater.delete(room);
-    set({ roomHeater: roomsHeater });
-  },
+  setRoomHeater: (rooms) => set({ roomHeater: rooms }),
   roomsTemps: new Map(),
   addRoomsTemps: (room, temp) => {
     const roomsTemps = get().roomsTemps;

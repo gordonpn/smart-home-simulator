@@ -42,8 +42,10 @@ export default function Legend() {
       <Text x={textX} y={120} text={"Blocked Window"} />
       <Rect x={shapeX - 2} y={140} width={15} height={15} fill="#F3F686" />
       <Text x={textX} y={140} text={"Lights On"} />
-      <Circle x={shapeX + 5} y={168} radius={8} fill={"orange"} />
-      <Text x={textX} y={163} text={"Heater On"} />
+      <Circle x={shapeX + 5} y={170} radius={8} fill={"orange"} />
+      <Text x={textX} y={165} text={"Heater On"} />
+      <Circle x={shapeX + 5} y={190} radius={8} fill={"#B0EAFC"} />
+      <Text x={textX} y={185} text={"AC On"} />
     </Layer>
   );
 }

@@ -20,13 +20,6 @@ export default function HouseLayout() {
   const [windowHeight, setWindowHeight] = useState(0);
   const { roomAC, roomHeater } = SHHStore();
 
-  const acRoom = (subComp) => {
-    return roomAC.has(subComp.name);
-  };
-  const heaterRoom = (subComp) => {
-    return roomHeater.has(subComp.name);
-  };
-
   useEffect(() => {
     const renderRooms = () => {
       const elements = [];
@@ -121,7 +114,7 @@ export default function HouseLayout() {
             textY = 5;
             break;
         }
-        elements.push();
+
         if (roomName !== "lights") {
           for (let i = 0; i < subComp.length; i++) {
             if (roomName !== "lights") {
@@ -170,13 +163,13 @@ export default function HouseLayout() {
               roomName !== "windows"
             ) {
               elements.push(
-                <Text
-                  key={subComp[i].name + "AC-"}
-                  x={subComp[i].x + textX - 8}
-                  y={subComp[i].y + textY}
-                  text={"AC"}
-                  fontSize={4}
-                  visible={acRoom(subComp[i])}
+                <Circle
+                  key={subComp[i].name + "-AC"}
+                  x={subComp[i].x + textX - 5}
+                  y={subComp[i].y + textY + 5}
+                  radius={3}
+                  fill={"#B0EAFC"}
+                  visible={roomAC.has(subComp[i].name)}
                 />
               );
             }
@@ -187,10 +180,10 @@ export default function HouseLayout() {
             ) {
               elements.push(
                 <Circle
-                  key={subComp[i].name + "Heater-"}
+                  key={subComp[i].name + "-Heater"}
                   x={subComp[i].x + textX - 5}
                   y={subComp[i].y + textY + 5}
-                  visible={heaterRoom(subComp[i])}
+                  visible={roomHeater.has(subComp[i].name)}
                   radius={3}
                   fill={"orange"}
                 />
