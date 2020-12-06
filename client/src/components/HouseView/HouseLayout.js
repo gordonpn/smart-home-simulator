@@ -3,6 +3,7 @@ import { Circle, Layer, Rect, Stage, Text } from "react-konva";
 import HouseStore from "@/src/stores/HouseStore";
 import Legend from "./Legend";
 import RunningStateStore from "@/src/stores/RunningStateStore";
+import SHHStore from "@/src/stores/SHHStore";
 
 export default function HouseLayout() {
   const {
@@ -17,6 +18,7 @@ export default function HouseLayout() {
   const [roomElements, setRoomElements] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
+  const { roomAC, roomHeater } = SHHStore();
 
   useEffect(() => {
     const renderRooms = () => {
@@ -155,6 +157,34 @@ export default function HouseLayout() {
               );
             }
 
+            if (
+              roomName !== "doors" &&
+              roomName !== "lights" &&
+              roomName !== "windows"
+            ) {
+              elements.push(
+                <Circle
+                  key={subComp[i].name + "-AC"}
+                  x={subComp[i].x + textX - 5}
+                  y={subComp[i].y + textY + 5}
+                  radius={3}
+                  fill={"#B0EAFC"}
+                  visible={roomAC.has(subComp[i].name)}
+                />
+              );
+
+              elements.push(
+                <Circle
+                  key={subComp[i].name + "-Heater"}
+                  x={subComp[i].x + textX - 5}
+                  y={subComp[i].y + textY + 5}
+                  visible={roomHeater.has(subComp[i].name)}
+                  radius={3}
+                  fill={"orange"}
+                />
+              );
+            }
+
             if (roomName === "windows") {
               elements.push(
                 <Circle
@@ -227,7 +257,16 @@ export default function HouseLayout() {
       setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     }
-  }, [currentHouse, profiles, triggerRender, windows, doors, lights]);
+  }, [
+    currentHouse,
+    profiles,
+    triggerRender,
+    windows,
+    doors,
+    lights,
+    roomAC,
+    roomHeater,
+  ]);
 
   return (
     <Stage

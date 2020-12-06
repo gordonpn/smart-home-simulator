@@ -1,6 +1,10 @@
 import create from "zustand";
 
 const SHHStore = create((set, get) => ({
+  roomAC: new Set(),
+  setRoomAC: (rooms) => set({ roomAC: rooms }),
+  roomHeater: new Set(),
+  setRoomHeater: (rooms) => set({ roomHeater: rooms }),
   roomsTemps: new Map(),
   addRoomsTemps: (room, temp) => {
     const roomsTemps = get().roomsTemps;

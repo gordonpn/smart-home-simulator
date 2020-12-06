@@ -23,6 +23,8 @@ export default function TempTable() {
     addRoomsBelowZero,
     deleteRoomsBelowZero,
     roomsBelowZero,
+    setRoomHeater,
+    setRoomAC,
   } = SHHStore();
   const { currentState, currentTime, timeSpeed } = RunningStateStore();
   const { currentTemperature, windows, setWindows } = HouseStore();
@@ -52,6 +54,8 @@ export default function TempTable() {
     }
     const interval = setInterval(() => {
       let updateWindows = false;
+      const tempAcRooms = new Set();
+      const tempHeaterRooms = new Set();
       const tempWindows = new Map();
 
       for (const roomName of Array.from(actualTemps.keys())) {
@@ -93,12 +97,22 @@ export default function TempTable() {
         ) {
           tempChange = tempChange * -1;
         }
+
+        if (hvacShouldTurnOn && desiredTemp < actualTemps.get(roomName)) {
+          tempAcRooms.add(roomName);
+        } else if (
+          hvacShouldTurnOn &&
+          desiredTemp > actualTemps.get(roomName)
+        ) {
+          tempHeaterRooms.add(roomName);
+        }
+
         const roomsTemp = round(actualTemps.get(roomName) + tempChange, 2);
 
         if (roomsTemp < 0.5 && !roomsBelowZero.has(roomName)) {
           appendToLogs({
             timestamp: new Date(),
-            message: `Potential pipe burst in the room ${roomName} due to tempeature at 0 degree!`,
+            message: `Potential pipe burst in the room ${roomName} due to temperature at 0 degree!`,
             module: "SHH",
           });
           addRoomsBelowZero(roomName);
@@ -140,6 +154,9 @@ export default function TempTable() {
 
         setActualTemps(roomName, roomsTemp);
       }
+
+      setRoomAC(tempAcRooms);
+      setRoomHeater(tempHeaterRooms);
       if (updateWindows) {
         setWindows(tempWindows);
       }
@@ -166,6 +183,8 @@ export default function TempTable() {
     setWindows,
     windows,
     blockedWindows,
+    setRoomAC,
+    setRoomHeater,
   ]);
 
   return (
