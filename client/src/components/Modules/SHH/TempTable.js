@@ -113,7 +113,8 @@ export default function TempTable() {
           deleteRoomHeater(roomName);
           updateHouseLayout = true;
         }
-        /*const hvacShouldTurnOn =
+
+        /* const hvacShouldTurnOn =
           Math.abs(actualTemps.get(roomName) - desiredTemp) > 0.25;
 
         let tempChange = 0;
@@ -146,7 +147,7 @@ export default function TempTable() {
         if (desiredTemp > actualTemps.get(roomName)) {
           addRoomHeater(roomName);
           updateHouseLayout = true;
-        }*/
+        } */
 
         const roomsTemp = round(actualTemps.get(roomName) + tempChange, 2);
 
